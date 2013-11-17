@@ -22,3 +22,4 @@ Files
     * compton.conf      -> $HOME/.compton.conf
     * vimrc             -> $HOME/.vimrc
     * vim/              -> $HOME/.vim/
+    * vim/latexsuite/*  -> /usr/share/vim/vimfiles/ftplugin/latex-suite/*
