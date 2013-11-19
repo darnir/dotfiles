@@ -28,8 +28,6 @@ set softtabstop=4           " Number of columns moved on a <tab> key
 set tabstop=4               " Number of columns a Tab represents
 set smarttab                " Enable Smart tab'ing
 set textwidth=80            " Auto wrap at char 80
-set spell                   " Enable spell checking
-set spelllang=en            " Define the default language of the document
 set spellfile=$HOME/.vim/spell/en.utf-8.add
                             " Set a custom path for the spellfile
 set showcmd                 " Show the command you are currently typing
@@ -39,3 +37,102 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~
                             " Ignore these files unconditionally
 set wildmenu                " Use Wildcard expansion menu
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
+set nrformats-=octal        " When using C-a / C-x, don't consider octals
+set omnifunc=syntaxcomplete#Complete
+                            " Enable omni-completion in Vim
+set display+=lastline       " When lines exceed the screen size, display as much
+                            " as possible. Useful for HTML development.
+set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
+set smartcase               " Use smart case sensitivity when searching
+set incsearch               " Use incremental search
+set lazyredraw              " Delay redrawing screen during macros. Performance boost
+set magic                   " Use magic regex during searches
+set foldcolumn=1            " Keep a dedicated column for showing folds
+set laststatus=2            " Always show status bar
+
+" The following section configures Vundle
+filetype off                " Required as a workaround. See #176
+set rtp+=~/.vim/bundle/vundle/
+                            " Edits the runtime path to include vundle
+call vundle#rc()            " Initiate Vundle
+
+" Always ensure that vundle manages vundle
+Bundle 'gmarik/vundle'
+
+" original repos on GitHub
+Bundle 'tpope/vim-fugitive'
+"Bundle 'scrooloose/syntastic'
+"Bundle 'bling/vim-airline'
+
+filetype plugin indent on   " required!
+" End of Vundle block
+
+colorscheme vividchalk      " Set the theme for Vim
+
+autocmd!
+" When a vimrc is sourced, the autocommands may be added again. Hence, clear all the autocommands
+" before defining any of our own
+
+" Set spell checking only on TeX files. Makes a lot more sense
+autocmd FileType tex setlocal spell spelllang=en_us
+
+" Pressing \ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" When editing a file, always jump to the last cursor position
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+\   exe "normal! g'\"" |
+\ endif
+
+" don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command W w !sudo tee % > /dev/null
+
+" CTags settings
+let g:ctags_statusline=1
+let g:generate_tags=1
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+"This unsets the 'last search pattern' register by hitting return
+nnoremap <CR> :noh<CR><CR>
+
+" Append modeline after last line in buffer.
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &softtabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+
+" Highlight trailing whitespaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" Custom filetype definations
+au BufNewFile,BufRead CommitLog set filetype=changelog
+au BufNewFile,BufRead *.px set filetype=perl
+au BufNewFile,BufRead *.py set filetype=python
+
+" Don't wake up system with blinking cursor:
+" http://www.linuxpowertop.org/known.php
+let &guicursor = &guicursor . ",a:blinkon0"
+
+" vim: set ts=4 sts=4 sw=4 tw=80 et :
