@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONF_NAME="Compton Conf"
+CONF_NAME="Git Config"
 
 echo "Working on ${CONF_NAME}"
 

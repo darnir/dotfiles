@@ -1,19 +1,35 @@
 #!/bin/bash
 
-VIMRC_ORIG=${HOME}/.vimrc
-VIMRC_BCK=${VIMRC_ORGIG}.bck
-VIMCONF=${HOME}/.vim
-VIMCONF_BCK=${VIMCONF}bck
+CONF_NAME="Vim Config"
 
-if [ -f ${VIMRC_ORIG} ]
+echo "Working on ${CONF_NAME}"
+
+_CONF_NAME=vimrc
+_CONF_FILE=${HOME}/.${_CONF_NAME}
+_BCK_FILE=${_CONF_FILE}.bck
+_LOC_FILE=$(pwd)/${_CONF_NAME}
+
+echo "Checking if ${_CONF_FILE} exists"
+if [ -f ${_CONF_FILE} ]
 then
-    mv ${VIMRC_ORIG} ${VIMRC_BCK}
+    echo "File found, saving to ${_BCK_FILE}"
+    mv ${_CONF_FILE} ${_BCK_FILE}
 fi
 
-if [ -d ${VIMCONF} ]
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+ln -s ${_LOC_FILE} ${_CONF_FILE}
+
+_CONF_NAME=vim
+_CONF_FILE=${HOME}/.${_CONF_NAME}
+_BCK_FILE=${_CONF_FILE}bck
+_LOC_FILE=$(pwd)/${_CONF_NAME}
+
+echo "Checking if ${_CONF_FILE} exists"
+if [ -f ${_CONF_FILE} ]
 then
-    mv ${VIMCONF} ${VIMCONF_BCK}
+    echo "File found, saving to ${_BCK_FILE}"
+    mv ${_CONF_FILE} ${_BCK_FILE}
 fi
 
-ln -s $(pwd)/vimrc ${VIMRC_ORIG}
-ln -s $(pwd)/vim ${VIMCONF}
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+ln -s ${_LOC_FILE} ${_CONF_FILE}
