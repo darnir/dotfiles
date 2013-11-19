@@ -26,6 +26,7 @@ Files
     * gitconfig         -> $HOME/.gitconfig
     * gitattributes     -> $HOME/.gitattributes
     * gitk              -> $HOME/.gitk
+    * bashrc            -> $HOME/.bashrc
 
 Note
 ====
