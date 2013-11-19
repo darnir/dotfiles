@@ -1,0 +1,29 @@
+[user]
+	email = darnir@gmail.com
+	name = Darshit Shah
+[credential]
+	helper = cache
+[color]
+	ui = true
+[core]
+	editor = vim
+    attributesfile = ~/.gitattributes
+[alias]
+	commits = commit --signoff
+    lg      = log --pretty=format:’%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset’
+    unstage = reset HEAD --
+    diffc   = diff --cached
+
+[merge "merge-changelog"]
+        name = GNU-style ChangeLog merge driver
+        driver = /usr/bin/git-merge-changelog %O %A %B
+[rerere]
+	enabled = true
+[merge]
+	tool = vimdiff
+[push]
+	default = simple
+[help]
+	autocorrect = 1
+[diff]
+	renames = copy

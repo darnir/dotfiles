@@ -23,3 +23,15 @@ Files
     * vimrc             -> $HOME/.vimrc
     * vim/              -> $HOME/.vim/
     * vim/latexsuite/*  -> /usr/share/vim/vimfiles/ftplugin/latex-suite/*
+    * gitconfig         -> $HOME/.gitconfig
+    * gitattributes     -> $HOME/.gitattributes
+    * gitk              -> $HOME/.gitk
+
+Note
+====
+The vim/latexsuite path  must be manually symlinked. The symlink requires
+superuser privileges and I prefer not to run scripts with sudo.
+
+The gitconfig refers to an external application, git-merge-changelog. Remember
+to install the same before using the configuration file. It is available on the
+AUR as git-merge-changelog-git.
