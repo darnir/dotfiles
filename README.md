@@ -36,3 +36,7 @@ superuser privileges and I prefer not to run scripts with sudo.
 The gitconfig refers to an external application, git-merge-changelog. Remember
 to install the same before using the configuration file. It is available on the
 AUR as git-merge-changelog-git.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/darnir/dotfiles/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
