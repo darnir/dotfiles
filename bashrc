@@ -122,6 +122,19 @@ extract() {
     return $e
 }
 
+pack() {
+  local FILE
+  FILE=$1
+  case $FILE in
+    *.tar.bz2)  shift && tar cjf $FILE $* ;;
+    *.tbz2)     shift && tar cjf $FILE $* ;;
+    *.tar.gz)   shift && tar czf $FILE $* ;;
+    *.tgz)      shift && tar czf $FILE $* ;;
+    *.zip)      shift && zip $FILE $*     ;;
+    *.rar)      shift && rar $FILE $*     ;;
+  esac
+}
+
 man() {
     env \
         LESS_TERMCAP_mb=$(printf "\e[1;31m") \
