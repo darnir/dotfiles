@@ -59,6 +59,21 @@ function /bin/rm() { command rm "-i""$@"; }
 
 #sudo() { if [[ $@ == "pacman -Syu" ]]; then command pacup.sh; else command sudo "$@"; fi; }
 
+shopt -s autocd
+shopt -s cdspell
+shopt -s checkwinsize
+shopt -s cmdhist
+shopt -s histappend
+shopt -s dotglob
+shopt -s expand_aliases
+shopt -s nocaseglob
+shopt -s extglob
+shopt -s checkjobs
+shopt -s dirspell
+
+
+set show-all-if-ambiguous on
+
 pdflatex() {
 GREP="grep --color=always --line-buffered"
 LL=$*
