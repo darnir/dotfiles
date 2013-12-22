@@ -61,8 +61,12 @@ Bundle 'gmarik/vundle'
 
 " original repos on GitHub
 Bundle 'tpope/vim-fugitive'
+Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
 "Bundle 'bling/vim-airline'
+
+Bundle 'a.vim'
+Bundle 'python.vim'
 
 filetype plugin indent on   " required!
 " End of Vundle block
