@@ -33,7 +33,7 @@ alias configwget='time ./configure --enable-option-checking --disable-silent-rul
 alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
 alias run='time ./runTest.py'
 alias proj='cd ~/Programming/wget-gsoc/testenv'
-alias resetproj='./bootstrap --gnulib-srcdir=../gnulib && configwget'
+alias resetproj='./bootstrap && configwget'
 
 # Safety Features
 alias chown='chown --preserve-root'
