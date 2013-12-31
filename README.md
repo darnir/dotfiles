@@ -28,6 +28,8 @@ Files
     * gitk              -> $HOME/.gitk
     * bashrc            -> $HOME/.bashrc
     * makepkg.conf      -> /etc/makepkg.conf
+    * pacman.conf       -> /etc/pacman.conf
+    * mirrorlist        -> /etc/pacman.d/mirrorlist
 
 Note
 ====
