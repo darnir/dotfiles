@@ -22,11 +22,12 @@ Files
     * compton.conf      -> $HOME/.compton.conf
     * vimrc             -> $HOME/.vimrc
     * vim/              -> $HOME/.vim/
-    * vim/latexsuite/*  -> /usr/share/vim/vimfiles/ftplugin/latex-suite/*
+    * vim/latexsuite/\* -> /usr/share/vim/vimfiles/ftplugin/latex-suite/\*
     * gitconfig         -> $HOME/.gitconfig
     * gitattributes     -> $HOME/.gitattributes
     * gitk              -> $HOME/.gitk
     * bashrc            -> $HOME/.bashrc
+    * makepkg.conf      -> /etc/makepkg.conf
 
 Note
 ====
