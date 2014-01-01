@@ -1,5 +1,5 @@
 [alias]
-	commits = commit --signoff
+    commits = commit --signoff
     lg      = log --pretty=format:’%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset’
     unstage = reset HEAD --
     diffc   = diff --cached
@@ -43,17 +43,16 @@
     whitespace = fix
 
 [core]
-	editor = vim
+    editor = vim
     attributesfile = ~/.gitattributes
-    # Treat spaces before tabs, lines that are indented with 8 or more spaces, and
-    # all kinds of trailing whitespace as an error.
+    # Treat spaces before tabs and all kinds of trailing whitespace as an error.
     # [default] trailing-space: looks for spaces at the end of a line
     # [default] space-before-tab: looks for spaces before tabs at the beginning of
     # a line
-    whitespace = space-before-tab,indent-with-non-tab,trailing-space
+    whitespace = space-before-tab,trailing-space
 
 [color]
-	ui = true
+    ui = true
 
 [color "branch"]
     current = yellow reverse
@@ -70,7 +69,7 @@
     untracked = cyan
 
 [credential]
-	helper = store
+    helper = store
 
 [diff]
     renames = copy
@@ -107,5 +106,5 @@
     insteadOf = "gist:"
 
 [user]
-	email = darnir@gmail.com
-	name = Darshit Shah
+    email = darnir@gmail.com
+    name = Darshit Shah
