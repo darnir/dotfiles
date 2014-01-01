@@ -33,3 +33,5 @@ fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
 ln -s ${_LOC_FILE} ${_CONF_FILE}
+
+vim +BundleInstall +qall
