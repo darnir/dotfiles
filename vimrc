@@ -50,6 +50,8 @@ set magic                   " Use magic regex during searches
 set foldcolumn=1            " Keep a dedicated column for showing folds
 set laststatus=2            " Always show status bar
 
+let mapleader=","
+
 " The following section configures Vundle
 filetype off                " Required as a workaround. See #176
 set rtp+=~/.vim/bundle/vundle/
