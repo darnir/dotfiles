@@ -65,7 +65,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
-"Bundle 'bling/vim-airline'
+Bundle 'bling/vim-airline'
 
 Bundle 'a.vim'
 Bundle 'python.vim'
@@ -98,6 +98,7 @@ autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+let g:Powerline_symbols = 'fancy'
 " CTags settings
 let g:ctags_statusline=1
 let g:generate_tags=1
