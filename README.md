@@ -27,6 +27,8 @@ Files
     * gitattributes     -> $HOME/.gitattributes
     * gitk              -> $HOME/.gitk
     * bashrc            -> $HOME/.bashrc
+    * bash\_aliases     -> $HOME/.bash\_aliases
+    * bash\_profile     -> $HOME/.bash\_profile
     * makepkg.conf      -> /etc/makepkg.conf
     * pacman.conf       -> /etc/pacman.conf
     * mirrorlist        -> /etc/pacman.d/mirrorlist

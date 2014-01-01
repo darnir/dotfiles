@@ -5,43 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Modified Commands
-#alias diff='vimdiff'
-alias grep='grep --color=auto'
-alias more='less'
-alias df='df -h'
-alias du='du -c -h'
-alias mkdir='mkdir -p -v'
-alias nano='vim'
-alias ping='ping -c 5'
-alias ..='cd ..'
-alias ls='ls --color=auto'
-alias update='yaourt -Syu --aur'
-alias rm='rm -v'
-
-# New Commands
-alias da='date "+%A, %B %d, %Y [%T]"'
-alias du1='du --max-depth=1'
-alias hist='history | grep'      # requires an argument
-alias openports='netstat --all --numeric --programs --inet --inet6'
-alias la='ls -la'
-alias :q='exit'
-alias :wq='exit'
-alias aur='cower -ddfu --target=/home/sauron/builds/'
-alias alert='beep -f 5000 -l 60 -r 2'
-alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex CFLAGS="-g -O0"'
-alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
-alias run='time ./runTest.py'
-alias proj='cd ~/Programming/wget-gsoc/testenv'
-alias resetproj='./bootstrap && configwget'
-
-# Safety Features
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-
-alias sudo='sudo '
-#alias pacman='pacsrv'
+[[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
 
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:
 
@@ -195,13 +159,16 @@ SH_YELLOW="\[\033[1;33m\]"
 BL_ANGLE="\342\224\224"
 TL_ANGLE="\342\224\214"
 HORIZ_LINE="\342\224\200"
+
 BATT="\$(acpi -b | awk '{print \$4}' | cut -b1-3)"
 FILES_STAT="\$(ls -1 | wc -l | sed 's: ::g')"
+FILES_SIZE="\$(ls -lah | grep -m 1 total | sed 's/1:total //')b"
+GIT_PS1='$(__git_ps1 "(%s)")'
 
 if [ $UID -eq 0 ]; then
 PS1='\[\e[0;31m\]\u\[\e[m\]\[\e[1;37m\]@\h\[\e[m\] \[\e[1;34m\]\W\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;32m\]'
 else
-PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, \$(ls -lah | grep -m 1 total | sed 's/1:total //')b\[\033[1;37m\])\342\224\200\[\033[1;34m\]"'$(__git_ps1 "(%s)")'"\[\033[1;37m\]> \[\033[1;32m\]"
+PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${SH_GREEN}
 fi
 trap 'echo -ne "\e[0m"' DEBUG
 PS2='>> '
