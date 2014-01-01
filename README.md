@@ -29,6 +29,7 @@ Files
     * bashrc            -> $HOME/.bashrc
     * bash\_aliases     -> $HOME/.bash\_aliases
     * bash\_profile     -> $HOME/.bash\_profile
+    * inputrc           -> $HOME/.inputrc
     * makepkg.conf      -> /etc/makepkg.conf
     * pacman.conf       -> /etc/pacman.conf
     * mirrorlist        -> /etc/pacman.d/mirrorlist
