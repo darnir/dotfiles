@@ -108,6 +108,9 @@ let g:ctags_statusline=1
 let g:generate_tags=1
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
+iab <expr> dts strftime("%F")
+iab <expr> dtt strftime("%F  Darshit Shah  <darnir@gmail.com>")
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
