@@ -27,6 +27,7 @@ alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
 alias run='time ./runTest.py'
 alias proj='cd ~/Programming/wget-gsoc/testenv'
 alias resetproj='./bootstrap && configwget'
+alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
 
 # Safety Features
 alias chown='chown --preserve-root'
