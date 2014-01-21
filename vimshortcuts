@@ -14,3 +14,8 @@ Vim-a: Alternate files quickly
 <Leader>ih      switches to file under cursor
 <Leader>is      switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 <Leader>ihn     cycles through matches
+
+Vundle: Plugin Management
+=========================
+
+:BundleInstall  Install all packages listed in vimrc
