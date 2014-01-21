@@ -65,10 +65,13 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
+Bundle 'majutsushi/tagbar'
 Bundle 'bling/vim-airline'
+Bundle 'airblade/vim-gitgutter'
 
 Bundle 'a.vim'
 Bundle 'python.vim'
+"Bundle 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
 " End of Vundle block
