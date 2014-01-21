@@ -102,6 +102,7 @@ autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 command W w !sudo tee % > /dev/null
 
 let g:Powerline_symbols = 'fancy'
+let g:airline_theme='badwolf'
 " CTags settings
 let g:ctags_statusline=1
 let g:generate_tags=1
