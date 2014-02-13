@@ -28,6 +28,7 @@ alias run='time ./runTest.py'
 alias proj='cd ~/Programming/wget-gsoc/testenv'
 alias resetproj='./bootstrap && configwget'
 alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
+alias cleantex='rm *.{aux,bbl,blg,log,lot,out,toc,pdf,dvi} 2>/dev/null'
 
 # Safety Features
 alias chown='chown --preserve-root'
