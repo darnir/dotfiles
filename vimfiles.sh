@@ -20,18 +20,19 @@ echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
 ln -s ${_LOC_FILE} ${_CONF_FILE}
 
 _CONF_NAME=vim
-_CONF_FILE=${HOME}/.${_CONF_NAME}
-_BCK_FILE=${_CONF_FILE}bck
-_LOC_FILE=$(pwd)/${_CONF_NAME}
+_CONF_DIR=${HOME}/.${_CONF_NAME}
+_BCK_DIR=${_CONF_DIR}bck
+_LOC_DIR=$(pwd)/${_CONF_NAME}
 
-echo "Checking if ${_CONF_FILE} exists"
-if [ -f ${_CONF_FILE} ]
+echo "Checking if ${_CONF_DIR} exists"
+if [ -d ${_CONF_DIR} ]
 then
-    echo "File found, saving to ${_BCK_FILE}"
-    mv ${_CONF_FILE} ${_BCK_FILE}
+    echo "File found, saving to ${_BCK_DIR}"
+    mv ${_CONF_DIR} ${_BCK_DIR}
 fi
 
-echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-ln -s ${_LOC_FILE} ${_CONF_FILE}
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
+ln -s ${_LOC_DIR} ${_CONF_DIR}
 
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall
