@@ -33,7 +33,7 @@ set spellfile=$HOME/.vim/spell/en.utf-8.add
 set showcmd                 " Show the command you are currently typing
 set modeline                " Enable modeline support
 set ttyfast                 " Improves Vim scrolling performance
-set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~,*.aux,*.log,*.out,*.blg,*.lot,,*.toc,*.pdf
                             " Ignore these files unconditionally
 set wildmenu                " Use Wildcard expansion menu
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
@@ -67,6 +67,7 @@ Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
 Bundle 'bling/vim-airline'
+Bundle 'gerw/vim-latex-suite'
 Bundle 'airblade/vim-gitgutter'
 
 Bundle 'a.vim'
