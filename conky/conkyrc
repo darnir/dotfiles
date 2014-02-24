@@ -74,7 +74,7 @@ color7 000000
 
 
 TEXT
-${image ~/.conky-weather-icons/background2.png -p 0,15 -s 287x725}${image ~/.conky-weather-icons/box.png -p 10,238 -s 267x64}${execi 300 ~/.conky_weather.sh}
+${image ~/.conky-weather-icons/background.png -p 0,15 -s 287x725}${image ~/.conky-weather-icons/box.png -p 10,238 -s 267x64}${execi 300 ~/.conky_weather.sh}
 ${color1}${font Open Sans Light:size=42}${alignc}${time %R}${font}
 ${color1}${font Open Sans Light:size=9}${alignc}${time %A, %B %d, %Y}${font Open Sans Light:size=3}
 ${color1}${font Open Sans Light:size=9}${alignc}Uptime: ${uptime}${font}
@@ -136,4 +136,3 @@ ${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 2}${col
 ${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 3}${color1}${alignc -10}${top_mem mem_res 3}${color2}${alignr}${goto 234}${top_mem mem 3}${color1} %
 ${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 4}${color1}${alignc -10}${top_mem mem_res 4}${color2}${alignr}${goto 234}${top_mem mem 4}${color1} %
 ${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 5}${color1}${alignc -10}${top_mem mem_res 5}${color2}${alignr}${goto 234}${top_mem mem 5}${color1} %
-
