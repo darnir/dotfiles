@@ -50,6 +50,9 @@ set magic                   " Use magic regex during searches
 set foldcolumn=1            " Keep a dedicated column for showing folds
 set laststatus=2            " Always show status bar
 
+set mouse=a
+set ttymouse=xterm
+
 let mapleader=","
 
 " The following section configures Vundle
@@ -72,6 +75,7 @@ Bundle 'airblade/vim-gitgutter'
 
 Bundle 'a.vim'
 Bundle 'python.vim'
+Bundle 'dwm.vim'
 "Bundle 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
@@ -145,6 +149,7 @@ autocmd BufWinLeave * call clearmatches()
 au BufNewFile,BufRead CommitLog set filetype=changelog
 au BufNewFile,BufRead *.px set filetype=perl
 au BufNewFile,BufRead *.py set filetype=python
+au BufNewFile,BufRead *.tex set filetype=tex
 
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
