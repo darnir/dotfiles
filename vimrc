@@ -70,12 +70,11 @@ Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
 Bundle 'bling/vim-airline'
-Bundle 'gerw/vim-latex-suite'
-Bundle 'airblade/vim-gitgutter'
-
 Bundle 'a.vim'
 Bundle 'python.vim'
 Bundle 'dwm.vim'
+"Bundle 'airblade/vim-gitgutter'
+Bundle 'gerw/vim-latex-suite'
 "Bundle 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
