@@ -153,6 +153,7 @@ au BufNewFile,BufRead *.py set filetype=python
 au BufNewFile,BufRead *.tex set filetype=tex
 au BufNewFile,BufRead *.md set filetype=markdown
 
+let g:tex_flavor = "latex"
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
