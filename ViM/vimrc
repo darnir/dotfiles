@@ -69,7 +69,9 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 "Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
-Bundle 'bling/vim-airline'
+"Bundle 'bling/vim-airline'
+Bundle 'plasticboy/vim-markdown'
+
 Bundle 'a.vim'
 Bundle 'python.vim'
 Bundle 'dwm.vim'
@@ -149,6 +151,7 @@ au BufNewFile,BufRead CommitLog set filetype=changelog
 au BufNewFile,BufRead *.px set filetype=perl
 au BufNewFile,BufRead *.py set filetype=python
 au BufNewFile,BufRead *.tex set filetype=tex
+au BufNewFile,BufRead *.md set filetype=markdown
 
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
