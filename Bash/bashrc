@@ -7,6 +7,8 @@
 
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
 
+HISTCONTROL=ignoreboth
+
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:
 
 # Privileged Access
@@ -141,7 +143,9 @@ if [ -d "$1" ]; then
 fi
 }
 
-
+pdf() {
+    evince $1 &>/dev/null &
+}
 
 source "/usr/share/doc/pkgfile/command-not-found.bash"
 source "/usr/share/git/completion/git-prompt.sh"
