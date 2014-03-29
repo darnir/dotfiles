@@ -20,6 +20,8 @@ plugins is also provided below.
   * **vim/**: The `$HOME/.vim/` directory is what contains the real crux of the
 ViM settings. It contains the actual plugins, dictionary, format specific
 settings, etc.
+  * **0001-Custom-statusline.patch**: This patches the hardcoded statusline in
+ctags.vim to match out own statusline. _Must manually apply patch_
 
 Plugins
 =======
@@ -36,4 +38,7 @@ The various plugins being used in the current ViM setup are:
 | a.vim                   | Alternate between .c -> .h          |
 | python.vim              | Better Python syntax highlighting   |
 | dwm.vim                 | Very nice Buffer management for ViM |
-
+| ctags.vim               | Provide tag information in StatusBar|
+| blockit                 | Surround text in ASCII blocks       |
+| vim-commentary          | Comment code blocks                 |
+| wipeout                 | Remove unused buffers               |
