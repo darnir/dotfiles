@@ -11,6 +11,7 @@ alias ..='cd ..'
 alias ls='ls --color=auto'
 alias update='yaourt -Syu --aur'
 alias rm='rm -v'
+alias vi="vim"
 
 # New Commands
 alias da='date "+%A, %B %d, %Y [%T]"'
