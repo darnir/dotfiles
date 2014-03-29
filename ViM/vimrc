@@ -119,6 +119,7 @@ Plugin 'dwm.vim'
 Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'gerw/vim-latex-suite'
+Plugin 'wikitopian/hardmode'
 "Plugin 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
@@ -147,6 +148,9 @@ au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
 " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
 autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+
+" Automatically enable hardmode always
+"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 " }}}
 
 " Powerline settings {{{
@@ -171,6 +175,9 @@ map <leader>ss :setlocal spell!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+" Toggle hardmode with <leader>h
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+
 " }}}
 
 " Syntastic Settings {{{
@@ -186,6 +193,13 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endif
+" }}}
+
+" Breaking bad habits {{{
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 " }}}
 
 " Custom Functions {{{
