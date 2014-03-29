@@ -107,18 +107,19 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'godlygeek/tabular'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sk1418/blockit'
 Plugin 'tpope/vim-commentary'
-
+Plugin 'szw/vim-ctrlspace'
+Plugin 'Yggdroot/indentLine'
 Plugin 'a.vim'
 Plugin 'python.vim'
 Plugin 'dwm.vim'
 Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'gerw/vim-latex-suite'
-Plugin 'ctags.vim--Johnson'
+"Plugin 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
 " }}}
@@ -149,8 +150,8 @@ autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 " }}}
 
 " Powerline settings {{{
-"let g:Powerline_symbols = 'fancy'
-"let g:airline_theme='badwolf'
+let g:Powerline_symbols = 'fancy'
+let g:airline_theme='badwolf'
 " }}}
 
 " CTags Settings {{{
@@ -206,7 +207,7 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+            \ | wincmd p | diffthis
 endif
 " }}}
 " }}}

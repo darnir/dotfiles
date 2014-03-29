@@ -32,13 +32,16 @@ The various plugins being used in the current ViM setup are:
 |-------------------------|-------------------------------------|
 | tpope/vim-fugitive      | Excellent Git Wrapper               |
 | godlygeek/tabular       | Beautify LaTeX Tables               |
+| scroolose/syntastic     | Syntax checker                      |
 | majutsushi/tagbar       | Browse source through Ctags         |
+| bling/vim-airline       | Airline statusbar. Looks cool!      |
 | plasticboy/vim-markdown | Better markdown Syntax highlighting |
-| gerw/vim-latex-suite    | Full Latex Suite for Vim            |
+| sk1418/blockit          | Surround text in ASCII blocks       |
+| tpope/vim-commentary    | Comment code blocks                 |
+| sqw/vim-ctrlspace       | Amazing buffer management in Vim    |
+| Yggdroot/indentLine     | Show indentation levels             |
 | a.vim                   | Alternate between .c -> .h          |
 | python.vim              | Better Python syntax highlighting   |
 | dwm.vim                 | Very nice Buffer management for ViM |
-| ctags.vim               | Provide tag information in StatusBar|
-| blockit                 | Surround text in ASCII blocks       |
-| vim-commentary          | Comment code blocks                 |
 | wipeout                 | Remove unused buffers               |
+| gerw/vim-latex-suite    | Full Latex Suite for Vim            |
