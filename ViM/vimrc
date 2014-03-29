@@ -62,22 +62,22 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()            " Initiate Vundle
 
 " Always ensure that vundle manages vundle
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " original repos on GitHub
-Bundle 'tpope/vim-fugitive'
-Bundle 'godlygeek/tabular'
-"Bundle 'scrooloose/syntastic'
-Bundle 'majutsushi/tagbar'
-"Bundle 'bling/vim-airline'
-Bundle 'plasticboy/vim-markdown'
+Plugin 'tpope/vim-fugitive'
+Plugin 'godlygeek/tabular'
+"Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+"Plugin 'bling/vim-airline'
+Plugin 'plasticboy/vim-markdown'
 
-Bundle 'a.vim'
-Bundle 'python.vim'
-Bundle 'dwm.vim'
-"Bundle 'airblade/vim-gitgutter'
-Bundle 'gerw/vim-latex-suite'
-"Bundle 'ctags.vim--Johnson'
+Plugin 'a.vim'
+Plugin 'python.vim'
+Plugin 'dwm.vim'
+"Plugin 'airblade/vim-gitgutter'
+Plugin 'gerw/vim-latex-suite'
+Plugin 'ctags.vim--Johnson'
 
 filetype plugin indent on   " required!
 " End of Vundle block
