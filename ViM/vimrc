@@ -50,8 +50,12 @@ set magic                   " Use magic regex during searches
 set foldcolumn=1            " Keep a dedicated column for showing folds
 set laststatus=2            " Always show status bar
 
-set mouse=a
-set ttymouse=xterm
+set mouse=a                 " Use the mouse in all modes in Vim
+set ttymouse=xterm2         " Set the terminal type on which we are running Vim
+set autoread                " Automatically reload the buffer if the local file changes
+set formatoptions+=tcroqlnj
+                            " Set various options for formatting text in Vim.
+                            " See :help formatoptions for details
 
 let mapleader=","
 
