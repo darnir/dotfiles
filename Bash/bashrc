@@ -147,6 +147,11 @@ pdf() {
     evince $1 &>/dev/null &
 }
 
+ddup() {
+    fsize=$(stat -c %s $1)
+    dd if=$1 bs=4096 | pv -s ${fsize} | dd of=$2 bs=4096
+}
+
 source "/usr/share/doc/pkgfile/command-not-found.bash"
 source "/usr/share/git/completion/git-prompt.sh"
 
