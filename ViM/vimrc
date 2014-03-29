@@ -105,7 +105,7 @@ Plugin 'gmarik/vundle'
 " original repos on GitHub
 Plugin 'tpope/vim-fugitive'
 Plugin 'godlygeek/tabular'
-"Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 "Plugin 'bling/vim-airline'
 Plugin 'plasticboy/vim-markdown'
@@ -170,6 +170,12 @@ map <leader>ss :setlocal spell!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+" }}}
+
+" Syntastic Settings {{{
+let g:syntastic_mode_map = { 'mode': 'active',
+    \ 'active_filetypes': [],
+    \ 'passive_filetypes': [] }
 " }}}
 
 " Syntax highlighting {{{
