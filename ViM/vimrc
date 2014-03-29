@@ -58,6 +58,17 @@ set formatoptions+=tcroqlnj
                             " See :help formatoptions for details
 
 let mapleader=","
+set statusline+=%<%F        " Full File path
+set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]
+                            " Display file encoding and format
+set statusline+=%h%m%r%y    " Various metadata
+set statusline+=%{fugitive#statusline()}
+                            " Git
+set statusline+=%=          " Begin Right aligned block
+set statusline+=%{TagName()}
+                            " Display current tag through Ctags
+set statusline+=\ %c,%l/%L\ %P
+                            " File Nav info
 
 " The following section configures Vundle
 filetype off                " Required as a workaround. See #176
