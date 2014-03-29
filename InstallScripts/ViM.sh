@@ -70,4 +70,6 @@ echo "Vundle Installed. Installing plguins..."
 sleep 2
 vim +BundleInstall +qall
 
+echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
+
 ################################################################################
