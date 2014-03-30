@@ -31,7 +31,6 @@ The various plugins being used in the current ViM setup are:
 | Name                    | Description                         |
 |-------------------------|-------------------------------------|
 | tpope/vim-fugitive      | Excellent Git Wrapper               |
-| godlygeek/tabular       | Beautify LaTeX Tables               |
 | scroolose/syntastic     | Syntax checker                      |
 | majutsushi/tagbar       | Browse source through Ctags         |
 | bling/vim-airline       | Airline statusbar. Looks cool!      |
@@ -44,4 +43,14 @@ The various plugins being used in the current ViM setup are:
 | python.vim              | Better Python syntax highlighting   |
 | dwm.vim                 | Very nice Buffer management for ViM |
 | wipeout                 | Remove unused buffers               |
+| wikitopian/hardmode     | Disable arrow keys                  |
+| biskark/vim-ultimate-colorscheme-utility | Quick colour switching |
+
+LaTeX Plugins
+-------------
+
+| Name                    | Description                         |
+|-------------------------|-------------------------------------|
+| godlygeek/tabular       | Beautify LaTeX Tables               |
 | gerw/vim-latex-suite    | Full Latex Suite for Vim            |
+| gerw/vim-tex-syntax     | Better LaTeX syntax highlighting    |

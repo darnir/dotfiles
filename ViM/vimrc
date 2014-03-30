@@ -119,6 +119,9 @@ Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'wikitopian/hardmode'
 
+" Manage Colourschemes {{{
+Plugin 'biskark/vim-ultimate-colorscheme-utility'
+" }}}
 " LaTeX Plugins {{{
 Plugin 'godlygeek/tabular'
 Plugin 'gerw/vim-latex-suite'
