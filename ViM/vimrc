@@ -104,7 +104,6 @@ Plugin 'gmarik/vundle'
 
 " original repos on GitHub
 Plugin 'tpope/vim-fugitive'
-Plugin 'godlygeek/tabular'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'bling/vim-airline'
@@ -117,11 +116,14 @@ Plugin 'a.vim'
 Plugin 'python.vim'
 Plugin 'dwm.vim'
 Plugin 'wipeout'
-Plugin 'gerw/vim-tex-syntax'
 "Plugin 'airblade/vim-gitgutter'
-Plugin 'gerw/vim-latex-suite'
 Plugin 'wikitopian/hardmode'
-"Plugin 'ctags.vim--Johnson'
+
+" LaTeX Plugins {{{
+Plugin 'godlygeek/tabular'
+Plugin 'gerw/vim-latex-suite'
+Plugin 'gerw/vim-tex-syntax'
+" }}}
 
 filetype plugin indent on   " required!
 " }}}
