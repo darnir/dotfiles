@@ -123,6 +123,7 @@ Plugin 'wikitopian/hardmode'
 Plugin 'biskark/vim-ultimate-colorscheme-utility'
 " }}}
 " LaTeX Plugins {{{
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'godlygeek/tabular'
 Plugin 'gerw/vim-latex-suite'
 Plugin 'gerw/vim-tex-syntax'

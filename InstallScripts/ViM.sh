@@ -21,6 +21,18 @@ echo "Installing package ${PACKAGE_NAME}"
 
 ################################################################################
 
+################################# Custom Block #################################
+
+CWD=$(pwd)
+cd /tmp
+wget https://aur.archlinux.org/packages/vi/vim-full/vim-full.tar.gz
+tar -xvzf vim-full.tar.gz
+cd vim-full
+makepkg -si
+cd ${CWD}
+
+################################################################################
+
 ############################## File Block ######################################
 
 _CONF_NAME=vimrc
@@ -69,6 +81,13 @@ git clone https://github.com/gmarik/vundle.git ${_CONF_DIR}/bundle/vundle
 echo "Vundle Installed. Installing plguins..."
 sleep 2
 vim +BundleInstall +qall
+
+cd ${UHOME}
+mkdir ycl_build
+cd ysl_build
+cmake -G "Unix Makefiles" -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/cpp
+make ycm_support_libs
+make
 
 echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
 
