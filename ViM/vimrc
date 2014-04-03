@@ -186,6 +186,8 @@ command W w !sudo tee % > /dev/null
 
 " Toggle hardmode with <leader>h
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+nnoremap <leader><leader> <Esc>
+inoremap <leader><leader> <Esc>
 
 " }}}
 
