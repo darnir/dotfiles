@@ -40,7 +40,6 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 " Editor UI Settings {{{
 set ruler                   " Show the cursor position all the time
-set nu                      " Show Line Numbers
 set showcmd                 " Show the command you are currently typing
 set formatoptions+=tcroqlnj
                             " Set various options for formatting text in Vim.
@@ -50,6 +49,7 @@ set display+=lastline       " When lines exceed the screen size, display as much
                             " as possible. Useful for HTML development.
 set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
 set foldcolumn=1            " Keep a dedicated column for showing folds
+set relativenumber          " Show relative line numbers
 colorscheme vividchalk      " Set the theme for Vim
 " }}}
 
