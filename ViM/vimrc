@@ -30,6 +30,7 @@ set nrformats-=octal        " When using C-a / C-x, don't consider octals
 set omnifunc=syntaxcomplete#Complete
                             " Enable omni-completion in Vim
 set lazyredraw              " Delay redrawing screen during macros. Performance boost
+set undofile                " Create a undo file
 " Blinking cursor fix {{{
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
