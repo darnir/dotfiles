@@ -30,7 +30,6 @@ set nrformats-=octal        " When using C-a / C-x, don't consider octals
 set omnifunc=syntaxcomplete#Complete
                             " Enable omni-completion in Vim
 set lazyredraw              " Delay redrawing screen during macros. Performance boost
-set undofile                " Create a undo file
 " Blinking cursor fix {{{
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
@@ -112,7 +111,8 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'sk1418/blockit'
 Plugin 'tpope/vim-commentary'
 Plugin 'szw/vim-ctrlspace'
-Plugin 'Yggdroot/indentLine'
+Plugin 'bogado/file-line'
+"Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree'
 Plugin 'a.vim'
 Plugin 'python.vim'
@@ -235,6 +235,24 @@ if !exists(":DiffOrig")
             \ | wincmd p | diffthis
 endif
 " }}}
+
+" cursor sniper {{{
+set updatetime=2000
+
+function! MySetCursor()
+	set cursorline
+	set cursorcolumn
+endfunction
+function! MyUnSetCursor()
+	set nocursorline
+	set nocursorcolumn
+endfunction
+
+au! CursorHold * call MyUnSetCursor()
+au! CursorMoved * call MySetCursor()
+au! CursorMovedI * call MyUnSetCursor()
+" }}}
+
 " }}}
 
 " Highlight trailing whitespaces {{{
@@ -257,14 +275,4 @@ au BufNewFile,BufRead *.md set filetype=markdown
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
 
 
-" cursor sniper
-set updatetime=2000
 
-function! MySetCursor()
-	set cursorline
-	set cursorcolumn
-endfunction
-function! MyUnSetCursor()
-	set nocursorline
-	set nocursorcolumn
-endfunction
