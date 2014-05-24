@@ -120,6 +120,7 @@ Plugin 'dwm.vim'
 Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'wikitopian/hardmode'
+Plugin 'mrtazz/simplenote.vim'
 
 " Manage Colourschemes {{{
 Plugin 'biskark/vim-ultimate-colorscheme-utility'
@@ -271,6 +272,8 @@ au BufNewFile,BufRead *.py set filetype=python
 au BufNewFile,BufRead *.tex set filetype=tex
 au BufNewFile,BufRead *.md set filetype=markdown
 " }}}
+
+source /media/truecrypt1/simplenoterc
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
 
