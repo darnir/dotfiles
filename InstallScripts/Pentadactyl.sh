@@ -5,6 +5,7 @@ PACKAGE_NAME="Pentadactyl"
 ############################ Initialize Script #################################
 
 INSTALLSCRIPTS="InstallScripts"
+SYSCONFDIR="/etc"
 UHOME=${HOME}
 
 

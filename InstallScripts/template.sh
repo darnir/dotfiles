@@ -29,14 +29,14 @@ _BCK_FILE=${_CONF_FILE}.bck
 _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
 echo "Checking if ${_CONF_FILE} exists"
-if [ -f ${_CONF_FILE} ]
+if [ -f "${_CONF_FILE}" ]
 then
     echo "File found, saving to ${_BCK_FILE}"
-    sudo mv ${_CONF_FILE} ${_BCK_FILE}
+    sudo mv "${_CONF_FILE}" "${_BCK_FILE}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-sudo ln -s ${_LOC_FILE} ${_CONF_FILE}
+sudo ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
@@ -48,13 +48,13 @@ _BCK_DIR=${_CONF_DIR}bck
 _LOC_DIR=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
 echo "Checking if ${_CONF_DIR} exists"
-if [ -d ${_CONF_DIR} ]
+if [ -d "${_CONF_DIR}" ]
 then
     echo "Directory found, saving to ${_BCK_DIR}"
-    sudo mv ${_CONF_DIR} ${_BCK_DIR}
+    sudo mv "${_CONF_DIR}" "${_BCK_DIR}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
-sudo ln -s ${_LOC_DIR} ${_CONF_DIR}
+sudo ln -s "${_LOC_DIR}" "${_CONF_DIR}"
 
 ################################################################################

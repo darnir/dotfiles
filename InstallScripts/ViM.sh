@@ -29,7 +29,7 @@ wget https://aur.archlinux.org/packages/vi/vim-full/vim-full.tar.gz
 tar -xvzf vim-full.tar.gz
 cd vim-full
 makepkg -si
-cd ${CWD}
+cd "${CWD}"
 
 ################################################################################
 
@@ -41,14 +41,14 @@ _BCK_FILE=${_CONF_FILE}.bck
 _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
 echo "Checking if ${_CONF_FILE} exists"
-if [ -f ${_CONF_FILE} ]
+if [ -f "${_CONF_FILE}" ]
 then
     echo "File found, saving to ${_BCK_FILE}"
-    mv ${_CONF_FILE} ${_BCK_FILE}
+    mv "${_CONF_FILE}" "${_BCK_FILE}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-ln -s ${_LOC_FILE} ${_CONF_FILE}
+ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
@@ -60,14 +60,14 @@ _BCK_DIR=${_CONF_DIR}bck
 _LOC_DIR=$(pwd)/${PACKAGE_NAME}/${_DIR_NAME}
 
 echo "Checking if ${_CONF_DIR} exists"
-if [ -d ${_CONF_DIR} ]
+if [ -d "${_CONF_DIR}" ]
 then
     echo "Directory found, saving to ${_BCK_DIR}"
-    mv ${_CONF_DIR} ${_BCK_DIR}
+    mv "${_CONF_DIR}" "${_BCK_DIR}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
-ln -s ${_LOC_DIR} ${_CONF_DIR}
+ln -s "${_LOC_DIR}" "${_CONF_DIR}"
 
 ################################################################################
 
@@ -75,12 +75,12 @@ ln -s ${_LOC_DIR} ${_CONF_DIR}
 
 echo "Now installing Vundle"
 
-mkdir ${_CONF_DIR}/bundle
-git clone https://github.com/gmarik/vundle.git ${_CONF_DIR}/bundle/vundle
+mkdir "${_CONF_DIR}"/bundle
+git clone https://github.com/gmarik/vundle.git "${_CONF_DIR}"/bundle/vundle
 
 echo "Vundle Installed. Installing plguins..."
 sleep 2
-vim +BundleInstall +qall
+vim +PluginInstall +qall
 
 cd ${UHOME}
 mkdir ycl_build
@@ -89,6 +89,6 @@ cmake -G "Unix Makefiles" -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe
 make ycm_support_libs
 make
 
-echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
+#echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
 
 ################################################################################

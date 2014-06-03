@@ -29,14 +29,14 @@ _BCK_FILE=${_CONF_FILE}.bck
 _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
 echo "Checking if ${_CONF_FILE} exists"
-if [ -f ${_CONF_FILE} ]
+if [ -f "${_CONF_FILE}" ]
 then
     echo "File found, saving to ${_BCK_FILE}"
-    mv ${_CONF_FILE} ${_BCK_FILE}
+    mv "${_CONF_FILE}" "${_BCK_FILE}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-ln -s ${_LOC_FILE} ${_CONF_FILE}
+ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
@@ -48,14 +48,14 @@ _BCK_FILE=${_CONF_FILE}.bck
 _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
 echo "Checking if ${_CONF_FILE} exists"
-if [ -f ${_CONF_FILE} ]
+if [ -f "${_CONF_FILE}" ]
 then
     echo "File found, saving to ${_BCK_FILE}"
-    mv ${_CONF_FILE} ${_BCK_FILE}
+    mv "${_CONF_FILE}" "${_BCK_FILE}"
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-ln -s ${_LOC_FILE} ${_CONF_FILE}
+ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
@@ -64,11 +64,11 @@ ln -s ${_LOC_FILE} ${_CONF_FILE}
 cd /tmp
 wget https://dl.dropboxusercontent.com/u/18576690/conky_weather_icons.tar.gz
 tar -xzf conky_weather_icons.tar.gz
-mv conky-weather-icons/ ${UHOME}/.conky-weather-icons
+mv conky-weather-icons/ "${UHOME}"/.conky-weather-icons
 
 wget https://dl.dropboxusercontent.com/u/18576690/OpenSans-Light.ttf
-mkdir -p ${HOME}/.fonts
-mv OpenSans-Light.ttf ${HOME}/.fonts/
+mkdir -p "${UHOME}"/.fonts
+mv OpenSans-Light.ttf "${UHOME}"/.fonts/
 fc-cache -v
 
 ################################################################################
