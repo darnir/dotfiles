@@ -1,7 +1,25 @@
 "1.1
 
+"Basic Initialization{{{
+" Load all javascript files as plugins
 loadplugins '\.(js|penta)$'
+" Set script group. Do not mess with this.
 group user
+"}}}
+
+" Basic Options{{{
+set editor='vim <file>'
+set guioptions=Crs
+set hlfind
+set visualbell
+set newtab=all
+set titlestring=Mozilla\ Firefox
+set maxitems=12
+set cpt=search,location,file
+"}}}
+
+" Remap keys{{{
+map , <leader>
 map -count -modes=n,v <A-s> <count>:set<Space>nst!=<A-Tab>
 map -count -modes=n,v <Return> <count>:noh<Return>
 map -count -modes=n,v j -builtin <count>3j
@@ -9,8 +27,14 @@ map -count -modes=n,v k -builtin <count>3k
 map -count -modes=n,v l -builtin <count>3l
 map -count -modes=n,v h -builtin <count>3h
 map -count -modes=I,input_multiline,v ,, <Esc>
-set editor='vim <file>'
-set guioptions=Crs
-set hlfind
+nmap <leader>mg :tabopen mail.google.com<Cr>
+nmap <leader>fb :tabopen www.facebook.com<Cr>
+nmap <leader>gh :tabopen www.github.com<Cr>
+nmap <leader>qo :tabopen www.quora.com<Cr>
+nmap <leader>ph :tabopen www.phoronix.com<Cr>
+nmap <leader>ar :tabopen www.arstechnica.com<Cr>
+nmap <leader>tv :tabopen www.theverge.com<Cr>
+nmap <leader>so :tabopen www.stackoverflow.com<Cr>
+"}}}
 
-" vim: set ft=pentadactyl:
+" vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker ft=pentadactyl et :
