@@ -69,7 +69,7 @@ Arch Linux system.
 
 License
 =======
-GPLv3
+MIT
 
 Authors
 =======
