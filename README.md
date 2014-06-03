@@ -37,10 +37,13 @@ Files
 │   ├── gitattributes         -> $HOME/.gitattributes
 │   ├── gitconfig             -> $HOME/.gitconfig
 │   └── gitk                  -> $HOME/.gitk
-└── ViM
-    ├── vim                   -> $HOME/.vim/
-    ├── vimrc                 -> $HOME/.vimrc
-    └── vimshortcuts          -> N/a
+├── ViM
+│   ├── vim                   -> $HOME/.vim/
+│   ├── vimrc                 -> $HOME/.vimrc
+│   └── vimshortcuts          -> N/a
+└── Pentadactyl
+    ├── pentadactylrc         -> $HOME/.pentadacylrc
+    └── pentadactyl           -> $HOME/.pentadactyl/
 </pre>
 
 Suggested Order
@@ -55,7 +58,8 @@ is suggested for the installation of the packages.
 ├── 3. Git
 │   └── 4. ViM
 ├── 5. Conky
-└── 6. Compton
+├── 6. Pentadactyl
+└── 7. Compton
 </pre>
 
 Each indentation level in the above diagram represents a dependency. Please

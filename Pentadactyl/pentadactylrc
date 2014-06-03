@@ -1,0 +1,16 @@
+"1.1
+
+loadplugins '\.(js|penta)$'
+group user
+map -count -modes=n,v <A-s> <count>:set<Space>nst!=<A-Tab>
+map -count -modes=n,v <Return> <count>:noh<Return>
+map -count -modes=n,v j -builtin <count>3j
+map -count -modes=n,v k -builtin <count>3k
+map -count -modes=n,v l -builtin <count>3l
+map -count -modes=n,v h -builtin <count>3h
+map -count -modes=I,input_multiline,v ,, <Esc>
+set editor='vim <file>'
+set guioptions=Crs
+set hlfind
+
+" vim: set ft=pentadactyl:
