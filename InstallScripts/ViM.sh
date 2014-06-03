@@ -82,7 +82,7 @@ echo "Vundle Installed. Installing plguins..."
 sleep 2
 vim +PluginInstall +qall
 
-cd ${UHOME}
+cd "${UHOME}"
 mkdir ycl_build
 cd ysl_build
 cmake -G "Unix Makefiles" -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/cpp
