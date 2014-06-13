@@ -21,7 +21,7 @@ fi
 
 pastebin() { curl -F 'f:1=<-' ix.io; }
 
-function /bin/rm() { command rm "-i""$@"; }
+#function /bin/rm() { command rm "-i""$@"; }
 
 #sudo() { if [[ $@ == "pacman -Syu" ]]; then command pacup.sh; else command sudo "$@"; fi; }
 
@@ -50,6 +50,14 @@ echo $LL
  | GREP_COLOR="00;33" $GREP -P "(LaTeX Warning(:|))|(Package [^\s]+ Warning(:|))|$" \
  | GREP_COLOR="00;32" $GREP -P "^Output written on .*\.pdf \(.*\)\.$|$" \
  | uniq
+}
+
+resolve() {
+    vimdiff "$1" "$1.pacnew"
+    read -p "Were the conflicts resolved? [Y/N]: " yn
+    case $yn in
+        [Yy]* ) echo "Deleting pacnew file"; sudo rm "$1.pacnew";;
+    esac
 }
 
 extract() {
