@@ -1,0 +1,23 @@
+Host github.com
+    User darnir
+    Hostname github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/github/id_rsa
+
+Host git.sv.gnu.org
+    User darnir
+    Hostname git.sv.gnu.org
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/savannah/id_rsa
+
+Host mpi-sws.org
+    User darnir
+    Hostname mpi-sws.org
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/mpi/id_rsa
+
+Host shell.xshellz.com
+    User darnir
+    Hostname shell.xshellz.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/xshellz/id_rsa
