@@ -7,9 +7,7 @@ alias du='du -c -h'
 alias mkdir='mkdir -p -v'
 alias nano='vim'
 alias ping='ping -c 5'
-alias ..='cd ..'
 alias ls='ls --color=auto'
-alias update='yaourt -Syu --aur'
 alias rm='rm -v'
 alias vi="vim"
 
@@ -26,16 +24,19 @@ alias alert='beep -f 5000 -l 60 -r 2'
 alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls -C CFLAGS="-g -O0 -Wall -Wextra"'
 alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
 alias run='time ./runTest.py'
-alias proj='cd ~/Programming/wget-gsoc/testenv'
-alias resetproj='./bootstrap && configwget'
+alias proj='cd ~/Programming/wget/'
+alias resetproj='./bootstrap --skip-po && configwget'
+alias resetprojpar='./bootstrap --skip-po && parallelconfig'
 alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
 alias cleantex='rm *.{aux,bbl,blg,log,lot,out,toc,pdf,dvi} 2>/dev/null'
+alias vimup='vim +PluginUpdate'
+alias mirrorlist='reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
 
 # Safety Features
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
+# Allows one to use bash aliases with superuser permissions. See bash(1) for
+# details
 alias sudo='sudo '
-#alias pacman='pacsrv'
-
