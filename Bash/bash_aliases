@@ -1,13 +1,14 @@
 # Modified Commands
 #alias diff='vimdiff'
 alias grep='grep --color=auto'
+alias less='less -r'
 alias more='less'
 alias df='df -h'
 alias du='du -c -h'
 alias mkdir='mkdir -p -v'
 alias nano='vim'
 alias ping='ping -c 5'
-alias ls='ls --color=auto'
+alias ls='ls --color'
 alias rm='rm -v'
 alias vi="vim"
 
