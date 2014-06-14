@@ -41,6 +41,11 @@ Files
 │   ├── vim                   -> $HOME/.vim/
 │   ├── vimrc                 -> $HOME/.vimrc
 │   └── vimshortcuts          -> N/a
+├── SSH
+│   ├── config                -> $HOME/.ssh/config
+│   └── known\_hosts          -> $HOME/.ssh/known\_hosts
+├── Screen
+│   └── screenrc              -> $HOME/.screenrc
 └── Pentadactyl
     ├── pentadactylrc         -> $HOME/.pentadacylrc
     └── pentadactyl           -> $HOME/.pentadactyl/
@@ -57,9 +62,11 @@ is suggested for the installation of the packages.
 ├── 2. Bash
 ├── 3. Git
 │   └── 4. ViM
-├── 5. Conky
-├── 6. Pentadactyl
-└── 7. Compton
+├── 5. SSH
+├── 6. Screen
+├── 7. Conky
+├── 8. Pentadactyl
+└── 9. Compton
 </pre>
 
 Each indentation level in the above diagram represents a dependency. Please
