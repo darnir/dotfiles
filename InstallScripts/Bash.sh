@@ -96,3 +96,15 @@ echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
 ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
+
+######################## Post-Install Hook #####################################
+
+# Is this an Arch Linux System?
+which pacman &> /dev/null
+if [ $? -eq 0 ]
+then
+    sudo pacman -S bash-completion
+else
+    echo "Optional Dependency: bash-completion"
+fi
+################################################################################
