@@ -82,12 +82,8 @@ echo "Vundle Installed. Installing plguins..."
 sleep 2
 vim +PluginInstall +qall
 
-cd "${UHOME}"
-mkdir ycl_build
-cd ysl_build
-cmake -G "Unix Makefiles" -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/cpp
-make ycm_support_libs
-make
+# Install YCM
+bash ViM/YCM.sh
 
 #echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
 
