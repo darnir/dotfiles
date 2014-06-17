@@ -277,6 +277,3 @@ au BufNewFile,BufRead *.md set filetype=markdown
 source /media/truecrypt1/simplenoterc
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
-
-
-
