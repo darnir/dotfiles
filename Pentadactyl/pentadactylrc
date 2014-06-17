@@ -21,17 +21,17 @@ set hintkeys=asdflkj
 
 " Gmail Specific Settings{{{
 
-" Allow GMail shortcuts
-set passkeys+=mail.google.com:jksacrqG#<CR>,gi,gl,gp
-" Let Hint Message from X Links
-autocmd LocationChange mail.google.com set ht+=span.ata-asJ
-" Let Hint Expand Collapsed Conversations
-autocmd LocationChange mail.google.com set ht+=span.adx
-" Let Hint Expand Message
-autocmd LocationChange mail.google.com set ht+=td.gF
-" Let Hint Expand Delete All Spam Messages
-autocmd LocationChange mail.google.com set ht+=span.x2
-" }}}
+" " Allow GMail shortcuts
+" set passkeys+=mail.google.com:jksacrqG#<CR>,gi,gl,gp
+" " Let Hint Message from X Links
+" autocmd LocationChange mail.google.com set ht+=span.ata-asJ
+" " Let Hint Expand Collapsed Conversations
+" autocmd LocationChange mail.google.com set ht+=span.adx
+" " Let Hint Expand Message
+" autocmd LocationChange mail.google.com set ht+=td.gF
+" " Let Hint Expand Delete All Spam Messages
+" autocmd LocationChange mail.google.com set ht+=span.x2
+" " }}}
 
 " Remap keys{{{
 map , <leader>
