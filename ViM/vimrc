@@ -31,6 +31,7 @@ set omnifunc=syntaxcomplete#Complete
                             " Enable omni-completion in Vim
 set lazyredraw              " Delay redrawing screen during macros. Performance boost
 set tabpagemax=100
+set clipboard=unnamed
 " Blinking cursor fix {{{
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
@@ -122,6 +123,7 @@ Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'wikitopian/hardmode'
 Plugin 'mrtazz/simplenote.vim'
+Plugin 'kien/rainbow_parentheses.vim'
 
 " Manage Colourschemes {{{
 Plugin 'biskark/vim-ultimate-colorscheme-utility'
