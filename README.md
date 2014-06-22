@@ -44,6 +44,9 @@ Files
 ├── SSH
 │   ├── config                -> $HOME/.ssh/config
 │   └── known\_hosts          -> $HOME/.ssh/known\_hosts
+├── MPD
+│   ├── mpdconf               -> $HOME/.mpdconf
+│   └── mpd.desktop           -> $HOME/.config/autostart/mpd.desktop
 ├── Screen
 │   └── screenrc              -> $HOME/.screenrc
 └── Pentadactyl
@@ -64,9 +67,10 @@ is suggested for the installation of the packages.
 │   └── 4. ViM
 ├── 5. SSH
 ├── 6. Screen
-├── 7. Conky
-├── 8. Pentadactyl
-└── 9. Compton
+├── 7. MPD
+├── 8. Conky
+├── 9. Pentadactyl
+└── 10. Compton
 </pre>
 
 Each indentation level in the above diagram represents a dependency. Please
