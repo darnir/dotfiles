@@ -78,6 +78,33 @@ ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
+############################## File Block ######################################
+
+_CONF_NAME=gitconfig_private
+_CONF_FILE=${UHOME}/.${_CONF_NAME}
+_BCK_FILE=${_CONF_FILE}.bck
+_LOC_FILE=/media/truecrypt1/gitconfig_private
+
+echo "Checking if ${_LOC_FILE} is mounted"
+if [ -f "${_LOC_FILE}" ]
+then
+
+    echo "Checking if ${_CONF_FILE} exists"
+    if [ -f "${_CONF_FILE}" ]
+    then
+        echo "File found, saving to ${_BCK_FILE}"
+        mv "${_CONF_FILE}" "${_BCK_FILE}"
+    fi
+
+    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+    ln -s "${_LOC_FILE}" "${_CONF_FILE}"
+
+else
+    echo "Please mount the TrueCrypt volume first"
+fi
+
+################################################################################
+
 ########################### Custom Commands ####################################
 
 echo "Checking if current system is Arch Linux..."
@@ -88,6 +115,9 @@ then
     tar -xzf git-merge-changelog-git.tar.gz
     cd git-merge-changelog-git
     makepkg -si
+
+    echo "Installing essential Perl packages for git send-email..."
+    sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
 fi
 
 ################################################################################

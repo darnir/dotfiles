@@ -78,6 +78,8 @@
 [help]
     autocorrect = 1
 
+[include]
+    path = ~/.gitconfig_private
 
 [merge]
     tool = vimdiff
