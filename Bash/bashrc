@@ -199,8 +199,8 @@ timer() {
 }
 
 ddup() {
-    fsize=$(stat -c %s $1)
-    dd if=$1 bs=4096 | pv -s ${fsize} | dd of=$2 bs=4096
+    fsize=$(stat -c %s "$1")
+    dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
 }
 
 source "/usr/share/doc/pkgfile/command-not-found.bash"
