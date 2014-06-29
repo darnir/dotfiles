@@ -36,6 +36,7 @@ alias run='time ./runTest.py'
 alias proj='cd ~/Programming/wget/'
 alias resetprojpar='./bootstrap --skip-po && parallelconfig'
 alias resetproj='./bootstrap --skip-po && configwget'
+alias resetprojgcc='./bootstrap --skip-po && configwgetgcc'
 
 # Safety Features
 alias chown='chown --preserve-root'
