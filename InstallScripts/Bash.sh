@@ -103,8 +103,13 @@ ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 which pacman &> /dev/null
 if [ $? -eq 0 ]
 then
-    sudo pacman -S bash-completion
+    sudo pacman -S bash-completion time beep zenity
+    sudo chmod 4755 `which beep`
 else
-    echo "Optional Dependency: bash-completion"
+    echo "Optional Dependencies:"
+    echo "bash-completion: For bash completion"
+    echo "time:            For certain wget aliases"
+    echo "beep:            For alias alert"
+    echo "zenity:          For timer() function"
 fi
 ################################################################################

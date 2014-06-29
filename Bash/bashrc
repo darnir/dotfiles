@@ -189,6 +189,15 @@ pdf() {
     evince $1 &>/dev/null &
 }
 
+timer() {
+    if [ $# -ne 2 ]
+    then
+        echo "Usage: timer [time] [message]"
+        return 1
+    fi
+    sleep "$1" && alert && zenity --info --text="$2" &
+}
+
 ddup() {
     fsize=$(stat -c %s $1)
     dd if=$1 bs=4096 | pv -s ${fsize} | dd of=$2 bs=4096
