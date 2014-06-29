@@ -5,4 +5,5 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 export PATH="/usr/lib/colorgcc/bin:$PATH"
+export PATH="$PATH:/home/sauron/Coursera/Algo1-Princeton/bin"
 export CC=clang
