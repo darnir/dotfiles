@@ -55,7 +55,7 @@ alignment top_right
 # Gap between borders of screen and text
 # same thing as passing -x at command line
 gap_x 15
-gap_y 0
+gap_y 20
 
 
 #	Open Sans Light             fonts
