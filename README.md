@@ -49,6 +49,8 @@ Files
 │   └── mpd.desktop           -> $HOME/.config/autostart/mpd.desktop
 ├── Screen
 │   └── screenrc              -> $HOME/.screenrc
+├── X
+│   └── xprofile              -> $HOME/.xprofile
 └── Pentadactyl
     ├── pentadactylrc         -> $HOME/.pentadacylrc
     └── pentadactyl           -> $HOME/.pentadactyl/
@@ -68,9 +70,10 @@ is suggested for the installation of the packages.
 ├── 5. SSH
 ├── 6. Screen
 ├── 7. MPD
-├── 8. Conky
-├── 9. Pentadactyl
-└── 10. Compton
+├── 8. X
+├── 9. Conky
+├── 10. Pentadactyl
+└── 11. Compton
 </pre>
 
 Each indentation level in the above diagram represents a dependency. Please
