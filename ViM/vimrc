@@ -126,6 +126,7 @@ Plugin 'mrtazz/simplenote.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'chazy/cscope_maps'
+Plugin 'LanguageTool'
 
 " Manage Colourschemes {{{
 Plugin 'biskark/vim-ultimate-colorscheme-utility'
@@ -275,6 +276,22 @@ endfunction
 au! CursorHold * call MyUnSetCursor()
 au! CursorMoved * call MySetCursor()
 au! CursorMovedI * call MyUnSetCursor()
+" }}}
+
+" Word Processing Mode {{{
+func! WordProcessorMode()
+  setlocal formatoptions=1
+  setlocal noexpandtab
+  map j gj
+  map k gk
+  setlocal spell spelllang=en_us
+  set thesaurus+=~/.vim/thesaurus/mthesaur.txt
+  set complete+=s
+  set formatprg=par
+  setlocal wrap
+  setlocal linebreak
+endfu
+com! WP call WordProcessorMode()
 " }}}
 
 " }}}

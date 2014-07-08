@@ -85,6 +85,29 @@ vim +PluginInstall +qall
 # Install YCM
 bash ViM/YCM.sh
 
+echo "Downloading thesaurus..."
+OCD=${PWD}
+cd /tmp
+wget http://www.gutenberg.org/dirs/etext02/mthes10.zip
+unzip mthes10.zip
+mkdir ~/.vim/thesaurus
+mv mthesaur.txt ~/.vim/thesaurus/mthesaur.txt
+cd "$OCD"
+
+
+if (which pacman)
+then
+    # We are in Arch Linux
+    echo "Installing par from AUR"
+    OCD=$(pwd)
+    cd /tmp
+    wget https://aur.archlinux.org/packages/pa/par/par.tar.gz
+    tar -xvzf par.tar.gz
+    cd par
+    makepkg -si
+    cd "$OCD"
+fi
+
 #echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
 
 ################################################################################
