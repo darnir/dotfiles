@@ -11,19 +11,7 @@ HISTCONTROL=ignoreboth
 
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:
 
-# Privileged Access
-if [ $UID -ne 0 ]; then
-    alias svim='sudo vim'
-    alias kdm='sudo kdm'
-    alias srm='sudo rm'
-    alias scp='sudo cp'
-fi
-
 pastebin() { curl -F 'f:1=<-' ix.io; }
-
-#function /bin/rm() { command rm "-i""$@"; }
-
-#sudo() { if [[ $@ == "pacman -Syu" ]]; then command pacup.sh; else command sudo "$@"; fi; }
 
 shopt -s autocd
 shopt -s cdspell
@@ -37,13 +25,12 @@ shopt -s extglob
 shopt -s checkjobs
 shopt -s dirspell
 
-
 set show-all-if-ambiguous on
 
 pdflatex() {
 GREP="grep --color=always --line-buffered"
 LL=$*
-echo $LL
+echo "$LL"
 (/usr/bin/pdflatex -file-line-error "$LL" 2>&1) \
  | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
  | GREP_COLOR="01;31" $GREP -P "(^[^:]*:\d+: )|(^l\.\d+ )|(^! LaTeX Error: )|$" \
@@ -134,59 +121,50 @@ pack() {
   local FILE
   FILE=$1
   case $FILE in
-    *.tar.bz2)  shift && tar cjf $FILE $* ;;
-    *.tbz2)     shift && tar cjf $FILE $* ;;
-    *.tar.gz)   shift && tar czf $FILE $* ;;
-    *.tgz)      shift && tar czf $FILE $* ;;
-    *.zip)      shift && zip $FILE $*     ;;
-    *.rar)      shift && rar $FILE $*     ;;
+    *.tar.bz2)  shift && tar cjf "$FILE" "$*" ;;
+    *.tbz2)     shift && tar cjf "$FILE" "$*" ;;
+    *.tar.gz)   shift && tar czf "$FILE" "$*" ;;
+    *.tgz)      shift && tar czf "$FILE" "$*" ;;
+    *.zip)      shift && zip "$FILE" "$*"     ;;
+    *.rar)      shift && rar "$FILE" "$*"     ;;
   esac
 }
 
 man() {
     env \
-        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-        LESS_TERMCAP_md=$(printf "\e[1;31m") \
-        LESS_TERMCAP_me=$(printf "\e[0m") \
-        LESS_TERMCAP_se=$(printf "\e[0m") \
-        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-        LESS_TERMCAP_ue=$(printf "\e[0m") \
-        LESS_TERMCAP_us=$(printf "\e[1;32m") \
+        LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
+        LESS_TERMCAP_md="$(printf '\e[1;31m')" \
+        LESS_TERMCAP_me="$(printf '\e[0m')" \
+        LESS_TERMCAP_se="$(printf '\e[0m')" \
+        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+        LESS_TERMCAP_ue="$(printf '\e[0m')" \
+        LESS_TERMCAP_us="$(printf '\e[1;32m')" \
             man "$@"
     }
 
 # A Little Note Taker
 note ()
 {
-       #if file doesn't exist, create it
-       [ -f $HOME/.notes ] || touch $HOME/.notes
-       #no arguments, print file
-       if [ $# = 0 ]
-       then
-               cat $HOME/.notes
-       #clear file
-       elif [ $1 = -c ]
-       then
-               > $HOME/.notes
-       #add all arguments to file
-       else
-               echo "$@" >> $HOME/.notes
-       fi
-}
 
-
-# cd and ls in one
-cl() {
-if [ -d "$1" ]; then
-        cd "$1"
-        ls -la
-        else
-        echo "bash: cl: '$1': Directory not found"
-fi
+    NOTES="$HOME/.notes"
+    #if file doesn't exist, create it
+    [ -f "$NOTES" ] || touch "$NOTES"
+    #no arguments, print file
+    if [ $# = 0 ]
+    then
+        cat "$NOTES"
+    #clear file
+    elif [ "$1" = -c ]
+    then
+        > "$NOTES"
+    #add all arguments to file
+    else
+        echo "$@" >> "$NOTES"
+    fi
 }
 
 pdf() {
-    evince $1 &>/dev/null &
+    evince "$1" &>/dev/null &
 }
 
 timer() {
