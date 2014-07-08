@@ -124,12 +124,13 @@ Plugin 'wipeout'
 Plugin 'wikitopian/hardmode'
 Plugin 'mrtazz/simplenote.vim'
 Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'chazy/cscope_maps'
 
 " Manage Colourschemes {{{
 Plugin 'biskark/vim-ultimate-colorscheme-utility'
 " }}}
 " LaTeX Plugins {{{
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'godlygeek/tabular'
 Plugin 'gerw/vim-latex-suite'
 Plugin 'gerw/vim-tex-syntax'
@@ -169,6 +170,25 @@ autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 " Powerline settings {{{
 let g:Powerline_symbols = 'fancy'
 let g:airline_theme='badwolf'
+" }}}
+
+" CScope Settings {{{
+if has('cscope')
+  set cscopetag cscopeverbose
+
+  if has('quickfix')
+    set cscopequickfix=s-,c-,d-,i-,t-,e-
+  endif
+
+  cnoreabbrev csa cs add
+  cnoreabbrev csf cs find
+  cnoreabbrev csk cs kill
+  cnoreabbrev csr cs reset
+  cnoreabbrev css cs show
+  cnoreabbrev csh cs help
+
+  command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
+endif
 " }}}
 
 " CTags Settings {{{
