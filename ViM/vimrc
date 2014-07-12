@@ -51,7 +51,6 @@ set display+=lastline       " When lines exceed the screen size, display as much
 set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
 set foldcolumn=1            " Keep a dedicated column for showing folds
 set relativenumber          " Show relative line numbers
-colorscheme vividchalk      " Set the theme for Vim
 " }}}
 
 " Indentation and Tab Settings {{{
@@ -129,7 +128,7 @@ Plugin 'chazy/cscope_maps'
 Plugin 'LanguageTool'
 
 " Manage Colourschemes {{{
-Plugin 'biskark/vim-ultimate-colorscheme-utility'
+Plugin 'flazz/vim-colorschemes'
 " }}}
 " LaTeX Plugins {{{
 Plugin 'godlygeek/tabular'
@@ -139,6 +138,13 @@ Plugin 'gerw/vim-tex-syntax'
 
 filetype plugin indent on   " required!
 " }}}
+
+" {{{ Set Colorscheme
+" We must the colorscheme only AFTER Vundle has been loaded so that the relevant
+" rtp has been set.
+
+colorscheme vividchalk          " Set the theme for Vim
+"}}}
 
 " Reset autocmds {{{
 autocmd!
@@ -313,6 +319,10 @@ au BufNewFile,BufRead *.tex set filetype=tex
 au BufNewFile,BufRead *.md set filetype=markdown
 " }}}
 
+"{{{ SimpleNote Settings
+"Since these are public dotfiles, the credentials are sourced froma private
+"configuration file.
 source /media/truecrypt1/simplenoterc
+" }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
