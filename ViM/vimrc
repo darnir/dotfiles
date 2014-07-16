@@ -177,9 +177,9 @@ autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 " }}}
 
-" Powerline settings {{{
-let g:Powerline_symbols = 'fancy'
+" Airline settings {{{
 let g:airline_theme='badwolf'
+let g:airline#extensions#tabline#enabled = 1
 " }}}
 
 " CScope Settings {{{
