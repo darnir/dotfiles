@@ -23,15 +23,16 @@ set spellfile=$HOME/.vim/spell/en.utf-8.add
                             " Set a custom path for the spellfile
 set autoread                " Automatically reload the buffer if the local file changes
 set modeline                " Enable modeline support
-let mapleader=","
+let mapleader=","           " Remap the leader key to something more convenient
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~,*.aux,*.log,*.out,*.blg,*.lot,*.toc,*.pdf
 set nrformats-=octal        " When using C-a / C-x, don't consider octals
                             " Ignore these files unconditionally
 set omnifunc=syntaxcomplete#Complete
                             " Enable omni-completion in Vim
 set lazyredraw              " Delay redrawing screen during macros. Performance boost
-set tabpagemax=100
-set clipboard=unnamed
+set tabpagemax=100          " Load upto 100 tabs max
+set clipboard=unnamedplus   " Use the system clipboard as the default unnamed register
+
 " Blinking cursor fix {{{
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
@@ -79,6 +80,8 @@ set ttyfast                 " Improves Vim scrolling performance
 " }}}
 
 " Status Line {{{
+" We no longer use this status line. However it is a good fallback in case
+" vim-ailine breaks.
 set laststatus=2            " Always show status bar
 set statusline+=%<%F        " Full File path
 set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]
