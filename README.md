@@ -12,7 +12,7 @@ each package, there is a helper install script available in InstallScripts/.
 These scripts can be used to automatically and safely symlink the files for
 each project to their relevant locations on the system.
 
-Check the Readme file in each package for more information.
+Check the README file in each package for more information.
 
 Files
 =====
@@ -77,7 +77,7 @@ is suggested for the installation of the packages.
 </pre>
 
 Each indentation level in the above diagram represents a dependency. Please
-ensure you install all the depenedencies *before* attempting to install a
+ensure you install all the dependencies *before* attempting to install a
 package. `ArchLinux` should be installed only when setting up the dotfiles on an
 Arch Linux system.
 
