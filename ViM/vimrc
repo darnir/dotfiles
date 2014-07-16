@@ -106,35 +106,43 @@ call vundle#rc()            " Initiate Vundle
 " Always ensure that vundle manages vundle
 Plugin 'gmarik/vundle'
 
-" original repos on GitHub
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'bling/vim-airline'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'sk1418/blockit'
+Plugin 'godlygeek/tabular'
+Plugin 'gabrielelana/vim-markdown'
+Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-commentary'
-Plugin 'szw/vim-ctrlspace'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'bogado/file-line'
-"Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/nerdtree'
 Plugin 'a.vim'
 Plugin 'python.vim'
 Plugin 'dwm.vim'
-Plugin 'wipeout'
-"Plugin 'airblade/vim-gitgutter'
-" Plugin 'wikitopian/hardmode'
-Plugin 'mrtazz/simplenote.vim'
+Plugin 'artnez/vim-wipeout'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'chazy/cscope_maps'
 Plugin 'LanguageTool'
+Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
+
+" {{{ Disabled Plugins
+" These are good plugins that I'd like to use someday, but since I don't
+" remember any of their features / keybindings, they're disabled till I find the
+" time to learn how to use them.
+
+" Plugin 'sk1418/blockit'
+" Plugin 'mrtazz/simplenote.vim'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'scrooloose/nerdtree'
+" Plugin 'szw/vim-ctrlspace'
+"}}}
 
 " Manage Colourschemes {{{
 Plugin 'flazz/vim-colorschemes'
+Plugin 'xolox/vim-colorscheme-switcher'
 " }}}
 " LaTeX Plugins {{{
-Plugin 'godlygeek/tabular'
 Plugin 'gerw/vim-latex-suite'
 Plugin 'gerw/vim-tex-syntax'
 " }}}
@@ -322,10 +330,10 @@ au BufNewFile,BufRead *.tex set filetype=tex
 au BufNewFile,BufRead *.md set filetype=markdown
 " }}}
 
-"{{{ SimpleNote Settings
-"Since these are public dotfiles, the credentials are sourced froma private
-"configuration file.
-source /media/truecrypt1/simplenoterc
-" }}}
+" "{{{ SimpleNote Settings
+" "Since these are public dotfiles, the credentials are sourced froma private
+" "configuration file.
+" source /media/truecrypt1/simplenoterc
+" " }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
