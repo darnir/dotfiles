@@ -123,7 +123,7 @@ Plugin 'python.vim'
 Plugin 'dwm.vim'
 Plugin 'wipeout'
 "Plugin 'airblade/vim-gitgutter'
-Plugin 'wikitopian/hardmode'
+" Plugin 'wikitopian/hardmode'
 Plugin 'mrtazz/simplenote.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'Valloric/YouCompleteMe'
@@ -173,8 +173,6 @@ au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
 autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
 
-" Automatically enable hardmode always
-"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 " }}}
 
 " Airline settings {{{
@@ -218,8 +216,6 @@ map <leader>ss :setlocal spell!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
-" Toggle hardmode with <leader>h
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 nnoremap <leader><leader> <Esc>
 inoremap <leader><leader> <Esc>
 
@@ -241,10 +237,14 @@ endif
 " }}}
 
 " Breaking bad habits {{{
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+imap <Left> <Nop>
+imap <Right> <Nop>
+imap <Up> <Nop>
+imap <Down> <Nop>
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
 " }}}
 
 " Custom Functions {{{
