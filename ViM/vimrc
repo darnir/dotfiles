@@ -224,10 +224,19 @@ map <leader>ss :setlocal spell!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+map <F6> :TagbarToggle<CR>
+
 nnoremap <leader><leader> <Esc>
 inoremap <leader><leader> <Esc>
 
+nnoremap <leader>r :RainbowParenthesesActivate<CR>
+
 " }}}
+
+"{{{ Tagbar Settings
+let g:tagbar_autoclose=1
+let g:tagbar_show_linenumbers=-1
+"}}}
 
 " Syntastic Settings {{{
 let g:syntastic_mode_map = { 'mode': 'active',
