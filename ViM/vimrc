@@ -33,11 +33,12 @@ set lazyredraw              " Delay redrawing screen during macros. Performance 
 set tabpagemax=100          " Load upto 100 tabs max
 set clipboard=unnamedplus   " Use the system clipboard as the default unnamed register
 
-" Blinking cursor fix {{{
-" Don't wake up system with blinking cursor:
-" http://www.linuxpowertop.org/known.php
-let &guicursor = &guicursor . ",a:blinkon0"
-" }}}
+" " Blinking cursor fix {{{
+" " Don't wake up system with blinking cursor:
+" " http://www.linuxpowertop.org/known.php
+" let &guicursor = &guicursor . ",a:blinkon0"
+" " }}}
+
 " }}}
 
 " Editor UI Settings {{{
