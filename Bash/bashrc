@@ -5,181 +5,42 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Source the utlity files containing aliases and functions for Bash
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
+[[ -f $HOME/.bash_functions ]] && . ~/.bash_functions
 
+# Ignore all duplicate lines AND commands that begin with a space in the history
 HISTCONTROL=ignoreboth
 
-export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:
+export GREP_OPTIONS="--color=auto"
 
-pastebin() { curl -F 'f:1=<-' ix.io; }
+# Suffixes that should be ignored during completion
+export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:.o:
 
-shopt -s autocd
-shopt -s cdspell
-shopt -s checkwinsize
-shopt -s cmdhist
-shopt -s histappend
-shopt -s dotglob
-shopt -s expand_aliases
-shopt -s nocaseglob
-shopt -s extglob
-shopt -s checkjobs
-shopt -s dirspell
+# Shell Builtin Settings
+shopt -s autocd                  # No need to type cd anymore
+shopt -s cdspell                 # Fix simple typos when cd'ing
+shopt -s checkwinsize            # Check window size and adjust accordingly
+shopt -s cmdhist                 # Save multiline commands in a single line
+shopt -s histappend              # Append to HISTFILE instead of overwriting it
+shopt -s dotglob                 # Include filenames beginning with '.' during expansion
+shopt -s expand_aliases          # Expand aliases too
+shopt -s nocaseglob              # Case insensitive pattern matching
+shopt -s extglob                 # Extended pathname completion rules
+shopt -s checkjobs               # Check if there are running jobs and refuse to exit
+shopt -s dirspell                # Fix simple typos in directory name expansion
+shopt -s no_empty_cmd_completion # Don't perform completions on empty lines
+shopt -u force_fignore           # We want to files in FIGNORE to appear uf they are only
+                                 # possible completions
 
+# Set Shell Settings
+set -o histexpand
+
+# Set Readline Settings
 set show-all-if-ambiguous on
-
-pdflatex() {
-GREP="grep --color=always --line-buffered"
-LL=$*
-echo "$LL"
-(/usr/bin/pdflatex -file-line-error "$LL" 2>&1) \
- | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
- | GREP_COLOR="01;31" $GREP -P "(^[^:]*:\d+: )|(^l\.\d+ )|(^! LaTeX Error: )|$" \
- | GREP_COLOR="00;33" $GREP -P "(LaTeX Warning(:|))|(Package [^\s]+ Warning(:|))|$" \
- | GREP_COLOR="00;32" $GREP -P "^Output written on .*\.pdf \(.*\)\.$|$" \
- | uniq
-}
-
-resolve() {
-    vimdiff "$1" "$1.pacnew"
-    read -p "Were the conflicts resolved? [Y/N]: " yn
-    case $yn in
-        [Yy]* ) echo "Deleting pacnew file"; sudo rm "$1.pacnew";;
-    esac
-}
-
-algs4c() {
-    if (checkstyle-algs4 "$1.java")
-    then
-        echo "CheckStyle Passed..."
-        if (javac-algs4 "$1.java")
-        then
-            echo "Compilation Successful..."
-            if (findbugs-algs4 "$1.class")
-            then
-                echo "No bugs Found..."
-                return 0
-            else
-                echo "Findbugs Failed!"
-                return 103
-            fi
-        else
-            echo "Compilation Failed!"
-            return 102
-        fi
-    else
-        echo "CheckStyle Failed!"
-        return 101
-    fi
-}
-
-algs4cr() {
-    if (algs4c "$1")
-    then
-        java-algs4 "$1"
-    else
-        reurn $?
-    fi
-}
-
-extract() {
-    local c e i
-
-    (($#)) || return
-
-    for i; do
-        c=''
-        e=1
-
-        if [[ ! -r $i ]]; then
-            echo "$0: file is unreadable: \`$i'" >&2
-            continue
-        fi
-
-        case $i in
-        *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
-               c='bsdtar xvf';;
-        *.7z)  c='7z x';;
-        *.Z)   c='uncompress';;
-        *.bz2) c='bunzip2';;
-        *.exe) c='cabextract';;
-        *.gz)  c='gunzip';;
-        *.rar) c='unrar x';;
-        *.xz)  c='unxz';;
-        *.zip) c='unzip';;
-        *)     echo "$0: unrecognized file extension: \`$i'" >&2
-               continue;;
-        esac
-
-        command $c "$i"
-        e=$?
-    done
-
-    return $e
-}
-
-pack() {
-  local FILE
-  FILE=$1
-  case $FILE in
-    *.tar.bz2)  shift && tar cjf "$FILE" "$*" ;;
-    *.tbz2)     shift && tar cjf "$FILE" "$*" ;;
-    *.tar.gz)   shift && tar czf "$FILE" "$*" ;;
-    *.tgz)      shift && tar czf "$FILE" "$*" ;;
-    *.zip)      shift && zip "$FILE" "$*"     ;;
-    *.rar)      shift && rar "$FILE" "$*"     ;;
-  esac
-}
-
-man() {
-    env \
-        LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
-        LESS_TERMCAP_md="$(printf '\e[1;31m')" \
-        LESS_TERMCAP_me="$(printf '\e[0m')" \
-        LESS_TERMCAP_se="$(printf '\e[0m')" \
-        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
-        LESS_TERMCAP_ue="$(printf '\e[0m')" \
-        LESS_TERMCAP_us="$(printf '\e[1;32m')" \
-            man "$@"
-    }
-
-# A Little Note Taker
-note ()
-{
-
-    NOTES="$HOME/.notes"
-    #if file doesn't exist, create it
-    [ -f "$NOTES" ] || touch "$NOTES"
-    #no arguments, print file
-    if [ $# = 0 ]
-    then
-        cat "$NOTES"
-    #clear file
-    elif [ "$1" = -c ]
-    then
-        > "$NOTES"
-    #add all arguments to file
-    else
-        echo "$@" >> "$NOTES"
-    fi
-}
-
-pdf() {
-    evince "$1" &>/dev/null &
-}
-
-timer() {
-    if [ $# -ne 2 ]
-    then
-        echo "Usage: timer [time] [message]"
-        return 1
-    fi
-    sleep "$1" && alert && zenity --info --text="$2" &
-}
-
-ddup() {
-    fsize=$(stat -c %s "$1")
-    dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
-}
+set completion-ignore-case on
+set show-all-if-unmodified on
+set skip-completed-text on
 
 source "/usr/share/doc/pkgfile/command-not-found.bash"
 source "/usr/share/git/completion/git-prompt.sh"
@@ -192,8 +53,9 @@ if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
         echo "| Detached screens are available:       |"
         echo "$detached_screens"
         echo "+---------------------------------------+"
+
+        export SHOWED_SCREEN_MESSAGE="true"
     fi
-    export SHOWED_SCREEN_MESSAGE="true"
 fi
 
 GIT_PS1_SHOWDIRTYSTATE=1;
@@ -235,7 +97,6 @@ trap 'echo -ne "\e[0m"' DEBUG
 PS2='>> '
 PS3='>>> '
 PS4='+ '
-#PS1='[\u@\h \W]\$ '
 
 export PERL_LOCAL_LIB_ROOT="/home/sauron/perl5";
 export PERL_MB_OPT="--install_base /home/sauron/perl5";

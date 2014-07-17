@@ -13,6 +13,7 @@ The files available in this repository are sourced in the following order:
   * bash_profile
   * bashrc
   * bash_aliases
+  * bash_functions
 
 There are other shell initialization files which are currently not a part of
 this dotfiles repository. Those will be loaded in their correct place in the
@@ -39,12 +40,20 @@ bashrc
 ------
 
 The general file for customizing the Bash Shell. This file contains various
-settings, environment variables, PS{1,2,3} values, custom functions, etc.
-It is loaded everytime a new shell starts.
+settings, environment variables, PS{1,2,3} values, etc.
+It is loaded every time a new shell starts.
 
 bash_aliases
 ------------
 
 This file is sourced from within `bashrc` and defines the different aliases
 being used in the system. This file is kept separate to keep the `bashrc` file
-clean from the large number of alises that are usually being set up.
+clean from the large number of aliases that are usually being set up.
+
+bash_functions
+--------------
+
+This file is sourced from within `bashrc` and contains a bunch of utility and
+helper functions for use from the bash shell. The number of such functions was
+rapidly increasing and polluting the `bashrc` file, so to keep it manageable
+this file is split out.

@@ -1,0 +1,260 @@
+# Bash Utility Functions
+
+# Function: pastebin()
+# Expects data on standard input that is then sent to ix.io for sharing text
+# snipets. The URL of the file on ix.io is printed to screen.
+pastebin() {
+    curl -F 'f:1=<-' ix.io;
+}
+
+# Function: tre()
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+tre() {
+    tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+# Function: calc()
+# This is a simple command line calculator for Bash. It uses bc to compute
+# various results. Give it a valid bc expression and this function will try to
+# evaluate its value. Complex output may cause problems on the printf statement.
+calc() {
+    local result="";
+    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')";
+    #                           └─ default (when `--mathlib` is used) is 20
+    #
+    if [[ "$result" == *.* ]]; then
+        # improve the output for decimal numbers
+        printf "$result" |
+        sed -e 's/^\./0./' `# add "0" for cases like ".5"` \
+            -e 's/^-\./-0./' `# add "0" for cases like "-.5"`\
+            -e 's/0*$//;s/\.$//'; # remove trailing zeros
+    else
+        printf "$result";
+    fi;
+    printf "\n";
+}
+
+cat() {
+    if [ `which pygmentize` ]
+    then
+        pygmentize -O style=monokai -f console256 -g "$@"
+    else
+        /usr/bin/cat "$@"
+    fi
+}
+
+# Function: pdflatex()
+# This function invokes the similarly named /usr/bin/pdflatex binary and uses
+# grep to colour the output and highlight the errors and warnings when running
+# pdflatex.
+pdflatex() {
+GREP="grep --color=always --line-buffered"
+LL=$*
+echo "$LL"
+(/usr/bin/pdflatex -file-line-error "$LL" 2>&1) \
+ | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
+ | GREP_COLOR="01;31" $GREP -P "(^[^:]*:\d+: )|(^l\.\d+ )|(^! LaTeX Error: )|$" \
+ | GREP_COLOR="00;33" $GREP -P "(LaTeX Warning(:|))|(Package [^\s]+ Warning(:|))|$" \
+ | GREP_COLOR="00;32" $GREP -P "^Output written on .*\.pdf \(.*\)\.$|$" \
+ | uniq
+}
+
+# Function: man()
+# Similar to pdflatex, this function is invoked when someone tries to load a man
+# page. It adds some amount of syntax colouring to the man page to make it
+# easier to scan visually.
+man() {
+    env \
+        LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
+        LESS_TERMCAP_md="$(printf '\e[1;31m')" \
+        LESS_TERMCAP_me="$(printf '\e[0m')" \
+        LESS_TERMCAP_se="$(printf '\e[0m')" \
+        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+        LESS_TERMCAP_ue="$(printf '\e[0m')" \
+        LESS_TERMCAP_us="$(printf '\e[1;32m')" \
+            man "$@"
+}
+
+# Function: resolve()
+# Expects a filename as a parameter at $1.
+# A file named $1.pacnew should also exist. This function will then invoke
+# vimdiff to diff the files for resolving the conflicts.
+# This is a very crude function with little to no error checking and should be
+# invoked with care.
+resolve() {
+    vimdiff "$1" "$1.pacnew"
+    read -p "Were the conflicts resolved? [Y/N]: " yn
+    case $yn in
+        [Yy]* ) echo "Deleting pacnew file"; sudo rm "$1.pacnew";;
+    esac
+}
+
+# Function: algs4c()
+# Expects the filename WITHOUT extension of a java source file.
+# This is a helper function for automating the various steps involved in
+# compiling and checking a java source for errors before it can be submitted to
+# the Algorithms Course by Princeton University on Coursera. This function will
+# only compile and check for errors.
+algs4c() {
+    if (checkstyle-algs4 "$1.java")
+    then
+        echo "CheckStyle Passed..."
+        if (javac-algs4 "$1.java")
+        then
+            echo "Compilation Successful..."
+            if (findbugs-algs4 "$1.class")
+            then
+                echo "No bugs Found..."
+                return 0
+            else
+                echo "Findbugs Failed!"
+                return 103
+            fi
+        else
+            echo "Compilation Failed!"
+            return 102
+        fi
+    else
+        echo "CheckStyle Failed!"
+        return 101
+    fi
+}
+
+# Function: algs4cr()
+# Expects a filename WITHOUT the extension of a java source file.
+# This function invokes algs4c() to compile and check the source for errors and
+# then will also execute the compiled executable.
+algs4cr() {
+    if (algs4c "$1")
+    then
+        java-algs4 "$1"
+    else
+        reurn $?
+    fi
+}
+
+# Function: extract()
+# Expects a compressed file as a paramter
+# This is a utility function I copied from the Arch Wiki. This function accepts
+# a filename as a parameter and based on the filename it will run the respective
+# utility to decompress the file. The way this function is written, it can be
+# used even with older versions of tar which do not have filename based
+# detection of the algorithm.
+extract() {
+    local c e i
+
+    (($#)) || return
+
+    for i; do
+        c=''
+        e=1
+
+        if [[ ! -r $i ]]; then
+            echo "$0: file is unreadable: \`$i'" >&2
+            continue
+        fi
+
+        case $i in
+        *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
+               c='bsdtar xvf';;
+        *.7z)  c='7z x';;
+        *.Z)   c='uncompress';;
+        *.bz2) c='bunzip2';;
+        *.exe) c='cabextract';;
+        *.gz)  c='gunzip';;
+        *.rar) c='unrar x';;
+        *.xz)  c='unxz';;
+        *.zip) c='unzip';;
+        *)     echo "$0: unrecognized file extension: \`$i'" >&2
+               continue;;
+        esac
+
+        command $c "$i"
+        e=$?
+    done
+
+    return $e
+}
+
+# Function: pack()
+# Expects a filename with a valid extension as the first paramter. All other
+# parameters list the files that need to be included in the compressed file.
+# This function is the dual of the above extract() function. Given a filename,
+# it recognizes the type and creates the respective compressed file containing
+# all the files provided on the command line.
+pack() {
+  local FILE
+  FILE=$1
+  case $FILE in
+    *.tar.bz2)  shift && tar cjf "$FILE" "$*" ;;
+    *.tbz2)     shift && tar cjf "$FILE" "$*" ;;
+    *.tar.gz)   shift && tar czf "$FILE" "$*" ;;
+    *.tgz)      shift && tar czf "$FILE" "$*" ;;
+    *.zip)      shift && zip "$FILE" "$*"     ;;
+    *.rar)      shift && rar "$FILE" "$*"     ;;
+  esac
+}
+
+# Function: note()
+# Another simple but extremely useful utlity function. This was copied from the
+# ArchWiki too. Expects a bunch of text as its parameters which is then stored
+# in ~/.notes file.
+# Commands:
+# Add a new note:  $ note <Enter note here>
+# Display notes:   $ note
+# Clean all notes: $ note -c
+note () {
+
+    NOTES="$HOME/.notes"
+    #if file doesn't exist, create it
+    [ -f "$NOTES" ] || touch "$NOTES"
+    #no arguments, print file
+    if [ $# = 0 ]
+    then
+        cat "$NOTES"
+    #clear file
+    elif [ "$1" = -c ]
+    then
+        > "$NOTES"
+    #add all arguments to file
+    else
+        echo "$@" >> "$NOTES"
+    fi
+}
+
+# Function: pdf()
+# Expects a pdf file as an argument
+# This is a simple helper function to asynchronously launch a pdf viewer from
+# the command line without polluting it.
+pdf() {
+    evince "$1" &>/dev/null &
+}
+
+# Function: timer()
+# Usage: timer [time] [message]
+# This function takes a time argument that is acceptable to sleep(1) and a
+# message. After a period of [time], the message is displayed on the screen and
+# a audio beep is generated. For the beep to be played, ensure that the beep
+# channel in ALSA is not muted.
+timer() {
+    if [ $# -ne 2 ]
+    then
+        echo "Usage: timer [time] [message]"
+        return 1
+    fi
+    sleep "$1" && alert && zenity --info --text="$2" &
+}
+
+# Function: ddup()
+# Usage: ddup [file1] [file2]
+# dd's [file1] onto [file2] but also displays a progress bar showing the
+# progress of the operation.
+ddup() {
+    fsize=$(stat -c %s "$1")
+    dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
+}
+
+# vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
