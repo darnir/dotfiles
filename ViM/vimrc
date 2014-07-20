@@ -280,6 +280,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  set t_co=256
 endif
 " }}}
 
