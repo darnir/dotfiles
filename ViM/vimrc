@@ -32,6 +32,19 @@ set omnifunc=syntaxcomplete#Complete
 set lazyredraw              " Delay redrawing screen during macros. Performance boost
 set tabpagemax=100          " Load upto 100 tabs max
 set clipboard=unnamedplus   " Use the system clipboard as the default unnamed register
+set diffopt=filler          " Keep the text synchronized in a diff window
+set gdefault                " Always set the 'g' value when substitiuting
+set hidden                  " Use hidden buffers
+set nojoinspaces            " Don't add an extra space between sentences when joining lines
+set nostartofline           " Don't move to start of line when moving around
+set viminfo=%,'9999,s512,n~/.vim/viminfo
+                            " Restore buffer list, marks are remembered for 9999 files,
+                            " registers up to 512Kb are remembered,et switchbuf=useopen,usetab
+set wrapscan                " Wrap searches around EOF
+
+set backupdir=~/.vim/tmp/backups
+                            " Store all backup files in a single directory
+set directory=/tmp/         " Temp. swap files need not persist
 
 " " Blinking cursor fix {{{
 " " Don't wake up system with blinking cursor:
@@ -53,6 +66,8 @@ set display+=lastline       " When lines exceed the screen size, display as much
 set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
 set foldcolumn=1            " Keep a dedicated column for showing folds
 set relativenumber          " Show relative line numbers
+set noshowmode              " Airline already shows this
+set shortmess=atI           " Change the messages shown by vim
 " }}}
 
 " Indentation and Tab Settings {{{
