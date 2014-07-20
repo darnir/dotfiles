@@ -16,6 +16,22 @@ tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
+lsn() {
+    if [ $# -lt 2 ]
+    then
+        echo "Usage: lsn [start no] [end no] [optional paramters]"
+        return 1
+    fi
+    BEGIN=$1
+    END=$2
+    PARAM=$3
+    while shift && [ -n "$3" ]; do
+        PARAM="${PARAM} $3"
+    done
+#    echo "ls ${PARAM} | head ${END} | tail $(($END - $BEGIN))"
+    /usr/bin/ls --color $PARAM | head -$END | tail -$(($END - $BEGIN))
+}
+
 # Function: calc()
 # This is a simple command line calculator for Bash. It uses bc to compute
 # various results. Give it a valid bc expression and this function will try to
