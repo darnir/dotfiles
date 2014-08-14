@@ -261,6 +261,8 @@ inoremap <leader><leader> <Esc>
 
 nnoremap <leader>r :RainbowParenthesesActivate<CR>
 
+nnoremap <F5> :buffers<CR>:buffer<Space>
+
 " }}}
 
 "{{{ Tagbar Settings
