@@ -16,6 +16,10 @@ tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
+# Function: lsn()
+# This function takes a start number, an end number and other parameters for the
+# ls command and displays only the files between start and end. This is useful
+# when trying to use ls to see only a handful of files at a time.
 lsn() {
     if [ $# -lt 2 ]
     then
@@ -30,6 +34,37 @@ lsn() {
     done
 #    echo "ls ${PARAM} | head ${END} | tail $(($END - $BEGIN))"
     /usr/bin/ls --color $PARAM | head -$END | tail -$(($END - $BEGIN))
+}
+
+# Function: cov-make()
+# This function is specifically geared towards creating a coverity build package
+# for my Wget code base. This function isn't portable since it was written to
+# simplify only my work.
+cov-make() {
+    if [ $PWD != "$HOME/Programming/wget" ]
+    then
+        echo "This function should only be run from the Wget source dir \
+located at: ~/Programming/wget/"
+        return 1
+    elif [ -z ${COV_TOKEN+x} ]
+    then
+        echo "Bash secrets were not sourced. Please source the bash secrets"
+        return 1
+    fi
+    make clean
+    configwgetgcc
+    cov-build --dir cov-int make
+    tar czvf wget.tgz cov-int
+
+    local version=$(git describe --always | sed 's|-|.|g')
+
+    curl --form project=GNU+Wget \
+  --form token=${COV_TOKEN}\
+  --form email=darnir@gmail.com \
+  --form file=@wget.tgz \
+  --form version="${version}"\
+  --form description="\"Coverity build for GNU Wget\"" \
+  https://scan.coverity.com/builds?project=GNU+Wget
 }
 
 # Function: calc()
@@ -53,6 +88,9 @@ calc() {
     printf "\n";
 }
 
+# Function: cat()
+# This function overrides the default cat executable. It uses pygmentize to
+# add colour support and then passes the output to cat for printing to screen.
 cat() {
     if [ `which pygmentize` ]
     then
