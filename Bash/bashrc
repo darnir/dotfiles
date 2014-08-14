@@ -8,6 +8,7 @@
 # Source the utlity files containing aliases and functions for Bash
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f $HOME/.bash_functions ]] && . ~/.bash_functions
+[[ -f $HOME/.bash_completions ]] && . ~/.bash_completions
 [[ -f /media/truecrypt1/bash_secret ]] && . /media/truecrypt1/bash_secret
 
 # Ignore all duplicate lines AND commands that begin with a space in the history
