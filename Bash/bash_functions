@@ -91,7 +91,7 @@ calc() {
 # Function: cat()
 # This function overrides the default cat executable. It uses pygmentize to
 # add colour support and then passes the output to cat for printing to screen.
-cat() {
+ccat() {
     if [ `which pygmentize` ]
     then
         pygmentize -O style=monokai -f console256 -g "$@"
