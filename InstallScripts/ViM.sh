@@ -106,6 +106,9 @@ then
     cd par
     makepkg -si
     cd "$OCD"
+
+    echo "Installing systemd syntax files"
+    sudo pacman -S vim-systemd
 fi
 
 #echo "Please apply the patch available in ViM/ manually to the ctags.vim plugin."
