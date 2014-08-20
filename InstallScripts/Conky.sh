@@ -42,8 +42,51 @@ ln -s "${_LOC_FILE}" "${_CONF_FILE}"
 
 ############################## File Block ######################################
 
-_CONF_NAME=conky_weather.sh
-_CONF_FILE=${UHOME}/.${_CONF_NAME}
+_CONF_NAME=weather_update
+_CONF_FILE="/usr/local/bin/${_CONF_NAME}"
+_BCK_FILE=${_CONF_FILE}.bck
+_LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+
+echo "Checking if ${_CONF_FILE} exists"
+if [ -f "${_CONF_FILE}" ]
+then
+    echo "File found, saving to ${_BCK_FILE}"
+    sudo mv "${_CONF_FILE}" "${_BCK_FILE}"
+fi
+
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+sudo ln -s "${_LOC_FILE}" "${_CONF_FILE}"
+sudo chmod ugo+x ${_CONF_FILE}
+
+################################################################################
+
+############################## File Block ######################################
+
+_CONF_NAME=get_weather
+_CONF_FILE="/usr/local/bin/${_CONF_NAME}"
+_BCK_FILE=${_CONF_FILE}.bck
+_LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+
+echo "Checking if ${_CONF_FILE} exists"
+if [ -f "${_CONF_FILE}" ]
+then
+    echo "File found, saving to ${_BCK_FILE}"
+    sudo mv "${_CONF_FILE}" "${_BCK_FILE}"
+fi
+
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+sudo ln -s "${_LOC_FILE}" "${_CONF_FILE}"
+sudo chmod ugo+x ${_CONF_FILE}
+
+################################################################################
+
+############################## File Block ######################################
+
+# This block creates a hard link instead of a symlink to the destination. This
+# is because systemd does not linke when a user manually creates symlinks to its
+# unit files.
+_CONF_NAME=weather-update.service
+_CONF_FILE="${UHOME}/.config/systemd/user/${_CONF_NAME}"
 _BCK_FILE=${_CONF_FILE}.bck
 _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
 
@@ -55,20 +98,41 @@ then
 fi
 
 echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-ln -s "${_LOC_FILE}" "${_CONF_FILE}"
+ln "${_LOC_FILE}" "${_CONF_FILE}"
+
+################################################################################
+
+############################## File Block ######################################
+
+_CONF_NAME=weather-update.timer
+_CONF_FILE="${UHOME}/.config/systemd/user/${_CONF_NAME}"
+_BCK_FILE=${_CONF_FILE}.bck
+_LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+
+echo "Checking if ${_CONF_FILE} exists"
+if [ -f "${_CONF_FILE}" ]
+then
+    echo "File found, saving to ${_BCK_FILE}"
+    mv "${_CONF_FILE}" "${_BCK_FILE}"
+fi
+
+echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+ln "${_LOC_FILE}" "${_CONF_FILE}"
 
 ################################################################################
 
 ############################# Custom Commands ##################################
 
 cd /tmp
-wget https://dl.dropboxusercontent.com/u/18576690/conky_weather_icons.tar.gz
-tar -xzf conky_weather_icons.tar.gz
-mv conky-weather-icons/ "${UHOME}"/.conky-weather-icons
+wget https://dl.dropboxusercontent.com/u/18576690/conky-weather.tgz
+tar -xzf conky-weather.tgz
+mv .conky-weather/ "${UHOME}/.conky-weather/"
 
 wget https://dl.dropboxusercontent.com/u/18576690/OpenSans-Light.ttf
 mkdir -p "${UHOME}"/.fonts
 mv OpenSans-Light.ttf "${UHOME}"/.fonts/
 fc-cache -v
 
+systemctl --user start weather-update.timer
+systemctl --user enable weather-update.timer
 ################################################################################

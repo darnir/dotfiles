@@ -1,0 +1,126 @@
+#!/bin/bash
+
+# Conky Weather Script
+# Author: Darshit Shah  <darnir@gmail.com>
+# License: MIT
+
+# The idea of this bash script is to create a simpler interface for applications
+# that require weather details but cannot access the internet directly or parse
+# the XML data provided by Yahoo Weather APIs. This script downloads the XML
+# data, parses it and provides a simple file with all the relevant contents.
+#
+# USAGE
+#
+# It is recommended that this script be executed through a systemd user session.
+# Upon invokation, this script generates a file at $WEATHER_TXT which contains
+# the various weather related information in a simple parseable format. The file
+# is also valid bash syntax, so it can be sourced from another script and the
+# variables can be directly used. A second script, get_weather.sh has been
+# provided which is supposed to be the interface for accessing this data.
+#
+# CUSTOMIZATION
+#
+# In general, this script should not require any customization. However, in case
+# you want more details in your conky than what is already provided by this
+# script, add a line to the relevant function or write your own. Even without
+# knowledge of Bash syntax, it should be easy to follow examples provided to
+# extend this script with more variables. However, should you wish to deviate
+# from the style already present here, do so at your own risk. The WEATHER_TXT
+# file may break causing all dependant programs to malfunction.
+#
+# The write_forecast() function requires a parameter between 1 - 4. This
+# parameter indicates the number of days for which forecast information should
+# be written to the WEATHER_TXT file. If no argument is provided, a default of 2
+# forecast days is assumed.
+#
+# Remember to atleast edit the WOEID to reflect the weather data id for your
+# current location. The WOEID is a unique number that identfies the region for
+# which you want weather updates from Yahoo! Weather.
+#
+# SUPPORT
+#
+# This script is supported on a best-effort basis. I wrote this script to
+# scratch a personal itch. It should work out of the box for most people, but if
+# it doesn't please drop a mail to darnir@gmail.com and I shall attempt to help
+# you out.
+
+
+# Various customization settings
+
+WOEID=2295411
+WEATHER_XML="/tmp/weather.xml"
+WEATHER_TXT="$HOME/.cache/weather.txt"
+WEATHER_TMP="/tmp/weather.txt"
+
+###############################################################################
+#                               Helper Functions                              #
+#                                                                             #
+# These are various helper functions which are used by the script to get the  #
+# weather details as requested.                                               #
+#                                                                             #
+# The variables which are parsed are grouped on the basis of similarity.      #
+# Location based variables are written together as are those for current      #
+# weather and forecasted weather.                                             #
+#                                                                             #
+# Please do not change the existing functions, instead add new ones based on  #
+# the template of the existing functions. Do not mess with these functions    #
+# unless you know precisely what you are doing.                               #
+###############################################################################
+
+write_location() {
+    local LOC_STR=$(grep "yweather:location" $WEATHER_XML)
+    grep -o 'city=\"[^\"]*\"' <<< "$LOC_STR" >> $WEATHER_TMP
+    grep -o 'country=\"[^\"]*\"' <<< "$LOC_STR" >> $WEATHER_TMP
+}
+
+write_cur_weather() {
+    local CON_STR=$(grep "yweather:condition" $WEATHER_XML)
+    local WIN_STR=$(grep "yweather:wind" $WEATHER_XML)
+    local ATM_STR=$(grep "yweather:atmosphere" $WEATHER_XML)
+    grep -o 'text=\"[^\"]*\"' <<< "$CON_STR" >> $WEATHER_TMP
+    grep -o 'temp=\"[^\"]*\"' <<< "$CON_STR" >> $WEATHER_TMP
+    grep -o 'speed=\"[^\"]*\"' <<< "$WIN_STR" >> $WEATHER_TMP
+    grep -o 'humidity=\"[^\"]*\"' <<< "$ATM_STR" >> $WEATHER_TMP
+    grep -o 'code=\"[^\"]*\"' <<< "$CON_STR" >> $WEATHER_TMP
+}
+
+write_units() {
+    local UNI_STR=$(grep "yweather:units" $WEATHER_XML)
+    echo "unit_$(grep -o 'speed=\"[^\"]*\"' <<< "$UNI_STR")" >> $WEATHER_TMP
+}
+
+write_forecast() {
+    if [[ $# -eq 0 ]]
+    then
+        days=2
+    else
+        days=$1
+    fi
+
+    OLDIFS=$IFS
+    IFS='>'
+    local FOR_STR=( $(grep "yweather:forecast" $WEATHER_XML) )
+    IFS=$OLDIFS
+
+    for f_day in $(seq 1 "$days")
+    do
+        echo "day_${f_day}_$(grep -o 'high=\"[^\"]*\"' <<< "${FOR_STR[$f_day]}")" >> $WEATHER_TMP
+        echo "day_${f_day}_$(grep -o 'low=\"[^\"]*\"' <<< "${FOR_STR[$f_day]}")" >> $WEATHER_TMP
+        echo "day_${f_day}_$(grep -o 'day=\"[^\"]*\"' <<< "${FOR_STR[$f_day]}")" >> $WEATHER_TMP
+        echo "day_${f_day}_$(grep -o 'code=\"[^\"]*\"' <<< "${FOR_STR[$f_day]}")" >> $WEATHER_TMP
+    done
+}
+
+# Main entry point of the script.
+
+wget --timeout=5 -O $WEATHER_XML "http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=c"
+
+if [[ -s $WEATHER_XML ]]
+then
+    rm $WEATHER_TMP &> /dev/null
+    write_location
+    write_units
+    write_cur_weather
+    write_forecast 2
+    mv "$WEATHER_TMP" "$WEATHER_TXT"
+fi

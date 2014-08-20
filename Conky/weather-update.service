@@ -1,0 +1,7 @@
+[Unit]
+Description=Update weather information from Yahoo! Weather APIs for Conky
+RequiresMountsFor=/tmp
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/weather_update

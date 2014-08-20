@@ -32,7 +32,10 @@ Files
 │   └── compton.conf          -> $HOME/.compton.conf
 ├── Conky
 │   ├── conkyrc               -> $HOME/.conkyrc
-│   └── conky\_weather.sh     -> $HOME/.conky\_weather.sh
+│   ├── weather_update        -> /usr/local/bin/weather_update
+│   ├── get_weather           -> /usr/local/bin/get_weather
+│   ├── weather-update.service=> $HOME/.config/systemd/user/weather-update.service
+│   └── weather-update.timer  => $HOME/.config/systemd/user/weather-update.timer
 ├── Git
 │   ├── gitattributes         -> $HOME/.gitattributes
 │   ├── gitconfig             -> $HOME/.gitconfig

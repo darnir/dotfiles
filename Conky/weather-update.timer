@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for conky weather update
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+AccuracySec=5min
+
+[Install]
+WantedBy=default.target

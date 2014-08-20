@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Conky Weather Interface Script
+# Author: Darshit Shah  <darnir@gmail.com>
+# License: MIT
+#
+# This script is called by a conky instance to get the weather details. The idea
+# of having such an interface is to abstract the internals of how the weather
+# data is obtained. The script expects a file available at ~/.cache/weather.txt
+# which contains a list of bash variables which represent various weather
+# condition related parameters.
+#
+# USAGE:
+# To use this script, call it with the relevant parameter. The corresponding
+# output will be printed to STDOUT. Valid parameters are listed below:
+# -l       : Prints the location for which the weather details are provided
+# -w {arg} : Print the relevant information about the current weather condition
+#            from temp{erature}, text, hum{idity}, speed.
+# -f {arg} : Print weather forecast about future days. The argument is the
+#            number of days in the future for which the forecast should be
+#            provided. Requires one of -H or -L to be set *BEFORE* this switch
+# -H       : Print the forecast day's High Temperature Forecast
+# -L       : Print the forecast day's Low Temperature Forecast
+# -d {arg} : Print the name of the day. 0 for today, 1 for tomorrow, etc.
+#
+# Remember, the -H or -L switch must always be set *BEFORE* the -f{orecast}
+# switch is called. Calling `-t temp` also copies the relevant weather icon
+# based on one of Yahoo! Weather's status code to $CACHE/weather.png
+# Similarly, calling -f with the -H switch also copies a weather icon for that
+# day's forecast to $CACHE/weather-$day.png.
+#
+# CUSTOMIZATION:
+# In order to obtain information about the weather which is not already provided
+# through this script, first ensure that the required information is already
+# available in the weather.txt file. To extend this script, simply add a new
+# option through getopts and add a new function to handle it. Remember, that the
+# output data should provided through STDOUT.
+
+WEATHER_ICONS="$HOME/.conky-weather"
+CACHE="$HOME/.cache"
+# This is a simple flat file in valid Bash syntax. The file contains bash
+# variables that store the details about the weather conditions that are read by
+# this script.
+source ~/.cache/weather.txt
+
+print_loc() {
+    echo "$city, $country"
+}
+
+print_weather() {
+    case $1 in
+        temp) echo "$temp°"
+            cp -f "$WEATHER_ICONS/$code.png" "$CACHE/weather.png";;
+        text) echo "${text^^}";;
+        hum)  echo "${humidity}%";;
+        speed) echo "${speed}${unit_speed}";;
+    esac
+}
+
+print_forecast() {
+    local name
+    if [[ $PRINT_HIGH -eq 1 ]]
+    then
+        name="day_$1_high"
+        code="day_$1_code"
+        cp -f "$WEATHER_ICONS/${!code}.png" "$CACHE/weather-$1.png"
+    else
+        name="day_$1_low"
+    fi
+    echo "${!name}°"
+
+}
+
+print_day_name() {
+    local name="day_$1_day"
+    echo "${!name^^}"
+}
+
+while getopts "lw:f:LHd:" OPTION
+do
+    case $OPTION in
+        l) print_loc;;
+        w) print_weather "$OPTARG";;
+        f) print_forecast "$OPTARG";;
+        d) print_day_name "$OPTARG";;
+        L) PRINT_HIGH=0;;
+        H) PRINT_HIGH=1;;
+        *) exit -1;;
+    esac
+done

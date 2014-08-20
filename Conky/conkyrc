@@ -1,138 +1,102 @@
-# Use Xft?
-use_xft yes
-xftfont Open Sans Light:size=8
-xftalpha 0.8
-text_buffer_size 2048
-uppercase yes
-
-# Update interval in seconds
-update_interval 1
-
-# This is the number of times Conky will update before quitting.
-# Set to zero to run forever.
-total_run_times 0
-
-# Create own window instead of using desktop (required in nautilus)
-own_window yes
-own_window_transparent yes
-own_window_type override
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-#own_window_argb_visual yes
-#own_window_argb_value 255
+## Conky Configuration File by Darshit Shah <darnir@gmail.com>
+## Inspired by "Numix Ubuntu" by "Dobbie03" on DeviantArt
+## Weather Icons taken from Conky Google Now by the Numix Project
+## The Weather Icons are licensed under GPLv3.0+
+## License: MIT
 
 background yes
-
-# Use double buffering (reduces flicker, may not work for everyone)
+use_xft yes
+xftfont 123:size=8
+xftalpha 0.1
+update_interval 1
+total_run_times 0
+own_window yes
+own_window_type desktop
+own_window_transparent yes
+#own_window_colour 2D2D2D
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_title conky
+own_window_argb_visual no
+#own_window_argb_value
 double_buffer yes
 
-minimum_size 282
-
-# Draw shades?
+border_inner_margin 10
+maximum_width 300
+minimum_size 250
 draw_shades no
-default_shade_color 292421
-# Draw outlines?
 draw_outline no
-
-# Draw borders around text
 draw_borders no
-
-# Stippled borders?
-stippled_borders 0
-
-# border margins
-#border_inner_margin 30
-#border_outer_margin 0
 draw_graph_borders no
-# border width
-border_width 0
-
-# Text alignment, other possible values are commented
-#alignment top_left
+default_color FFFFFF
+default_shade_color red
+default_outline_color green
 alignment top_right
-#alignment bottom_left
-#alignment bottom_right
-
-# Gap between borders of screen and text
-# same thing as passing -x at command line
-gap_x 15
+gap_x 30
 gap_y 20
 
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+net_avg_samples 2
+override_utf8_locale yes
+use_spacer none
 
-#	Open Sans Light             fonts
-#	Droid Sans
+#lua_load ~/.conky/draw_bg.lua
+#lua_draw_hook_pre draw_bg
+#draw_graph_borders yes
 
-
-imlib_cache_size 0
-
-color1 323232
-color2 323232
-color3 000000
-color4 6b6b6b
-color5 6db9d5
-color6 000000
-color7 000000
-
+color1 FFFFFF
+color2 0079BA
+color3 FFFFFF
+color4 555555
+color5 CD55CD
+color6 FFAA00
+color7 CEEE15
 
 TEXT
-${image ~/.conky-weather-icons/background.png -p 0,15 -s 287x725}${image ~/.conky-weather-icons/box.png -p 10,238 -s 267x64}${execi 300 ~/.conky_weather.sh}
 ${color1}${font Open Sans Light:size=42}${alignc}${time %R}${font}
 ${color1}${font Open Sans Light:size=9}${alignc}${time %A, %B %d, %Y}${font Open Sans Light:size=3}
 ${color1}${font Open Sans Light:size=9}${alignc}Uptime: ${uptime}${font}
-${image ~/.conky-weather-icons/separator.png -p 1,110 -s 285x2}
-${color1}${font Open Sans Light:size=42}${alignr 10}${execi 300 grep "yweather:condition" ~/.cache/weather.xml | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}°${font}
-${font Droid Sans:pixelsize=9}${execi 300 cp -f ~/.conky-weather-icons/60x60/$(grep "yweather:condition" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*").png ~/.cache/weather.png}${image ~/.cache/weather.png -p 8,125 -s 60x60}${color5}
-   Currently:${color1}${alignc}${execi 300 grep "yweather:condition" ~/.cache/weather.xml | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${color5}
-   Wind:${alignc}${color1}${execi 300 grep "yweather:wind" ~/.cache/weather.xml | grep -o "speed=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${execi 300 grep "yweather:units" ~/.cache/weather.xml | grep -o "speed=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${color5}
-   Humidity:${color1}${alignc}${execi 300 grep "yweather:atmosphere" ~/.cache/weather.xml | grep -o "humidity=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}%
-
-
-${color1}${goto 24}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1'}°${execi 300 cp -f ~/.conky-weather-icons/32x32/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1').png ~/.cache/weather-1.png}${image ~/.cache/weather-1.png -p 14,257 -s 32x32}${goto 128}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2'}°${execi 300 cp -f ~/.conky-weather-icons/32x32/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2').png ~/.cache/weather-2.png}${image ~/.cache/weather-2.png -p 120,257 -s 32x32}${goto 224}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3'}°${execi 300 cp -f ~/.conky-weather-icons/32x32/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3').png ~/.cache/weather-3.png}${image ~/.cache/weather-3.png -p 224,257 -s 32x32}
-
-
-${color4}${goto 60}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1'}°${goto 164}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2'}°${alignr 10}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3'}°
-${image ~/.conky-weather-icons/separator.png -p 1,335 -s 285x2}
-
-${color5}${font Droid Sans:pixelsize=12}${goto 22}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z]'}${goto 126}${color1}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]'}${goto 232}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]'}${font}
-
-${font Droid Sans:pixelsize=9}${if_existing /proc/net/route wlp4s0}
-${goto 14}${color1}Up:${color1} ${color3}${upspeed wlp4s0}${color1}${alignr}${goto 190}${color1}Down:${color1} ${color3}${downspeed wlp4s0}${color1}
-${goto 14}${upspeedgraph wlp4s0 50,120 6db9d5 6db9d5}${alignr}${goto 160}${downspeedgraph wlp4s0 50,120 6db9d5 6db9d5}
-${image ~/.conky-weather-icons/online.png -p 225,210 -s 48x23}
-${goto 14}${color1}Sent:${color1} ${color2}${totalup wlp4s0}${color1}${alignr}${goto 190}${color1}Received:${color1} ${color2}${totaldown wlp4s0}${color}1
-${else}${if_existing /proc/net/route enp8s0}
-${goto 14}${color1}Up:${color1} ${color3}${upspeed enp8s0}${color1}${alignr}${goto 190}${color1}Down:${color1} ${color3}${downspeed enp8s0}${color1}
-${goto 14}${upspeedgraph enp8s0 50,120 6db9d5 6db9d5}${alignr}${goto 160}${downspeedgraph enp8s0 50,120 6db9d5 6db9d5}
-${goto 14}${color1}Sent:${color1} ${color2}${totalup enp8s0}${color1}${alignr}${goto 190}${color1}Received:${color} ${color2}${totaldown enp8s0}${color1}
-${image ~/.conky-weather-icons/online.png -p 225,210 -s 48x23}
-${else}${if_existing /proc/net/route eth1}
-${goto 14}${color1}Up:${color1} ${color3}${upspeed eth1}${color}${alignr}${goto 190}${color1}Down:${color1} ${color3}${downspeed eth1}${color1}
-${goto 14}${upspeedgraph eth1 50,120 6db9d5 6db9d5}${alignr}${goto 160}${downspeedgraph eth1 50,120 6db9d5 6db9d5}
-${goto 14}${color1}Sent:${color1} ${color2}${totalup eth1}${color1}${alignr}${goto 190}${color1}Received:${color1} ${color2}${totaldown eth1}${color1}
-${else}${if_existing /proc/net/route ppp0}
-${goto 14}${color5}Up:${color1} ${color1}${upspeed ppp0}${color}${alignr}${goto 160}${goto 190}${color5}Down:${color1} ${color1}${downspeed ppp0}${color}
-${goto 14}${upspeedgraph ppp0 50,120 6db9d5 6db9d5}${alignr}${goto 160}${downspeedgraph ppp0 50,120 6db9d5 6db9d5}
-${image ~/.conky-weather-icons/online.png -p 218,180 -s 48x23}
-${goto 14}${color5}Sent:${color1} ${color2}${totalup ppp0}${color1}${alignr}${goto 190}${color5}Received:${color1} ${color2}${totaldown ppp0}${color1}
-${else}
-   Network disconnected${image ~/.conky-weather-icons/offline.png -p 218,210 -s 48x23}
-${color3}   Connect to a network to see statistics${color1}
-${voffset 50}
-${endif}${endif}${endif}${endif}${voffset -15}
-${image ~/.conky-weather-icons/separator.png -p 1,455 -s 285x2}
-
-${goto 50}${color1}${font Open Sans Light:size=15}Processors/Memory
-${goto 14}${color5}${font Droid Sans:pixelsize=9}CPU: ${color1}${alignc}${freq_g} ${color1}Ghz ${goto 14}${color2}${alignr}${goto 254}${cpu cpu}${color1}%
-
-
-
-${goto 14}${alignr}${goto 14}${loadgraph 50,266 6db9d5 6db9d5 -l}
-
-${goto 14}${color5}${font Droid Sans:pixelsize=9}RAM: ${color1}${alignc 10}${mem}
-${goto 14}${color5}${font Droid Sans:pixelsize=9}TOTAL: ${color1}${alignc 10}${memmax}
-${image ~/.conky-weather-icons/separator.png -p 1,637 -s 285x2}
-${goto 74}${color1}${font Open Sans Light:size=15}Top Processes
-${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 1}${color1}${alignc -10}${top_mem mem_res 1}${color2}${alignr}${goto 234}${top_mem mem 1}${color1} %
-${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 2}${color1}${alignc -10}${top_mem mem_res 2}${color2}${alignr}${goto 234}${top_mem mem 2}${color1} %
-${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 3}${color1}${alignc -10}${top_mem mem_res 3}${color2}${alignr}${goto 234}${top_mem mem 3}${color1} %
-${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 4}${color1}${alignc -10}${top_mem mem_res 4}${color2}${alignr}${goto 234}${top_mem mem 4}${color1} %
-${goto 14}${color1}${font Droid Sans:pixelsize=9}${color5}${top_mem name 5}${color1}${alignc -10}${top_mem mem_res 5}${color2}${alignr}${goto 234}${top_mem mem 5}${color1} %
+${color4}${hr 1}${color}
+# Gets the location and prints it as a header
+${font Open Sans Light:size=16}${execi 300 get_weather -l}${font}
+# Prints the large temperature
+${font Open Sans Light:size=60}${alignr}${execi 300 get_weather -w temp}${font}${voffset -20}
+# Gets today's weather conditions icon
+${image ~/.cache/weather.png -n -p 0,155 -s 60x60}
+# Gets the weather conditions (Haze, Partly Cloudy, etc)
+${goto 30}${execi 300 get_weather -w text}
+# Gets the wind speed icon as well as the wind speed
+${image ~/.conky-weather/wind.png -p 0,243 -s 15x15}${goto 35}${voffset 9}${execi 300 get_weather -w speed}
+#Gets the humidity image as well s the actual humidity
+${image ~/.conky-weather/humidity.png -p 0,263 -s 15x15}${goto 35}${voffset 5}${execi 300 get_weather -w hum}
+# Gets the images for the next day's forecast
+${image ~/.cache/weather-1.png -n -p 20,293 -s 30x30}${image ~/.cache/weather-2.png -n -p 150,293 -s 30x30}
+# Gets the names of the next two days
+${goto 80}${execi 300 get_weather -d 1}${goto 210}${execi 300 get_weather -d 2}
+# Gets the temperatures of the next two days
+${color1}${goto 80}${execi 300 get_weather -H -f 1} ${color6}${execi 300 get_weather -L -f 1}${color1}${goto 210}${execi 300 get_weather -H -f 2} ${color6}${execi 300 get_weather -L -f 2}${color}${voffset 5}
+${color4}${hr 1}
+${color3}${font Open Sans Light:size=16}Processors/Memory
+${color1}${font 123:size=8}CPU1${goto 120}${color2}${freq_g 1}GHz${alignr}${color5}${cpu cpu1}${color2}%
+${color1}CPU2${goto 120}${color2}${freq_g 2}GHz${alignr}${color5}${cpu cpu2}${color2}%
+${alignc}${cpugraph cpu0 40,250 FFAA00 FFAA00}
+${color1}RAM:${goto 120}${color7}${mem}
+${color1}TOTAL:${goto 120}${color7}${memmax}
+${color4}${hr 1}
+${color3}${font Open Sans Light:size=16}Top Processes
+${color1}${font 123:size=8}${top_mem name 1}${goto 120}${color2}${top_mem mem_res 1}${alignr}${color5}${top_mem mem 1}${color2}%
+${color1}${top_mem name 2}${goto 120}${color2}${top_mem mem_res 2}${alignr}${color5}${top_mem mem 2}${color2}%
+${color1}${top_mem name 3}${goto 120}${color2}${top_mem mem_res 3}${alignr}${color5}${top_mem mem 3}${color2}%
+${color1}${top_mem name 4}${goto 120}${color2}${top_mem mem_res 4}${alignr}${color5}${top_mem mem 4}${color2}%
+${color1}${top_mem name 5}${goto 120}${color2}${top_mem mem_res 5}${alignr}${color5}${top_mem mem 5}${color2}%
+${color4}${hr 1}
+${color3}${font Open Sans Light:size=16}Network
+${if_existing /proc/net/route wlp4s0}${color2}${font 123:size=9}Up: ${color7}${upspeed wlp4s0}${alignr}${color2}Down: ${color7}${downspeed wlp4s0}
+${upspeedgraph wlp4s0 40,115 FFAA00 FFAA00}${alignr}${downspeedgraph wlp4s0 40,115 FFAA00 FFAA00}
+${color2}${font 123:size=9}Total: ${color5}${totalup wlp4s0}${alignr}${color2}Total: ${color5}${totaldown wlp4s0}
+${image ~/.conky-weather/online.png -p 190,250 -s 48x23}
+${else}${image ~/.conky-weather/offline.png -p 190,250 -s 48x23}${endif}
+${if_existing /proc/net/route enp8s0}${color2}${font 123:size=9}Up: ${color7}${upspeed enp8s0}${alignr}${color2}Down: ${color7}${downspeed enp8s0}
+${upspeedgraph enp8s0 40,115 FFAA00 FFAA00}${alignr}${downspeedgraph enp8s0 40,115 FFAA00 FFAA00}
+${color2}${font 123:size=9}Total: ${color5}${totalup enp8s0}${alignr}${color2}Total: ${color5}${totaldown enp8s0}${endif}${voffset -50}
