@@ -1,0 +1,151 @@
+#!/bin/bash
+
+# Helper functions for Dotfies Manager
+#
+# This file contains a bunch of helper functions for installing files and
+# directories using the Dotfiles Manager script.
+#
+# Author: Darshit Shah  <darnir@gmail.com>
+# License: MIT
+
+# This helper function gets the location of where the configuration file should
+# exist on the system based on the keywords passed to it. Supported keywords
+# are:
+#   * home: Stores the file in the user's $HOME dir with a dot (.) affixed to
+#   the filename.
+#   * etc: Attempts to store the file in the user's /etc directory. The command
+#   should be executed with superuser privileges. TODO: Automatically set
+#   SUDO when the location is /etc
+#   * bin: Symlink the file in the /usr/local/bin/ directory. TODO:
+#   Automatically set SUDO when location is bin
+#   * systemd-user: Attempts to install the file as a unit file in the systemd
+#   user configuration directory, ~/.config/systemd/user/. TODO: Automaically
+#   set the file to to create a hardlink when installing a systemd unit file
+#   * autostart: Install the file to ~/.config/autostart.
+#   If none of the above keywords are provided, the parameter is assumed to
+#   contain the absolute path to the directory where the file should be
+#   installed.
+_get_conf_file() {
+    local confpath
+    case "$1" in
+        etc) confpath="/etc/${_CONF_NAME}";;
+        home) confpath="$HOME/.${_CONF_NAME}";;
+        bin) confpath="/usr/local/bin/${_CONF_NAME}";;
+        systemd-user) confpath="$HOME/.config/systemd/user/${_CONF_NAME}";;
+        autostart) confpath="$HOME/.config/autostart/${_CONF_NAME}";;
+        *) confpath="$1/${_CONF_NAME}"
+    esac
+    echo "$confpath"
+}
+
+_check_sudo() {
+    if [[ $1 == true ]]
+    then
+        echo "sudo"
+    else
+        echo ""
+    fi
+}
+
+_set_linktype() {
+    if [[ -z $1 || $1 == true ]]
+    then
+        echo "-s "
+    else
+        echo ""
+    fi
+}
+
+_backup_target() {
+    echo "Checking if ${_CONF_FILE} exists"
+    if [ -f "${_CONF_FILE}" ]
+    then
+        echo "Target file found, saving to ${_BCK_FILE}"
+        ${SUDO} mv -v "${_CONF_FILE}" "${_BCK_FILE}"
+    else
+        echo "Target file not found"
+    fi
+}
+
+_backup_target_dir() {
+    echo "Checking if ${_CONF_DIR} exists"
+    if [ -d "${_CONF_DIR}" ]
+    then
+        echo "Target directory found, saving to ${_BCK_DIR}"
+        $SUDO mv -v "${_CONF_DIR}" "${_BCK_DIR}"
+    else
+        echo "Target directory not found"
+    fi
+}
+
+# Function: install_file()
+# Parameter List:
+#   $1 : Conf File Name
+#   $2 : Install Path for Conf File
+#   $3 : Needs root privileges to install?
+#   $4 : Is a symlink? (Default: Yes)
+install_file() {
+    local _CONF_NAME="$1"
+    local _CONF_FILE=$(_get_conf_file "$2")
+    local _BCK_FILE=${_CONF_FILE}.bck
+    local _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+
+    local SUDO=$(_check_sudo "$3")
+    local linktype=$(_set_linktype "$4")
+
+    _backup_target
+
+    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+    ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+}
+
+install_private_file() {
+    local _CONF_NAME="$1"
+    local _CONF_FILE=$(_get_conf_file "$2")
+    local _BCK_FILE=${_CONF_FILE}.bck
+    local _LOC_FILE="/media/truecrypt1/${_CONF_NAME}"
+
+    local SUDO=$(_check_sudo "$3")
+    local linktype=$(_set_linktype "$4")
+
+    echo "Checking if ${_LOC_FILE} is mounted"
+    if [[ ! -f "${_LOC_FILE}" ]]
+    then
+        echo "Please mount the TrueCrypt volume before proceeding"
+        exit 2
+    fi
+
+    _backup_target
+
+    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+    ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+}
+
+install_directory() {
+    local _CONF_NAME="$1"
+    local _CONF_DIR=$(_get_conf_file "$2")
+    local _BCK_DIR=${_CONF_DIR}bck
+    local _LOC_DIR=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+
+    local SUDO=$(_check_sudo "$3")
+    local linktype=$(_set_linktype "$4")
+
+    _backup_target_dir
+
+    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
+    $SUDO ln ${linktype}"${_LOC_DIR}" "${_CONF_DIR}"
+}
+
+################################################################################
+# Custom Functions for use by the dotfile package installers                   #
+################################################################################
+
+safetouch() {
+    if [ ! -f "$1" ]
+    then
+        echo "Touching $1"
+        touch "$1"
+    else
+        echo "$1 exists, not touching"
+    fi
+}

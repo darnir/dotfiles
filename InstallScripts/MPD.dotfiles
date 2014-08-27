@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PACKAGE_NAME="MPD"
+
+install() {
+    install_file mpdconf home false true
+    install_file mpd.desktop autostart false true
+}
+
+post_install() {
+    mkdir -p "$HOME/Music/Playlists"
+    mkdir -p "$HOME/.mpd"
+
+    safetouch "$HOME/.mpd/sticker.sql"
+    safetouch "$HOME/.mpd/mpdstate"
+    safetouch "$HOME/.mpd/.mpd.pid"
+    safetouch "$HOME/.mpd/mpd.db"
+}

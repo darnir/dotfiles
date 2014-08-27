@@ -1,0 +1,30 @@
+#!/bin/bash
+
+PACKAGE_NAME="Git"
+
+install() {
+    install_file gitk home false true
+    install_file gitconfig home false true
+    install_file gitattributes home false true
+    install_private_file gitconfig_private home false true
+}
+
+post_install() {
+    echo "Checking if current system is Arch Linux..."
+    if [[ $(uname -r) =~ ARCH$ ]]
+    then
+        cd /tmp
+        wget https://aur.archlinux.org/packages/gi/git-merge-changelog-git/git-merge-changelog-git.tar.gz
+        tar -xzf git-merge-changelog-git.tar.gz
+        cd git-merge-changelog-git
+        makepkg -si
+
+    echo "Installing essential Perl packages for git send-email..."
+    sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
+    else
+        echo "Please install the following optional dependencies:"
+        echo "git-merge-changelog   Merge algorithm for GNU ChangeLogs"
+        echo "perl-authen-sasl      For git send-email"
+        echo "perl-net-smtp=ssl     For git send-email"
+    fi
+}

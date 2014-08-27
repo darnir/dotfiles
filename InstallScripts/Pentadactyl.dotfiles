@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PACKAGE_NAME="Pentadactyl"
+
+install() {
+    install_file pentadactylrc home false true
+    instal_directory pentadactyl home false true
+}

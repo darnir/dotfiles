@@ -1,0 +1,45 @@
+#!/bin/bash
+
+PACKAGE_NAME="ViM"
+
+install() {
+    install_file vimrc home false true
+    install_directory vim home false true
+}
+
+post_install() {
+    echo "Now installing Vundle"
+
+    mkdir "$HOME/.vim/bundle"
+    git clone https://github.com/gmarik/vundle.git "$HOME/.vim/bundle/vundle"
+
+    echo "Vundle Installed. Installing plugins..."
+    sleep 2
+    vim +PluginInstall +qall
+
+    echo "Downloading thesaurus..."
+    OCD=${PWD}
+    cd /tmp
+    wget http://www.gutenberg.org/dirs/etext02/mthes10.zip
+    unzip mthes10.zip
+    mkdir ~/.vim/thesaurus
+    mv mthesaur.txt ~/.vim/thesaurus/mthesaur.txt
+    cd "$OCD"
+
+
+    if (which pacman)
+    then
+        # We are in Arch Linux
+        echo "Installing par from AUR"
+        OCD=$PWD
+        cd /tmp
+        wget https://aur.archlinux.org/packages/pa/par/par.tar.gz
+        tar -xvzf par.tar.gz
+        cd par
+        makepkg -si
+        cd "$OCD"
+
+        echo "Installing systemd syntax files"
+        sudo pacman -S vim-systemd
+    fi
+}

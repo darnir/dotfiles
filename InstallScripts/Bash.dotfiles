@@ -1,0 +1,31 @@
+#!/bin/bash
+
+PACKAGE_NAME="Bash"
+
+install() {
+    install_file inputrc home false true
+    install_file bash_profile home false true
+    install_file bashrc home false true
+    install_file bash_aliases home false true
+    install_file bash_functions home false true
+    install_file bash_completions home false true
+}
+
+post_install() {
+    # Is this an Arch Linux System?
+    which pacman &> /dev/null
+    if [[ $? -eq 0 ]]
+    then
+        sudo pacman -S bash-completion time beep zenity python2-pygments
+        sudo chmod 4755 "$(which beep)"
+    else
+        # We are not in Arch Linux. Install manually
+        echo "Please install the following optional dependencies:"
+        echo "Optional Dependencies:  "
+        echo "bash-completion:        For bash completion"
+        echo "time:                   For certain wget aliases"
+        echo "beep:                   For alias alert"
+        echo "zenity:                 For timer() function"
+        echo "python2-pygments:       For ccat() function"
+    fi
+}

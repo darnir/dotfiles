@@ -1,0 +1,33 @@
+#!/bin/bash
+
+PACKAGE_NAME="Conky"
+
+install() {
+    install_file conkyrc home false true
+    install_file weather_update bin true true
+    install_file get_weather bin true true
+    install_file weather-update.service systemd-user false false
+    install_file weather-update.timer systemd-user false false
+}
+
+post_install() {
+   # sudo chmod ugo+x /usr/local/bin/weather_update
+    # sudo chmod ugo+x /usr/local/bin/get_weather
+
+    echo "Downloading weather icons:"
+    cd /tmp
+    wget https://dl.dropboxusercontent.com/u/18576690/conky-weather.tgz
+    tar -xzf conky-weather.tgz
+    mv -v .conky-weather/ "${HOME}/.conky-weather/"
+
+    echo "Downloading Requisite Fonts:"
+    wget https://dl.dropboxusercontent.com/u/18576690/OpenSans-Light.ttf
+    mkdir -p "${HOME}"/.fonts
+    mv -v OpenSans-Light.ttf "${HOME}"/.fonts/
+    fc-cache
+
+    echo "Enable the systemd timer"
+    systemctl --user start weather-update.timer
+    systemctl --user enable weather-update.timer
+    echo "Systemd timer enabled"
+}

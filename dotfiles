@@ -1,0 +1,140 @@
+#!/bin/bash
+
+# Dotfiles Manager
+# Author: Darshit Shah  <darnir@gmail.com>
+# License: MIT
+#
+# This is the main "Package Manager" script for the dotfiles manager.
+# Dotfiles Manager is a new way of managing all your dotfiles on a *nix
+# system. The idea behind this project is to bundle a set of similar files as a
+# package that can be shared singularly. Creating such "packages" of dotfiles
+# also helps in maintaining them in the long run.
+#
+# This project works by creating a symlink from the Package to the location on
+# the system where it needs to be. As a result, any changes to the
+# confioguration files, AFTER the package has been installed will automatically
+# be reflected in the repository. Since this is a Git repository, one can look
+# at the diffs of the changes and revert back to the original state very easily.
+# Once, you have confirmed that the changes are good, they should be committed
+# to the repository.
+#
+# PACKAGING:
+# We use the term "dotfile package" in this project. A dotfile package is a
+# collection of files which configure a particular aspect of the system. Hence,
+# one can have a package for Vim, Bash, SSH, X, etc. To make a new package,
+# create a directory with the package name in the root of the repository. This
+# directory should contain all the files which should be handled by the dotfile
+# manager. All the files and directories which should be handled by the dotfile
+# manager, should reside only in the top level of the package directory.
+# Next, one needs to write the install script for this package.
+#
+# INSTALL SCRIPTS:
+# Install scripts are small snippets which tell the dotfile manager which
+# configuration file needs to be placed at which location in the system.
+# An install script MUST define the PACKAGE_NAME variable to state what package
+# the script is for. The value of this variable must coincide exactly with the
+# name of the directory in which the configuration files are stored. The
+# dotfiles manager calls the following three functions in that order:
+#   * package()
+#   * install()
+#   * post_install()
+#
+# USAGE:
+# The dotfiles script lies in the root directory of the dotfiles repository.
+# Use this script to list all available dotfile packages and to install them.
+#
+# For more information, please refer to the README file available in the
+# repository.
+
+# Soure the various functions that are called by the install scripts
+source InstallScripts/dotfile_installer
+
+# Location and name of the log file
+LOGFILE="dotfiles.log"
+
+# Redirect fd 3 to the logfile and redirect STDERR to STDOUT. This is set up for
+# easier logging. Redirecting STDERR to STDOUT allows us to simply write a
+# single redirection against the commands and all their output will be logged,
+# including errors and warnings
+exec 3>>$LOGFILE 2>&1
+
+# Function: write_log [Text]
+# This is a helper function to output a message to the console AND print it to
+# the log file too.
+write_log() {
+    tee -a /dev/fd/3 <<< "$*"
+}
+
+# Function: install_package() [PKG Name]
+# Handle the -I switch.
+install_package() {
+    echo "=== New Log Entry: $(date) ===" >> $LOGFILE
+    write_log "Installing package $1"
+    local pkgbuild="InstallScripts/$1.dotfiles"
+
+    if [[ -f $pkgbuild ]]
+    then
+        source "InstallScripts/$1.dotfiles"
+    else
+        write_log "Cannot find Install Script for $1"
+        return 2
+    fi
+    if [[ ! -d "$1" ]]
+    then
+        write_log "Unable to locate package $1"
+        return 2
+    fi
+
+    if [[ $(type -t prepare) == "function" ]]
+    then
+        prepare  2>&1 | tee -a /dev/fd/3
+    fi
+
+    install 2>&1 | tee -a /dev/fd/3
+
+    if [[ $(type -t post_install) == "function" ]]
+    then
+        post_install 2>&1 | tee -a /dev/fd/3
+    fi
+    echo "=== End of Log Entry ===" >> $LOGFILE
+    echo "" >> $LOGFILE
+}
+
+# Function: list_package()
+# Handle the -l switch. This package looks into the InstallScripts directory for
+# all available installscripts. Installscripts are identified using their
+# ".dotfiles" extension and then listed here.
+list_packages() {
+    echo "Packages available:"
+    cd InstallScripts
+    for package in *.dotfiles
+    do
+        echo "${package%.dotfiles}"
+    done
+    cd ../
+}
+
+# Function: print_help()
+# Handle the -h switch. Print the usage information about the script
+print_help() {
+    echo "Usage: $0 [Options]"
+    echo "List of valid options:"
+    echo "-I package  : Install dotfiles package \"package\""
+    echo "-l          : List available packages"
+    echo "-h          : Print this help and exit"
+    echo "Remember, this script must only be invoked from the root dir of the \
+repository"
+}
+
+# main()
+# The script begins here with parsing the command line arguments and invoking
+# the relevant functions
+while getopts "I:lh" options
+do
+    case $options in
+        I) install_package "$OPTARG";;
+        l) list_packages;;
+        h) print_help;;
+        *) print_help;;
+   esac
+done

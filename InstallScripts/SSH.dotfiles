@@ -1,0 +1,19 @@
+#!/bin/bash
+
+PACKAGE_NAME="SSH"
+
+prepare() {
+    echo "Checking if .ssh/ directory exists and is a symlink"
+
+    if [ ! -h "${HOME}/.ssh" ]
+    then
+        echo "The SSH directory either does not exist or is not a symlink."
+        echo "Please ensure that you have symlinked and mounted the TrueCrypt volume"
+        exit 2
+    fi
+}
+
+install() {
+    install_file config "$HOME/.ssh" false true
+    install_file known_hosts "$HOME/.ssh" false true
+}

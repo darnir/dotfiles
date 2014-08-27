@@ -1,0 +1,7 @@
+#1/bin/bash
+
+PACKAGE_NAME="Screen"
+
+install() {
+    install_file screenrc home false true
+}

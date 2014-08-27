@@ -1,18 +1,19 @@
-dotfiles
-========
+Darnir's Dotfiles
+=================
 
-This repository contains a collection of various configuration files that are
-used to customize my Arch Linux system. These files can be freely copied
-and used by anybody who wishes to do so. I however take no responsibility for
-the effects of doing so.
+This is a dotfiles repository that uses my custom `dotfiles mamager` scripts.
+This repository contains a collection of various configuration files used to
+customize my GNU/Linux based machines.. These files can be freely copied and
+used by anybody who wishes to do so. I however take no responsibility for the
+effects of doing so.
 
 The files in repository are organized within a set of directories. Each
-directory in the dotfiles root represents a package. Corresponding to
-each package, there is a helper install script available in InstallScripts/.
-These scripts can be used to automatically and safely symlink the files for
-each project to their relevant locations on the system.
+directory in the dotfiles root represents a package. Corresponding to each
+package, is an `installscript` in the `InstallScripts/` directory. To install
+any package, use the master `./dotfiles` script. Explanation on how to use the
+script is available in the README file in repository.
 
-Check the README file in each package for more information.
+Check the README.md file in each package for more information.
 
 Files
 =====
@@ -20,9 +21,7 @@ Files
 .
 ├── ArchLinux
 │   ├── makepkg.conf          -> /etc/makepkg.conf
-│   ├── pacman.conf           -> /etc/pacman.conf
-│   └── pacman.d
-│       └── mirrormist        -> /etc/pacman.d/mirrorlist
+│   └── pacman.conf           -> /etc/pacman.conf
 ├── Bash
 │   ├── bash\_aliases         -> $HOME/.bash\_aliases
 │   ├── bash\_profile         -> $HOME/.bash\_profile
@@ -91,3 +90,5 @@ MIT
 Authors
 =======
 Darshit Shah  <darnir@gmail.com>
+
+>  vim: set ts=2 sts=4 sw=2 tw=80 et :
