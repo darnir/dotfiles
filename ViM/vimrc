@@ -140,6 +140,7 @@ Plugin 'artnez/vim-wipeout'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'chazy/cscope_maps'
 Plugin 'LanguageTool'
+Plugin 'smancill/conky-syntax.vim'
 Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
 
 " {{{ Disabled Plugins
