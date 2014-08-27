@@ -11,7 +11,7 @@ The files in repository are organized within a set of directories. Each
 directory in the dotfiles root represents a package. Corresponding to each
 package, is an `installscript` in the `InstallScripts/` directory. To install
 any package, use the master `./dotfiles` script. Explanation on how to use the
-script is available in the README file in repository.
+script is available in the README_dotfiles.md file in repository.
 
 Check the README.md file in each package for more information.
 
