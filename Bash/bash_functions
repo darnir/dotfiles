@@ -320,4 +320,15 @@ pacup() {
     cd "$oldpwd"
 }
 
+screen() {
+    filename=".screenrc_$1"
+    filepath="$HOME/$filename"
+    if [[ -f $filepath ]]
+    then
+        /usr/bin/screen -c $filepath
+    else
+        /usr/bin/screen $*
+    fi
+}
+
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
