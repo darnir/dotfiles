@@ -311,4 +311,13 @@ ddup() {
     dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
 }
 
+pacup() {
+    oldpwd=$PWD
+    sudo pacman -Syy
+    cd /home/commonFiles/pacman/pkg
+    pacman -Sup | tail -n +2 | sudo wget -q --show-progress -N --input-file -
+    sudo pacman -Su
+    cd "$oldpwd"
+}
+
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
