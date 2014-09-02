@@ -1,47 +1,48 @@
 # Modified Commands
-alias less='less -r'
-alias more='less'
+alias cp='cp -v'
 alias df='df -h'
 alias du='du -c -h'
+alias less='less -r'
+alias ls='ls --color'
 alias mkdir='mkdir -p -v'
+alias more='less'
 alias nano='vim'
 alias ping='ping -c 5'
-alias ls='ls --color'
 alias rm='rm -v'
 alias vi="vim"
 
 # New Commands
-alias da='date "+%A, %B %d, %Y [%T]"'
-alias du1='du --max-depth=1'
-alias hist='history | grep'      # requires an argument
-alias openports='netstat --all --numeric --programs --inet --inet6'
-alias la='ls -la'
 alias :q='exit'
 alias :wq='exit'
-alias aur='cower -ddfu --target=/home/sauron/builds/'
 alias alert='beep -f 5000 -l 60 -r 2'
-alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
+alias aur='cower -ddfu --target=/home/sauron/builds/'
 alias cleantex='rm *.{aux,bbl,blg,log,lot,out,toc,pdf,dvi} 2>/dev/null'
-alias vimup='vim +PluginUpdate'
+alias da='date "+%A, %B %d, %Y [%T]"'
+alias du1='du --max-depth=1'
+alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
+alias hist='history | grep'      # requires an argument
+alias la='ls -la'
 alias mirrorlist='reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
-alias path='printf ${PATH//:/\\n}'
 alias musicdb='mpc update --wait && mpc ls | mpc add'
 alias netuse='sudo netstat -lantp | grep -i establ'
+alias openports='netstat --all --numeric --programs --inet --inet6'
+alias path='printf ${PATH//:/\\n}'
+alias vimup='vim +PluginUpdate'
 
 # Aliases for Wget
 alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls -C CFLAGS="-g -O0 -Wall -Wextra"'
 alias configwgetgcc='CC=gcc time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls CFLAGS="-g -O0 -Wall -Wextra"'
 alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
-alias run='time ./runTest.py'
 alias proj='cd ~/Programming/wget/'
-alias resetprojpar='./bootstrap --skip-po && parallelconfig'
 alias resetproj='./bootstrap --skip-po && configwget'
 alias resetprojgcc='./bootstrap --skip-po && configwgetgcc'
+alias resetprojpar='./bootstrap --skip-po && parallelconfig'
+alias run='time ./runTest.py'
 
 # Safety Features
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chown='chown --preserve-root'
 
 # Allows one to use bash aliases with superuser permissions. See bash(1) for
 # details
