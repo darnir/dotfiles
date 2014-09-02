@@ -142,6 +142,7 @@ Plugin 'chazy/cscope_maps'
 Plugin 'LanguageTool'
 Plugin 'smancill/conky-syntax.vim'
 Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
+Plugin 'kien/ctrlp.vim'
 
 " {{{ Disabled Plugins
 " These are good plugins that I'd like to use someday, but since I don't
@@ -264,6 +265,8 @@ nnoremap <leader>r :RainbowParenthesesActivate<CR>
 
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>c :CtrlP<CR>
 " }}}
 
 "{{{ Tagbar Settings
