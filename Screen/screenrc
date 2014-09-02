@@ -1,10 +1,19 @@
 # Don't display the copyright page
 startup_message off
 
-vbell on
+vbell off
+bell_msg ""
+
 termcapinfo xterm* ti@:te@
+term screen-256color
+
+defutf8 on
 
 hardstatus alwayslastline
 hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+bind q quit
+bindkey ";5D" prev  # change window with ctrl-left
+bindkey ";5C" next  # change window with ctrl-right
 
 altscreen on
