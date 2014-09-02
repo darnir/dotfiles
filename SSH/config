@@ -21,3 +21,7 @@ Host shell.xshellz.com
     Hostname shell.xshellz.com
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/xshellz/id_rsa
+
+Host *.terminal.com
+    ProxyCommand ssh -p 2200 darnir@sshterminal.com setup_terminal_proxy %h %p
+    IdentityFile ~/.ssh/terminal/id_rsa
