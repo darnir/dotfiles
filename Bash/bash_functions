@@ -311,15 +311,26 @@ ddup() {
     dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
 }
 
+# Function: pacup()
+# Usage: pacup
+# A helper function. It invokes pacman to download the latest repository files
+# and gets a list of links for updated packages. Then feeds all the links to
+# wget in a single invokation. The advantage of this is that Wget can now
+# download all the files over a single HTTP/1.1 persistant connection. This
+# significantly helps on my network where creating a connection is a bottleneck.
 pacup() {
     oldpwd=$PWD
     sudo pacman -Syy
-    cd /home/commonFiles/pacman/pkg
-    pacman -Sup | tail -n +2 | sudo wget -q --show-progress -N --input-file -
+    pacman -Sup | tail -n +2 | sudo wget -c -q --directory-prefix='/home/commonFiles/pacman/pkg' --show-progress -N --input-file -
     sudo pacman -Su
-    cd "$oldpwd"
 }
 
+# Function: screen()
+# Usage: screen [preset]
+# This function overrides the call to /usr/bin/screen. There exist a number of
+# screen presets in $HOME. When $1 to this function matches an existing preset,
+# this function invokes screen with the respective screenrc file. As a result it
+# can be used to quickly set up a development environment for multiple projects.
 screen() {
     filename=".screenrc_$1"
     filepath="$HOME/$filename"
@@ -329,6 +340,28 @@ screen() {
     else
         /usr/bin/screen $*
     fi
+}
+
+ssh-genkey() {
+    if [[ -z $1 ]]
+    then
+        echo "Usage: ssh-genkey [name]"
+        return 1
+    fi
+    mkdir $HOME/.ssh/"$1"
+    ssh-keygen -C "darnir@gmail.com" -f $HOME/.ssh/"$1"/id_rsa
+
+    cat <<EOF >> $HOME/.ssh/config
+
+Host $1.com
+    User darnir
+    Hostname $1.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/$1/id_rsa
+EOF
+
+    echo "Identity Settings written to config file. Please verify:"
+    vim $HOME/.ssh/config
 }
 
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
