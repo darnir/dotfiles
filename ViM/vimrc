@@ -172,6 +172,7 @@ filetype plugin indent on   " required!
 " We must the colorscheme only AFTER Vundle has been loaded so that the relevant
 " rtp has been set.
 
+set background=dark
 colorscheme vividchalk          " Set the theme for Vim
 "}}}
 
@@ -262,11 +263,15 @@ nnoremap <leader><leader> <Esc>
 inoremap <leader><leader> <Esc>
 
 nnoremap <leader>r :RainbowParenthesesActivate<CR>
+nnoremap <leader>o o<ESC>
+nnoremap <leader>O O<Esc>
 
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>c :CtrlP<CR>
+
+nnoremap t i<CR><ESC>
 " }}}
 
 "{{{ Tagbar Settings
