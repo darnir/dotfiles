@@ -1,0 +1,14 @@
+source $HOME/.screenrc
+
+screen -t "Latex"
+stuff "cd $HOME/Documents/MPI-Thesis"
+stuff "vim -S Session.vim"
+
+screen -t "Build"
+stuff "cd $HOME/Documents/MPI-Thesis"
+stuff "pdf MPI-Thesis.pdf"
+stuff "latexmk -pvc -pdf MPI-Thesis.tex"
+
+select 0
+
+#  vim: set ts=4 sts=4 sw=4 tw=80 ft=screen et :

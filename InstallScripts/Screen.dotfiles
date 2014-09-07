@@ -4,4 +4,7 @@ PACKAGE_NAME="Screen"
 
 install() {
     install_file screenrc home false true
+    install_file screenrc_wget home false true
+    install_file screenrc_sop home false true
+    install_file screenrc_mpi home false true
 }

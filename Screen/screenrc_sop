@@ -1,0 +1,14 @@
+source $HOME/.screenrc
+
+screen -t "Latex"
+stuff "cd $HOME/Documents/MS\ Applications/SOP/"
+stuff "vim Statement\ of\ Purpose.tex"
+
+screen -t "Build"
+stuff "cd $HOME/Documents/MS\ Applications/SOP/"
+stuff "pdf Statement\ of\ Purpose.pdf"
+stuff "latexmk -pvc -pdf Statement\ of\ Purpose.tex"
+
+select 0
+
+#  vim: set ts=4 sts=4 sw=4 tw=80 ft=screen et :

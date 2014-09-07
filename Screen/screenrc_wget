@@ -1,0 +1,14 @@
+source $HOME/.screenrc
+
+screen -t "Source"
+stuff "proj"
+stuff "cd srcclear"
+stuff "vim main.c"
+
+screen -t "Build"
+stuff "projclear"
+
+screen -t "Debug"
+stuff "cd ~/testing"
+
+select 0
