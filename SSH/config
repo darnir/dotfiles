@@ -25,3 +25,9 @@ Host shell.xshellz.com
 Host *.terminal.com
     ProxyCommand ssh -p 2200 darnir@sshterminal.com setup_terminal_proxy %h %p
     IdentityFile ~/.ssh/terminal/id_rsa
+
+Host bitbucket.org
+    User darnir
+    Hostname bitbucket.org
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/bitbucket/id_rsa
