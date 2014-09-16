@@ -308,7 +308,7 @@ timer() {
 # progress of the operation.
 ddup() {
     fsize=$(stat -c %s "$1")
-    dd if="$1" bs=4096 | pv -s "${fsize}" | dd of="$2" bs=4096
+    dd if="$1" bs=4096 &> /dev/null| pv -petrb -s "${fsize}" | dd of="$2" bs=4096
 }
 
 # Function: pacup()
