@@ -26,6 +26,8 @@ post_install() {
     mv mthesaur.txt ~/.vim/thesaurus/mthesaur.txt
     cd "$OCD"
 
+    # Directory needed for storing swaps and backups
+    mkdir -p ~/.vim/tmp/backups/
 
     if (which pacman &> /dev/null)
     then
