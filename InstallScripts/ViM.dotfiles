@@ -27,7 +27,7 @@ post_install() {
     cd "$OCD"
 
 
-    if (which pacman)
+    if (which pacman &> /dev/null)
     then
         # We are in Arch Linux
         echo "Installing par from AUR"
