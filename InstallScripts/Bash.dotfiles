@@ -13,8 +13,7 @@ install() {
 
 post_install() {
     # Is this an Arch Linux System?
-    which pacman &> /dev/null
-    if [[ $? -eq 0 ]]
+    if [[ $(uname -r) =~ ARCH$  ]]
     then
         sudo pacman -S bash-completion time beep zenity python2-pygments
         sudo chmod 4755 "$(which beep)"
