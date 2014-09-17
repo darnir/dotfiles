@@ -1,0 +1,194 @@
+BASH_FUNCTIONS(7)
+=================
+:doctype: manpage
+
+NAME
+----
+bash_functions - Reference Manual for Bash Functions
+
+SYNOPSIS
+--------
+*bash_functions*: List and description of custom functions in '~/.bash_functions'
+
+DESCRIPTION
+-----------
+This manual page is a listing for the various custom defined functions in
+'~/.bash_functions'
+
+WARNING: The functions defined here are niche utility methods written for a specific
+purpose and often do not have error checking included. User discretion is
+advised when using these functions.
+
+The '~/.bash_functions' file will define the following function prototypes:
+
+[width="75%",frame="none"]
+|=========================================================
+|*FUNCTION*   |   *INPUT*                |   *OUTPUT*
+|*pastebin*   |   stdin                  |   stdout
+|*tre*        |   [path]                 |   stdout / pager
+|*lsn*        |   [start] [end] [params] |   stdout
+|*cov-make*   |                          |   File
+|*calc*       |   [expr]                 |   stdout
+|*ccat*       |   [file]                 |   stdout
+|*pdflatex*   |   [file]                 |   stdout
+|*man*        |   [file]                 |   stdout / pager
+|*resolve*    |   [file]                 |   vimdiff
+|*algs4c*     |   [file]                 |   stdout
+|*algs4cr*    |   [file]                 |   stdout
+|*extract*    |   [compressed file]      |   File
+|*pack*       |   [filename] [files]     |   File
+|*note*       |   [option \|\| note]     |   stdout
+|*pdf*        |   [file]                 |   X
+|*timer*      |   [time] [message]       |   X
+|*ddup*       |   [file1] [file2]        |   stdout
+|*pacup*      |                          |   stdout + stderr
+|*screen*     |   [template]             |   screen
+|*ssh-genkey* |   [name]                 |   Files
+|=========================================================
+
+FUNCTIONS
+---------
+
+*pastebin*::
+Expects a data stream via standard input which is sent to an online
+pastebin-like service. Currently, this function will send the ASCII, plaintext
+data to _http://ix.io_ for sharing. The link to the shared data is then output
+to 'stdout'. Example:
+[source,sh]
+-----------
+$ cat file.txt | pastebin
+http://ix.io/ek9
+------------
+
+*tre* '[path]'::
+_`tre`_ is a shorthand for _`tree`_ with hidden files and color enabled, ignoring
+the '.git' directory, listing directories first. The output gets piped into
+_`less`_ with options to preserve color and line numbers, unless the output is
+small enough for one screen.
+
+*lsn* '[start]' '[end]' '[ls options]'::
+This function is used to print only a select number of items from the output of
+_`ls`_. The 'start' and 'end' parameters are mandatory. All other paramters are
+passed to _`ls`_ and can be used for modifying the output of _`ls`_.
+Usage:
+[source,sh]
+-----------
+┌(sauron@mordor)─(0)─(0%)─(02:16 PM Sun Sep 14)
+└─(~/dotfiles/Bash)─(10 files, total 164Kb)─(master *%)> lsn 2 5
+bash_functions
+bash_functions.7
+bash_functions.pdf
+----------
+
+*cov-make*::
+A special utility function. *cov-make* is used to generate and submit a
+_coverity_ build package for static analysis. Currently this function has been
+hardcoded to build and submit a package for *GNU Wget* only from a specific
+location on the disk. In the future this function may be expanded to be more
+generic. The Coverity API Token is required for this function to complete and
+the function will fail if the *bash_secrets* file with the API Token hasn't been
+sourced yet. +
+IMPORTANT: *cov-make* will only execute frim '~/Programming/wget/' directory and
+requires the *`$COV_TOKEN`* variable to be set with the correct API Token for
+coverity.
+
+*calc* '[expr]'::
+This is a simple command line calculator for Bash. It uses bc to compute
+various results. Give it a valid bc expression and this function will try to
+evaluate its value. Complex output may cause problems on the printf statement.
+
+*ccat* '[file]'::
+This function overrides the default cat executable. It uses pygmentize to
+add colour support and then passes the output to cat for printing to screen.
+
+*pdflatex* '[file]'::
+This function invokes the similarly named /usr/bin/pdflatex binary and uses
+grep to colour the output and highlight the errors and warnings when running
+pdflatex.
+
+*man* '[page]'::
+Similar to pdflatex, this function is invoked when someone tries to load a man
+page. It adds some amount of syntax colouring to the man page to make it
+easier to scan visually.
+
+*resolve* '[file]'::
+Expects a filename as a parameter at $1.
+A file named $1.pacnew should also exist. This function will then invoke
+vimdiff to diff the files for resolving the conflicts.
+This is a very crude function with little to no error checking and should be
+invoked with care.
+
+*algs4c* '[file]'::
+Expects the filename WITHOUT extension of a java source file.
+This is a helper function for automating the various steps involved in
+compiling and checking a java source for errors before it can be submitted to
+the Algorithms Course by Princeton University on Coursera. This function will
+only compile and check for errors.
+
+*algs4cr* '[file]'::
+Expects a filename WITHOUT the extension of a java source file.
+This function invokes algs4c() to compile and check the source for errors and
+then will also execute the compiled executable.
+
+*extract* '[compressed file]'::
+Expects a compressed file as a paramter
+This is a utility function I copied from the Arch Wiki. This function accepts
+a filename as a parameter and based on the filename it will run the respective
+utility to decompress the file. The way this function is written, it can be
+used even with older versions of tar which do not have filename based
+detection of the algorithm.
+
+*pack* '[filename]' '[file(s)]'::
+Expects a filename with a valid extension as the first paramter. All other
+parameters list the files that need to be included in the compressed file.
+This function is the dual of the above extract() function. Given a filename,
+it recognizes the type and creates the respective compressed file containing
+all the files provided on the command line.
+
+*note* '[options || notes]'::
+Another simple but extremely useful utlity function. This was copied from the
+ArchWiki too. Expects a bunch of text as its parameters which is then stored
+in ~/.notes file.
+Commands:
+Add a new note:  $ note <Enter note here>
+Display notes:   $ note
+Clean all notes: $ note -c
+
+*pdf* '[file]'::
+Expects a pdf file as an argument
+This is a simple helper function to asynchronously launch a pdf viewer from
+the command line without polluting it.
+
+*timer* '[time]' '[message]'::
+Usage: timer [time] [message]
+This function takes a time argument that is acceptable to sleep(1) and a
+message. After a period of [time], the message is displayed on the screen and
+a audio beep is generated. For the beep to be played, ensure that the beep
+channel in ALSA is not muted.
+
+*ddup* '[file1]' '[file2]'::
+Usage: ddup [file1] [file2]
+dd's [file1] onto [file2] but also displays a progress bar showing the
+progress of the operation.
+
+*pacup*::
+A helper function. It invokes pacman to download the latest repository files
+and gets a list of links for updated packages. Then feeds all the links to
+wget in a single invokation. The advantage of this is that Wget can now
+download all the files over a single HTTP/1.1 persistant connection. This
+significantly helps on my network where creating a connection is a bottleneck.
+
+*screen* '[template]'::
+Usage: screen [preset]
+This function overrides the call to /usr/bin/screen. There exist a number of
+screen presets in $HOME. When $1 to this function matches an existing preset,
+this function invokes screen with the respective screenrc file. As a result it
+can be used to quickly set up a development environment for multiple projects.
+
+*ssh-genkey* '[name]'::
+Creates a new SSH key
+
+AUTHOR
+------
+Darshit Shah  <darnir@gmail.com>
+// vim: set ts=4 sts=4 sw=4 tw=80 ft=asciidoc et :
