@@ -8,15 +8,19 @@ group user
 "}}}
 
 " Basic Options{{{
-set editor='vim <file>'
+set editor='vim'
 set guioptions=Crs
 set hlfind
+set incfind
+set findcase=smart
 set visualbell
 set newtab=all
 set titlestring=Mozilla\ Firefox
 set maxitems=12
 set cpt=search,location,file
 set hintkeys=asdflkj
+hi -a Hint font-size: 9pt !important;
+set scrolltime=50
 "}}}
 
 " Gmail Specific Settings{{{
@@ -31,16 +35,17 @@ set hintkeys=asdflkj
 " autocmd LocationChange mail.google.com set ht+=td.gF
 " " Let Hint Expand Delete All Spam Messages
 " autocmd LocationChange mail.google.com set ht+=span.x2
+set strictfocus=google.com:laissez-faire,'chrome:*':laissez-faire,*:despotic
 " " }}}
 
 " Remap keys{{{
 map , <leader>
 map -count -modes=n,v <A-s> <count>:set<Space>nst!=<A-Tab>
 map -count -modes=n,v <leader>h <count>:noh<Return>
-map -count -modes=n,v j -builtin <count>3j
-map -count -modes=n,v k -builtin <count>3k
-map -count -modes=n,v l -builtin <count>3l
-map -count -modes=n,v h -builtin <count>3h
+map -count -modes=n,v j -builtin <count>4j
+map -count -modes=n,v k -builtin <count>4k
+map -count -modes=n,v l -builtin <count>4l
+map -count -modes=n,v h -builtin <count>4h
 map -count -modes=I,input_multiline,v ,, <Esc>
 nmap <leader>mg :tabopen mail.google.com<Cr>
 nmap <leader>fb :tabopen www.facebook.com<Cr>
