@@ -160,6 +160,7 @@ Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
 " Manage Colourschemes {{{
 Plugin 'flazz/vim-colorschemes'
 Plugin 'xolox/vim-colorscheme-switcher'
+Plugin 'altercation/vim-colors-solarized'
 " }}}
 " LaTeX Plugins {{{
 Plugin 'gerw/vim-latex-suite'
@@ -187,6 +188,7 @@ autocmd!
 
 " Set spell checking only on TeX files. Makes a lot more sense
 autocmd FileType tex setlocal spell spelllang=en_us
+autocmd FileType mail setlocal spell spelllang=en_us
 
 " When editing a file, always jump to the last cursor position
 autocmd BufReadPost *
