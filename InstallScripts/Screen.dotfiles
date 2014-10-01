@@ -7,4 +7,5 @@ install() {
     install_file screenrc_wget home false true
     install_file screenrc_sop home false true
     install_file screenrc_mpi home false true
+    install_file screenrc_comm home false true
 }

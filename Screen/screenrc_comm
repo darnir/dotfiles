@@ -1,0 +1,14 @@
+source $HOME/.screenrc
+
+screen -t "Email"
+stuff "mutt"
+
+screen -t "IRC"
+stuff "irssi"
+
+screen -t "News"
+stuff "newsbeuter"
+
+select 0
+
+#  vim: set ts=4 sts=4 sw=4 tw=80 ft=screen et :
