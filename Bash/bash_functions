@@ -287,6 +287,14 @@ pdf() {
     evince "$1" &>/dev/null &
 }
 
+pdftools() {
+    ACTION="$1"
+    case $ACTION in
+        compress) gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -sOutputFile="$2" "$3";;
+        join) gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="$2" "${@:3}";;
+    esac
+}
+
 # Function: timer()
 # Usage: timer [time] [message]
 # This function takes a time argument that is acceptable to sleep(1) and a
