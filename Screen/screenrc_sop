@@ -2,12 +2,12 @@ source $HOME/.screenrc
 
 screen -t "Latex"
 stuff "cd $HOME/Documents/MS\ Applications/SOP/"
-stuff "vim Statement\ of\ Purpose.tex"
+stuff "vim Statement_Of_Purpose.tex"
 
 screen -t "Build"
 stuff "cd $HOME/Documents/MS\ Applications/SOP/"
-stuff "pdf Statement\ of\ Purpose.pdf"
-stuff "latexmk -pvc -pdf Statement\ of\ Purpose.tex"
+stuff "pdf Statement_Of_Purpose.pdf"
+stuff "make"
 
 select 0
 
