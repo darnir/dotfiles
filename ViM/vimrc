@@ -265,6 +265,8 @@ map <F6> :TagbarToggle<CR>
 nnoremap <leader><leader> <Esc>
 inoremap <leader><leader> <Esc>
 
+nnoremap <leader>m :!make<Esc>
+
 nnoremap <leader>r :RainbowParenthesesActivate<CR>
 nnoremap <leader>o o<ESC>
 nnoremap <leader>O O<Esc>
