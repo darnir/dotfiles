@@ -1,11 +1,11 @@
 source $HOME/.screenrc
 
 screen -t "Latex"
-stuff "cd $HOME/Documents/MS\ Applications/SOP/"
+stuff "cd $HOME/Documents/MSApps/SOP/"
 stuff "vim Statement_Of_Purpose.tex"
 
 screen -t "Build"
-stuff "cd $HOME/Documents/MS\ Applications/SOP/"
+stuff "cd $HOME/Documents/MSApps/SOP/"
 stuff "pdf Statement_Of_Purpose.pdf"
 stuff "make"
 
