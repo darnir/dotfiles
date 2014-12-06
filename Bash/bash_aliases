@@ -33,8 +33,8 @@ alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
 alias watchmail='watch systemctl --user status offlineimap.service'
 
 # Aliases for Wget
-alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls -C CFLAGS="-g -O0 -Wall -Wextra"'
-alias configwgetgcc='CC=gcc time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls CFLAGS="-g -O0 -Wall -Wextra"'
+alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls -C CFLAGS="-g -O0 -Wall -Wextra --std=gnu99 -Wpedantic"'
+alias configwgetgcc='CC=gcc time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls CFLAGS="-g -O0 -Wall -Wextra --std=gnu99 -Wpedantic"'
 alias parallelconfig='configwget --enable-metalink --enable-threads=posix'
 alias proj='cd ~/Programming/wget/'
 alias resetproj='./bootstrap --skip-po && configwget'
