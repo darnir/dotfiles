@@ -4,15 +4,18 @@ PACKAGE_NAME="ArchLinux"
 
 if ! isarchlinux
 then
-    echo "This system does not seem to be ArchLinux."
-    echo "Exiting installer for ArchLinux"
+    _error "This system does not seem to be ArchLinux."
+    _error "Exiting installer for ArchLinux"
     exit 1
+else
+    echo "" # For a cleaner output. We add a newline here
 fi
 
 prepare() {
 
     if ! pacman -Qs wget &> /dev/null
     then
+        _info "Wget not found. Installing Wget from official repositories"
         sudo pacman -S wget
     fi
 }
