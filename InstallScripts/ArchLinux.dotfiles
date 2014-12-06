@@ -26,5 +26,5 @@ install() {
 }
 
 post_install() {
-    sudo pacman -S clang ccache
+    sudo pacman -Syyu clang ccache
 }
