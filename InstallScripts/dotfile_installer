@@ -112,11 +112,11 @@ install_private_file() {
     _info "Checking if ${_LOC_FILE} is mounted"
     if [[ ! -f "${_LOC_FILE}" ]]
     then
-        _error "Please mount the TrueCrypt volume before proceeding"
-        exit 2
+        _warn "Private configuration file not found."
+        _info "Will continue and create symlink to location"
+    else
+        _backup_target
     fi
-
-    _backup_target
 
     _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
     ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
