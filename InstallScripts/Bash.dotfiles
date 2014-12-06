@@ -42,6 +42,7 @@ post_install() {
     then
         sudo pacman -S bash-completion time beep zenity python2-pygments pkgfile
         sudo chmod 4755 "$(which beep)"
+        sudo pkgfile --update
     else
         # We are not in Arch Linux. Install manually
         _warn "Please install the following optional dependencies:"
