@@ -8,8 +8,6 @@
 # Ignore all duplicate lines AND commands that begin with a space in the history
 HISTCONTROL=ignoreboth
 
-export GREP_OPTIONS="--color=auto"
-
 # Suffixes that should be ignored during completion
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:.o:
 
