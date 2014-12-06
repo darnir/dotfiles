@@ -3,11 +3,18 @@
 PACKAGE_NAME="Bash"
 
 prepare() {
-    if [[ ! $(which a2x &> /dev/null) ]]
+    _info "Checking if a2x exists..."
+    if ! which a2x &> /dev/null
     then
-        echo "Please install a2x, asciidoc and xsltproc for man page generation"
-        echo "Press Enter after installing the above packages:"
-        read
+        _warn "a2x not found. Attempting to install"
+        if isarchlinux
+        then
+            sudo pacman -S asciidoc libxslt
+        else
+            _warn "a2x, asciidoc and xsltproc are required to generate man pages."
+            _info "Please insteall these packages before continuing"
+            exit 2
+        fi
     fi
 
     a2x -f manpage Bash/bash_functions.txt
@@ -31,13 +38,13 @@ post_install() {
     sudo mandb
 
     # Is this an Arch Linux System?
-    if [[ $(uname -r) =~ ARCH$  ]]
+    if isarchlinux
     then
         sudo pacman -S bash-completion time beep zenity python2-pygments
         sudo chmod 4755 "$(which beep)"
     else
         # We are not in Arch Linux. Install manually
-        echo "Please install the following optional dependencies:"
+        _warn "Please install the following optional dependencies:"
         echo "Optional Dependencies:  "
         echo "bash-completion:        For bash completion"
         echo "time:                   For certain wget aliases"
