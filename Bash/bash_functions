@@ -327,7 +327,7 @@ timer() {
         echo "Usage: timer [time] [message]"
         return 1
     fi
-    sleep "$1" && alert && zenity --info --text="$2" &
+    sleep "$1" && alert && zenity --info --text="$2" &> /dev/null &
 }
 
 # Function: ddup()
