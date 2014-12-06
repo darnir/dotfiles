@@ -71,19 +71,20 @@ write_log() {
 # Handle the -I switch.
 install_package() {
     echo "=== New Log Entry: $(date) ===" >> $LOGFILE
-    write_log "$(_info "Installing package $1\n")"
-    local pkgbuild="InstallScripts/$1.dotfiles"
+    pkgname=${1%/}
+    write_log "$(_info "Installing package $pkgname\n")"
+    local pkgbuild="InstallScripts/$pkgname.dotfiles"
 
     if [[ -f $pkgbuild ]]
     then
-        source "InstallScripts/$1.dotfiles"
+        source "InstallScripts/$pkgname.dotfiles"
     else
-        write_log "$(_error "Cannot find Install Script for $1")"
+        write_log "$(_error "Cannot find Install Script for $pkgname")"
         return 2
     fi
-    if [[ ! -d "$1" ]]
+    if [[ ! -d "$pkgname" ]]
     then
-        write_log "$(_error "Unable to locate package $1")"
+        write_log "$(_error "Unable to locate package $pkgname")"
         return 2
     fi
 
