@@ -3,12 +3,15 @@
 PACKAGE_NAME="SSH"
 
 prepare() {
-    echo "Checking if .ssh/ directory exists and is a symlink"
+    _info "Checking if ~/.ssh/ directory exists and is a symlink"
 
     if [ ! -h "${HOME}/.ssh" ]
     then
-        echo "The SSH directory either does not exist or is not a symlink."
-        echo "Please ensure that you have symlinked and mounted the TrueCrypt volume"
+        _warn "The SSH directory either does not exist or is not a symlink."
+        _info "For security reasons, the SSH directory should exist only in a encryted container"
+        _info "Please ensure that you have symlinked the local .ssh/ directory"
+        _info "to the actual location in the encrypted container."
+        _error "Installer will now quit"
         exit 2
     fi
 }
