@@ -29,6 +29,8 @@ alias openports='netstat --all --numeric --programs --inet --inet6'
 alias path='printf ${PATH//:/\\n}'
 alias pfind='ps aux | grep'
 alias vimup='vim +PluginUpdate'
+alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
+alias watchmail='watch systemctl --user status offlineimap.service'
 
 # Aliases for Wget
 alias configwget='time ./configure --enable-option-checking --disable-silent-rules --enable-dependency-tracking --with-ssl=openssl --without-included-regex --enable-nls -C CFLAGS="-g -O0 -Wall -Wextra"'
