@@ -1,0 +1,34 @@
+if tput colors > /dev/null
+then
+
+    _BLACK='\e[0;30m'
+    _RED='\e[0;31m'
+    _GREEN='\e[0;32m'
+    _BROWN='\e[0;33m'
+    _BLUE='\e[0;34m'
+    _PURPLE='\e[0;35m'
+    _CYAN='\e[0;36m'
+    _LGRAY='\e[0;37m'
+    _DGRAY='\e[1;30m'
+    _LRED='\e[1;31m'
+    _LGREEN='\e[1;32m'
+    _YELLOW='\e[1;33m'
+    _LBLUE='\e[1;34m'
+    _LPURPLE='\e[1;35m'
+    _LCYAN='\e[1;36m'
+    _WHITE='\e[1;37m'
+    _NC='\e[0m' # No Colo
+
+fi
+
+_info() {
+    echo -e "${_WHITE}$*${_NC}"
+}
+
+_error() {
+    echo -e "${_RED}$*${_NC}"
+}
+
+_usage() {
+    echo -e "${_LBLUE}$*${_NC}"
+}

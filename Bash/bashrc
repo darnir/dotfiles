@@ -40,6 +40,7 @@ set skip-completed-text on
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f $HOME/.bash_functions ]] && . ~/.bash_functions
 [[ -f $HOME/.bash_completions ]] && . ~/.bash_completions
+[[ -f $HOME/.bash_colors ]] && . ~/.bash_colors
 [[ -f /media/truecrypt1/bash_secret ]] && . /media/truecrypt1/bash_secret
 
 source "/usr/share/doc/pkgfile/command-not-found.bash"

@@ -22,6 +22,7 @@ install() {
     install_file bash_aliases home false true
     install_file bash_functions home false true
     install_file bash_completions home false true
+    install_file bash_colours home false true
     install_file bash_functions.7.gz /usr/local/man/man7 true false
 }
 
