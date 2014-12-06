@@ -19,4 +19,5 @@ prepare() {
 install() {
     install_file config "$HOME/.ssh" false true
     install_file known_hosts "$HOME/.ssh" false true
+    install_file sshd_config "/etc/ssh" true true
 }
