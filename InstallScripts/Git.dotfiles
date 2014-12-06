@@ -10,19 +10,19 @@ install() {
 }
 
 post_install() {
-    echo "Checking if current system is Arch Linux..."
-    if [[ $(uname -r) =~ ARCH$ ]]
+    if isarchlinux
     then
-        cd /tmp
+        mkdir /tmp/aur
+        cd /tmp/aur
         wget https://aur.archlinux.org/packages/gi/git-merge-changelog-git/git-merge-changelog-git.tar.gz
         tar -xzf git-merge-changelog-git.tar.gz
         cd git-merge-changelog-git
         makepkg -si
 
-    echo "Installing essential Perl packages for git send-email..."
-    sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
+        _info "Installing essential Perl packages for git send-email..."
+        sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
     else
-        echo "Please install the following optional dependencies:"
+        _warn "Please install the following optional dependencies:"
         echo "git-merge-changelog   Merge algorithm for GNU ChangeLogs"
         echo "perl-authen-sasl      For git send-email"
         echo "perl-net-smtp=ssl     For git send-email"
