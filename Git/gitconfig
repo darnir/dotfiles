@@ -40,6 +40,14 @@
     # Remove branches that have already been merged with master
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
+    # Create patch files for all commits to branch since origin/HEAD
+    fp = format-patch origin/HEAD
+
+    # Reset the repository...
+    # ... to origin/HEAD
+    ro = reset --hard origin/HEAD
+    rh = reset --hard HEAD
+
 [apply]
     # Detect whitespace errors when applying a patch
     whitespace = fix
@@ -74,7 +82,12 @@
     helper = store
 
 [diff]
-    renames = copy
+    renames = copies
+    mnemonicprefix = true
+
+[grep]
+    lineNumber = true
+    extendedRegexp
 
 [help]
     autocorrect = 1
