@@ -57,24 +57,24 @@ _set_linktype() {
 }
 
 _backup_target() {
-    echo "Checking if ${_CONF_FILE} exists"
+    _info "Checking if ${_CONF_FILE} exists"
     if [ -f "${_CONF_FILE}" ]
     then
-        echo "Target file found, saving to ${_BCK_FILE}"
+        _warn "Target file found, saving to ${_BCK_FILE}"
         ${SUDO} mv -v "${_CONF_FILE}" "${_BCK_FILE}"
     else
-        echo "Target file not found"
+        _info "Target file not found"
     fi
 }
 
 _backup_target_dir() {
-    echo "Checking if ${_CONF_DIR} exists"
+    _info "Checking if ${_CONF_DIR} exists"
     if [ -d "${_CONF_DIR}" ]
     then
-        echo "Target directory found, saving to ${_BCK_DIR}"
+        _warn "Target directory found, saving to ${_BCK_DIR}"
         $SUDO mv -v "${_CONF_DIR}" "${_BCK_DIR}"
     else
-        echo "Target directory not found"
+        _info "Target directory not found"
     fi
 }
 
@@ -95,8 +95,9 @@ install_file() {
 
     _backup_target
 
-    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
     ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+    echo ""
 }
 
 install_private_file() {
@@ -108,17 +109,18 @@ install_private_file() {
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
 
-    echo "Checking if ${_LOC_FILE} is mounted"
+    _info "Checking if ${_LOC_FILE} is mounted"
     if [[ ! -f "${_LOC_FILE}" ]]
     then
-        echo "Please mount the TrueCrypt volume before proceeding"
+        _error "Please mount the TrueCrypt volume before proceeding"
         exit 2
     fi
 
     _backup_target
 
-    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
+    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
     ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+    echo ""
 }
 
 install_directory() {
@@ -132,8 +134,9 @@ install_directory() {
 
     _backup_target_dir
 
-    echo "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
+    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
     $SUDO ln ${linktype}"${_LOC_DIR}" "${_CONF_DIR}"
+    echo ""
 }
 
 ################################################################################
@@ -143,21 +146,21 @@ install_directory() {
 safetouch() {
     if [ ! -f "$1" ]
     then
-        echo "Touching $1"
+        _info "Touching $1"
         touch "$1"
     else
-        echo "$1 exists, not touching"
+        _info "$1 exists, not touching"
     fi
 }
 
 isarchlinux() {
-    echo "Checking if current system is Arch Linux..."
+    _info "Checking if current system is Arch Linux..."
     if which pacman &> /dev/null
     then
-        echo "System is Arch Linux. Continuing..."
+        _info "System is Arch Linux. Continuing..."
         return 0
     else
-        echo "System is not Arch Linux."
+        _warn "System is not Arch Linux."
         return 1
     fi
 }
