@@ -149,3 +149,15 @@ safetouch() {
         echo "$1 exists, not touching"
     fi
 }
+
+isarchlinux() {
+    echo "Checking if current system is Arch Linux..."
+    if which pacman &> /dev/null
+    then
+        echo "System is Arch Linux. Continuing..."
+        return 0
+    else
+        echo "System is not Arch Linux."
+        return 1
+    fi
+}

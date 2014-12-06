@@ -2,7 +2,26 @@
 
 PACKAGE_NAME="ArchLinux"
 
+if ! isarchlinux
+then
+    echo "This system does not seem to be ArchLinux."
+    echo "Exiting installer for ArchLinux"
+    exit 1
+fi
+
+prepare() {
+
+    if ! pacman -Qs wget &> /dev/null
+    then
+        sudo pacman -S wget
+    fi
+}
+
 install() {
     install_file pacman.conf etc true true
     install_file makepkg.conf etc true true
+}
+
+post_install() {
+    sudo pacman -S clang ccache
 }
