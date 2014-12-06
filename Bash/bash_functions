@@ -395,4 +395,14 @@ EOF
     vim $HOME/.ssh/config
 }
 
+# Overload mutt to clean the aliases file first
+mutt() {
+    ~/.mutt/cleanalias.sh
+    /usr/bin/mutt
+}
+
+fork() {
+    $* &> /dev/null &
+}
+
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
