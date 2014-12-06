@@ -40,7 +40,7 @@ post_install() {
     # Is this an Arch Linux System?
     if isarchlinux
     then
-        sudo pacman -S bash-completion time beep zenity python2-pygments
+        sudo pacman -S bash-completion time beep zenity python2-pygments pkgfile
         sudo chmod 4755 "$(which beep)"
     else
         # We are not in Arch Linux. Install manually
