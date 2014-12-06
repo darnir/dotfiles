@@ -38,3 +38,10 @@ Host mordor.com
     Hostname mordor.com
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/mordor/id_rsa
+
+Host reniac-wks
+    User darnir
+    Hostname 192.168.0.103
+    Port 2109
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/reniac/id_rsa
