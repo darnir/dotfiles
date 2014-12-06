@@ -144,6 +144,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
+Plugin 'Yggdroot/indentLine'
 
 " {{{ Disabled Plugins
 " These are good plugins that I'd like to use someday, but since I don't
@@ -217,6 +218,8 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
+" vim-commentary settings
+" autocmd FileType config set commentstring=dnl\ %s
 " }}}
 
 " Airline settings {{{
