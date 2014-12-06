@@ -26,5 +26,9 @@ install() {
 }
 
 post_install() {
+    sudo pacman-key --init
+    sudo pacman-key -r 962DDE58
+    sudo pacman-key --lsign-key 962DDE58
+    sudo pacman-key --refresh-keys
     sudo pacman -Syyu clang ccache
 }
