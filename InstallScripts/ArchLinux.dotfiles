@@ -31,4 +31,14 @@ post_install() {
     sudo pacman-key --lsign-key 962DDE58
     sudo pacman-key --refresh-keys
     sudo pacman -Syyu clang ccache
+
+    _info "Installing Cower from the AUR"
+    OPWD="$PWD"
+    mkdir /tmp/aur
+    cd /tmp/aur
+    wget https://aur.archlinux.org/packages/co/cower/cower.tar.gz
+    tar -xvf cower.tar.gz
+    cd cower
+    makepkg -si
+    cd "$OPWD"
 }
