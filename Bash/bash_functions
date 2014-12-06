@@ -4,6 +4,11 @@
 # Expects data on standard input that is then sent to ix.io for sharing text
 # snipets. The URL of the file on ix.io is printed to screen.
 pastebin() {
+    if [ $# -gt 0 ]
+    then
+        _error "This function only accepts input from stdin"
+        return 100
+    fi
     curl -F 'f:1=<-' ix.io;
 }
 
@@ -23,7 +28,7 @@ tre() {
 lsn() {
     if [ $# -lt 2 ]
     then
-        echo "Usage: lsn [start no] [end no] [optional paramters]"
+        _usage "Usage: lsn [start no] [end no] [optional paramters]"
         return 1
     fi
     BEGIN=$1
@@ -41,23 +46,38 @@ lsn() {
 # for my Wget code base. This function isn't portable since it was written to
 # simplify only my work.
 cov-make() {
+    _info "Running cov-make, the Coverity Wrapper for my Wget"
     if [ $PWD != "$HOME/Programming/wget" ]
     then
-        echo "This function should only be run from the Wget source dir \
+        _error "This function should only be run from the Wget source dir \
 located at: ~/Programming/wget/"
-        return 1
+        return 100
     elif [ -z ${COV_TOKEN+x} ]
     then
-        echo "Bash secrets were not sourced. Please source the bash secrets"
-        return 1
+        _error "Bash secrets were not sourced. Please source the bash secrets"
+        return 100
     fi
+    _info "Running `make clean`."
     make clean
+    _info "Configure Wget with GCC."
     configwgetgcc
+    _info "Running cov-build..."
     cov-build --dir cov-int make
+
+    COMPILED_UNITS=$(grep -o -e \"[0-9][0-9].%\" cov-int/build-log.txt)
+    if [[ $COMPILED_UNITS != "100%" ]]
+    then
+        _info "Compiled Units: $COMPILED_UNITS"
+        _error "Not all units compiled. Please check cov-int/build-log.txt"
+        return 100
+    fi
+
+    _info "Packing the coverity build files"
     tar czvf wget.tgz cov-int
 
     local version=$(git describe --always | sed 's|-|.|g')
 
+    _info "Uploading Coverity Build to the server"
     curl --form project=GNU+Wget \
   --form token=${COV_TOKEN}\
   --form email=darnir@gmail.com \
@@ -142,7 +162,7 @@ resolve() {
     vimdiff "$1" "$1.pacnew"
     read -p "Were the conflicts resolved? [Y/N]: " yn
     case $yn in
-        [Yy]* ) echo "Deleting pacnew file"; sudo rm "$1.pacnew";;
+        [Yy]* ) _info "Deleting pacnew file"; sudo rm "$1.pacnew";;
     esac
 }
 
@@ -353,7 +373,7 @@ screen() {
 ssh-genkey() {
     if [[ -z $1 ]]
     then
-        echo "Usage: ssh-genkey [name]"
+        echo -e "${_LBLUE}Usage: ssh-genkey [name]"
         return 1
     fi
     mkdir $HOME/.ssh/"$1"
