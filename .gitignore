@@ -6,4 +6,7 @@ ViM/vim/spell/en.utf-8.add.spl
 ViM/vim/bundle/*
 ViM/vim/thesaurus/
 ViM/vim/viminfo
+ViM/vim/viminfx.tmp
+ViM/vim/viminfy.tmp
+ViM/vim/viminfz.tmp
 Bash/bash_functions.pdf
