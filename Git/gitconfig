@@ -1,3 +1,7 @@
+[advice]
+    statusHints = False
+    detachedHead = False
+
 [alias]
     commits = commit --signoff
     lg      = log --pretty=format:’%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset’
@@ -48,6 +52,9 @@
     ro = reset --hard origin/HEAD
     rh = reset --hard HEAD
 
+[am]
+    messageid = True
+
 [apply]
     # Detect whitespace errors when applying a patch
     whitespace = fix
@@ -59,10 +66,11 @@
     # [default] trailing-space: looks for spaces at the end of a line
     # [default] space-before-tab: looks for spaces before tabs at the beginning of
     # a line
-    whitespace = space-before-tab,trailing-space
+    whitespace = space-before-tab,trailing-space,tab-in-indent
+    eol = lf
 
 [color]
-    ui = true
+    ui = auto
 
 [color "branch"]
     current = yellow reverse
@@ -73,21 +81,27 @@
     frag = magenta bold
     old = red bold
     new = green bold
+    whitespace = red reverse
 [color "status"]
     added = yellow
     changed = green
     untracked = cyan
 
+[column]
+    ui = auto
+
 [credential]
+    helper = cache --socket $XDG_RUNTIME_DIR/git-credential-cache.socket
     helper = store
 
 [diff]
     renames = copies
     mnemonicprefix = true
+    submodule = log
 
 [grep]
     lineNumber = true
-    extendedRegexp
+    extendedRegexp = true
 
 [help]
     autocorrect = 1
@@ -125,3 +139,4 @@
 [user]
     email = darnir@gmail.com
     name = Darshit Shah
+    signingkey = "4A9E67985E08BAD6"
