@@ -9,5 +9,5 @@ export PATH="$PATH:/opt/cov-analysis/bin/"
 export PATH="$PATH:/home/sauron/Coursera/Algo1-Princeton/bin"
 export CC=clang
 
-export BROWSER="/usr/bin/firefox"
+export BROWSER="/usr/bin/lynx"
 export EDITOR="vim"
