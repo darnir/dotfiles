@@ -56,6 +56,14 @@ _set_linktype() {
     fi
 }
 
+_test_source_file() {
+    _info "Checking if ${_CONF_NAME} exists in package"
+    if [ ! -f "${_LOC_FILE}" ]
+    then
+        _warn "Source file not found. Will create empty symlink"
+    fi
+}
+
 _backup_target() {
     _info "Checking if ${_CONF_FILE} exists"
     if [ -f "${_CONF_FILE}" ]
@@ -93,6 +101,7 @@ install_file() {
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
 
+    _test_source_file
     _backup_target
 
     _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
