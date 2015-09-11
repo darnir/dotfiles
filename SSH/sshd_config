@@ -1,4 +1,4 @@
-#	$OpenBSD: sshd_config,v 1.90 2013/05/16 04:09:14 dtucker Exp $
+#	$OpenBSD: sshd_config,v 1.97 2015/08/06 14:53:21 deraadt Exp $
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
@@ -24,6 +24,7 @@ AddressFamily any
 #HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_dsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Lifetime and size of ephemeral version 1 server key
 #KeyRegenerationInterval 1h
@@ -111,7 +112,7 @@ UsePrivilegeSeparation sandbox		# Default for new installations.
 #Compression delayed
 #ClientAliveInterval 0
 #ClientAliveCountMax 3
-#UseDNS yes
+#UseDNS no
 #PidFile /run/sshd.pid
 #MaxStartups 10:30:100
 #PermitTunnel no
@@ -128,4 +129,5 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 #Match User anoncvs
 #	X11Forwarding no
 #	AllowTcpForwarding no
+#	PermitTTY no
 #	ForceCommand cvs server
