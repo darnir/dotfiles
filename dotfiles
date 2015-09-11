@@ -73,11 +73,11 @@ install_package() {
     echo "=== New Log Entry: $(date) ===" >> $LOGFILE
     pkgname=${1%/}
     write_log "$(_info "Installing package $pkgname\n")"
-    local pkgbuild="InstallScripts/$pkgname.dotfiles"
+    local pkgbuild="$pkgname/InstallScript"
 
     if [[ -f $pkgbuild ]]
     then
-        source "InstallScripts/$pkgname.dotfiles"
+        source "$pkgbuild"
     else
         write_log "$(_error "Cannot find Install Script for $pkgname")"
         return 2
