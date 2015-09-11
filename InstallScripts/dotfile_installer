@@ -68,8 +68,21 @@ _backup_target() {
     _info "Checking if ${_CONF_FILE} exists"
     if [ -f "${_CONF_FILE}" ]
     then
-        _warn "Target file found, saving to ${_BCK_FILE}"
-        ${SUDO} mv -v "${_CONF_FILE}" "${_BCK_FILE}"
+        _BACKUPNAME="${_BCK_FILE}"
+        _BCKNO=1
+        while [ -f "${_BACKUPNAME}" ]; do
+            _BACKUPNAME="${_BCK_FILE}.${_BCKNO}"
+            _BCKNO=$((_BCKNO+1))
+        done
+        _warn "Target file found, saving to ${_BACKUPNAME}"
+        if [ -L "${_CONF_FILE}" ]
+        then
+            REAL_CONF=$(realpath "${_CONF_FILE}")
+            ${SUDO} cp -v -R "${REAL_CONF}" "${_BACKUPNAME}"
+            ${SUDO} rm -v "${_CONF_FILE}"
+        else
+            ${SUDO} mv -v "${_CONF_FILE}" "${_BACKUPNAME}"
+        fi
     else
         _info "Target file not found"
     fi
