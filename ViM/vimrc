@@ -145,6 +145,8 @@ Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
 Plugin 'Yggdroot/indentLine'
+Plugin 'Firef0x/PKGBUILD.vim'
+Plugin 'rust-lang/rust.vim'
 
 " {{{ Disabled Plugins
 " These are good plugins that I'd like to use someday, but since I don't
