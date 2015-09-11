@@ -8,6 +8,7 @@
     unstage = reset HEAD --
     diffc   = diff --cached
     cpn     = cherry-pick -n
+    cp      = cherry-pick
     # View abbreviated SHA, description, and history graph of the latest 20 commits
     l = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 20 --graph
     # View the current working tree status using the short format
@@ -66,7 +67,7 @@
     # [default] trailing-space: looks for spaces at the end of a line
     # [default] space-before-tab: looks for spaces before tabs at the beginning of
     # a line
-    whitespace = space-before-tab,trailing-space,tab-in-indent
+    whitespace = space-before-tab,trailing-space
     eol = lf
 
 [color]
@@ -111,10 +112,6 @@
 
 [merge]
     tool = vimdiff
-
-[merge "merge-changelog"]
-    name = GNU-style ChangeLog merge driver
-    driver = /usr/bin/git-merge-changelog %O %A %B
 
 [push]
     default = simple
