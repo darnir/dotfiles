@@ -45,3 +45,18 @@ Host reniac-wks
     Port 2109
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/reniac/id_rsa
+
+Host seedbox
+    User darnir
+    Hostname 62.210.195.14
+    Port 51234
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/seedbox/id_rsa
+    SendEnv TZ
+    ForwardAgent yes
+
+Host aur.archlinux.org
+    User darnir
+    Hostname aur.archlinux.org
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/aur4/id_rsa
