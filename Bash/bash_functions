@@ -60,7 +60,7 @@ located at: ~/Programming/wget/"
     _info "Running `make clean`."
     make clean
     _info "Configure Wget with GCC."
-    configwgetgcc
+    configwget gcc
     _info "Running cov-build..."
     cov-build --dir cov-int make
 
@@ -336,7 +336,7 @@ timer() {
 # progress of the operation.
 ddup() {
     fsize=$(stat -c %s "$1")
-    dd if="$1" bs=4096 2> /dev/null | pv -petrb -s "${fsize}" | dd of="$2" bs=4096
+    su -c "dd if="$1" bs=4096 2> /dev/null | pv -petrb -s "${fsize}" | dd of="$2" bs=4096"
 }
 
 # Function: pacup()
@@ -347,6 +347,7 @@ ddup() {
 # download all the files over a single HTTP/1.1 persistant connection. This
 # significantly helps on my network where creating a connection is a bottleneck.
 pacup() {
+    set -x
     oldpwd=$PWD
     sudo ~/testing/wget --timeout=5 --tries=2 -q --show-progress -i ~/pacmanrepo --directory-prefix='/var/lib/pacman/sync'
     cd /var/lib/pacman/sync
@@ -354,6 +355,7 @@ pacup() {
     cd -
     pacman -Sup | tail -n +2 | sudo ~/testing/wget --timeout=5 --tries=15 -c -q --directory-prefix='/home/commonFiles/pacman/pkg' --show-progress -N --input-file -
     sudo pacman -Su
+    set +x
 }
 
 # Function: screen()
@@ -403,6 +405,33 @@ mutt() {
 
 fork() {
     $* &> /dev/null &
+}
+
+configwget() {
+    _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
+    _CC="clang"
+    _CONFOPT="--enable-option-checking
+              --disable-silent-rules
+              --enable-dependency-tracking
+              --with-ssl=openssl
+              --without-included-regex
+              --enable-nls
+              -enable-assert"
+    _clang_CONFOPT="-C"
+    _gcc_CONFOPT=""
+
+    if [[ "$1" == "gcc" ]]; then
+        _CC="gcc"
+    fi
+
+    _CC_CONFOPT="_${_CC}_CONFOPT"
+    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} CFLAGS="$_CFLAGS"
+}
+
+cleanswap() {
+    SWDEV=$(swapon -s | tail -1 | awk '{print $1}')
+    sudo swapoff $SWDEV
+    sudo swapon $SWDEV
 }
 
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :
