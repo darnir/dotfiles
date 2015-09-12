@@ -13,7 +13,7 @@ fi
 
 prepare() {
 
-    if ! pacman -Qs wget &> /dev/null
+    if ! which wget &> /dev/null
     then
         _info "Wget not found. Installing Wget from official repositories"
         sudo pacman -S wget
@@ -36,7 +36,7 @@ post_install() {
     OPWD="$PWD"
     mkdir /tmp/aur
     cd /tmp/aur
-    wget https://aur.archlinux.org/packages/co/cower/cower.tar.gz
+    wget https://aur.archlinux.org/cgit/aur.git/snapshot/cower.tar.gz
     tar -xvf cower.tar.gz
     cd cower
     makepkg -si
