@@ -49,7 +49,7 @@
 # Source the variables and functions for displaying coloured output
 source .bash_colours || exit
 # Soure the various functions that are called by the install scripts
-source InstallScripts/dotfile_installer || exit
+source dotfile_installer || exit
 
 # Location and name of the log file
 LOGFILE="dotfiles.log"
