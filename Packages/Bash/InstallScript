@@ -17,8 +17,8 @@ prepare() {
         fi
     fi
 
-    a2x -f manpage Bash/bash_functions.txt
-    gzip Bash/bash_functions.7
+    a2x -f manpage $pkgdir/bash_functions.txt
+    gzip $pkgdir/bash_functions.7
     sudo mkdir -p /usr/local/man/man7
 }
 
