@@ -109,7 +109,7 @@ install_file() {
     local _CONF_NAME="$1"
     local _CONF_FILE=$(_get_conf_file "$2")
     local _BCK_FILE=${_CONF_FILE}.bck
-    local _LOC_FILE=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+    local _LOC_FILE=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
@@ -149,7 +149,7 @@ install_directory() {
     local _CONF_NAME="$1"
     local _CONF_DIR=$(_get_conf_file "$2")
     local _BCK_DIR=${_CONF_DIR}bck
-    local _LOC_DIR=$(pwd)/${PACKAGE_NAME}/${_CONF_NAME}
+    local _LOC_DIR=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")

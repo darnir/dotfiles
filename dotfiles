@@ -73,7 +73,7 @@ install_package() {
     echo "=== New Log Entry: $(date) ===" >> $LOGFILE
     pkgname=${1%/}
     write_log "$(_info "Installing package $pkgname\n")"
-    local pkgbuild="$pkgname/InstallScript"
+    local pkgbuild="Packages/$pkgname/InstallScript"
 
     if [[ -f $pkgbuild ]]
     then
@@ -109,12 +109,12 @@ install_package() {
 # ".dotfiles" extension and then listed here.
 list_packages() {
     echo "Packages available:"
-    cd InstallScripts
-    for package in *.dotfiles
+    for pkg_dir in Packages/*/
     do
-        echo "${package%.dotfiles}"
+        if [ -f $pkg_dir/InstallScript ]; then
+            echo "$(basename $pkg_dir)"
+        fi
     done
-    cd ../
 }
 
 # Function: print_help()
