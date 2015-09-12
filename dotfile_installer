@@ -84,6 +84,7 @@ _backup_target() {
             ${SUDO} mv -v "${_CONF_FILE}" "${_BACKUPNAME}"
         fi
     else
+        ${SUDO} rm "${_CONF_FILE}"
         _info "Target file not found"
     fi
 }
