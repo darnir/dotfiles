@@ -1,0 +1,21 @@
+#!/bin/bash
+
+PACKAGE_NAME="Yakuake"
+
+prepare() {
+    if ! is_in_path yakuake
+    then
+        if isarchlinux
+        then
+            sudo pacman -S yakuake
+        else
+            echo "Please install yakuake first"
+            return 1
+        fi
+    fi
+    
+}
+
+install() {
+    install_file Yakuake.desktop autostart false false
+}
