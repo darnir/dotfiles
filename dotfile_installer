@@ -181,6 +181,15 @@ safetouch() {
     fi
 }
 
+is_in_path() {
+    exec_name="$1"
+    if ! which $exec_name &> /dev/null; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 isarchlinux() {
     _info "Checking if current system is Arch Linux..."
     if which pacman &> /dev/null
