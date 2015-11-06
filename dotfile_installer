@@ -30,6 +30,7 @@ _get_conf_file() {
     case "$1" in
         etc) confpath="/etc/${_CONF_NAME}";;
         home) confpath="$HOME/.${_CONF_NAME}";;
+        userconf) confpath="$HOME/.config/${_CONF_NAME}";;
         bin) confpath="/usr/local/bin/${_CONF_NAME}";;
         systemd-user) confpath="$HOME/.config/systemd/user/${_CONF_NAME}";;
         autostart) confpath="$HOME/.config/autostart/${_CONF_NAME}";;
