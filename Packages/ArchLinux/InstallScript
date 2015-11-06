@@ -26,6 +26,7 @@ install() {
 }
 
 post_install() {
+    _info "Initializing pacman's keyring"
     sudo pacman-key --init
     sudo pacman-key -r 962DDE58
     sudo pacman-key --lsign-key 962DDE58
