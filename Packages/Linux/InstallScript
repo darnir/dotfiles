@@ -1,0 +1,9 @@
+#!/bin/bash
+
+PACKAGE_NAME="Linux"
+
+install() {
+    install_file locale.conf etc true true
+    install_file locale.gen etc true true
+    install_file user-dirs.dirs userconf false true
+}
