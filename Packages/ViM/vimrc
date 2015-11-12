@@ -42,15 +42,7 @@ set viminfo=%,'9999,s512,n~/.vim/viminfo
                             " registers up to 512Kb are remembered,et switchbuf=useopen,usetab
 set wrapscan                " Wrap searches around EOF
 
-set backupdir=~/.vim/tmp/backups
-                            " Store all backup files in a single directory
 set directory=/tmp/         " Temp. swap files need not persist
-
-" " Blinking cursor fix {{{
-" " Don't wake up system with blinking cursor:
-" " http://www.linuxpowertop.org/known.php
-" let &guicursor = &guicursor . ",a:blinkon0"
-" " }}}
 
 " }}}
 
@@ -64,10 +56,11 @@ set wildmenu                " Use Wildcard expansion menu
 set display+=lastline       " When lines exceed the screen size, display as much
                             " as possible. Useful for HTML development.
 set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
-set foldcolumn=1            " Keep a dedicated column for showing folds
 set relativenumber          " Show relative line numbers
 set noshowmode              " Airline already shows this
 set shortmess=atI           " Change the messages shown by vim
+set visualbell
+set noerrorbells
 " }}}
 
 " Indentation and Tab Settings {{{
@@ -130,23 +123,19 @@ Plugin 'chazy/cscope_maps'
 Plugin 'dwm.vim'
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'godlygeek/tabular'
-Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'LanguageTool'
 Plugin 'majutsushi/tagbar'
 Plugin 'python.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'SirVer/ultisnips'
 Plugin 'smancill/conky-syntax.vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
-Plugin 'xolox/vim-misc' " Required by vim-colorscheme-switcher
 Plugin 'Yggdroot/indentLine'
 Plugin 'Firef0x/PKGBUILD.vim'
-Plugin 'rust-lang/rust.vim'
 
 " {{{ Disabled Plugins
 " These are good plugins that I'd like to use someday, but since I don't
@@ -158,11 +147,14 @@ Plugin 'rust-lang/rust.vim'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'scrooloose/nerdtree'
 " Plugin 'szw/vim-ctrlspace'
+" Plugin 'rust-lang/rust.vim'
+" Plugin 'SirVer/ultisnips'
+" Plugin 'honza/vim-snippets'
 "}}}
 
 " Manage Colourschemes {{{
-Plugin 'flazz/vim-colorschemes'
-Plugin 'xolox/vim-colorscheme-switcher'
+" Plugin 'flazz/vim-colorschemes'
+" Plugin 'xolox/vim-colorscheme-switcher'
 Plugin 'altercation/vim-colors-solarized'
 " }}}
 " LaTeX Plugins {{{
@@ -178,7 +170,7 @@ filetype plugin indent on   " required!
 " rtp has been set.
 
 set background=dark
-colorscheme vividchalk          " Set the theme for Vim
+colorscheme solarized          " Set the theme for Vim
 "}}}
 
 " Reset autocmds {{{
@@ -203,9 +195,6 @@ autocmd BufReadPost *
 " set it to the first line when editing a git commit message
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
-" don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
-
 " Create non-existant directories
 function s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
@@ -220,12 +209,10 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
-" vim-commentary settings
-" autocmd FileType config set commentstring=dnl\ %s
 " }}}
 
 " Airline settings {{{
-let g:airline_theme='badwolf'
+let g:airline_theme="solarized"
 let g:airline#extensions#tabline#enabled = 1
 " }}}
 
@@ -256,8 +243,6 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
 
 " Keyboard Shortcuts {{{
-iab <expr> dts strftime("%F")
-iab <expr> dtt strftime("%F  Darshit Shah  <darnir@gmail.com>")
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
 " Pressing <leader>ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
@@ -304,17 +289,6 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
   set t_co=256
 endif
-" }}}
-
-" Breaking bad habits {{{
-imap <Left> <Nop>
-imap <Right> <Nop>
-imap <Up> <Nop>
-imap <Down> <Nop>
-map <Left> <Nop>
-map <Right> <Nop>
-map <Up> <Nop>
-map <Down> <Nop>
 " }}}
 
 " Custom Functions {{{
@@ -391,11 +365,5 @@ au BufNewFile,BufRead *.py set filetype=python
 au BufNewFile,BufRead *.tex set filetype=tex
 au BufNewFile,BufRead *.md set filetype=markdown
 " }}}
-
-" "{{{ SimpleNote Settings
-" "Since these are public dotfiles, the credentials are sourced froma private
-" "configuration file.
-" source /media/truecrypt1/simplenoterc
-" " }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
