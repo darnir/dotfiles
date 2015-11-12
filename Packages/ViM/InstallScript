@@ -21,15 +21,12 @@ post_install() {
     OCD=${PWD}
     cd /tmp
     wget https://www.gutenberg.org/files/3202/files.zip
-    unzip files.zip
+    tar xf files.zip
     mkdir ~/.vim/thesaurus
     mv files/mthesaur.txt ~/.vim/thesaurus/mthesaur.txt
     cd "$OCD"
 
-    # Directory needed for storing swaps and backups
-    mkdir -p ~/.vim/tmp/backups/
-
-    if (which pacman &> /dev/null)
+    if isarchlinux
     then
         # We are in Arch Linux
         echo "Installing par from AUR"
