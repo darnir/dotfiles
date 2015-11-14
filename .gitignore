@@ -1,6 +1,7 @@
 *.swp
 *.un~
 dotfiles.log
+.install_db
 Packages/ViM/vim/.netrwhist
 Packages/ViM/vim/spell/en.utf-8.add.spl
 Packages/ViM/vim/bundle/*

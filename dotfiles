@@ -53,6 +53,8 @@ source dotfile_installer || exit
 
 # Location and name of the log file
 LOGFILE="dotfiles.log"
+INSTALL=".install_db"
+TEMPDB="/tmp/dotfile_tmp"
 
 # Redirect fd 3 to the logfile and redirect STDERR to STDOUT. This is set up for
 # easier logging. Redirecting STDERR to STDOUT allows us to simply write a
@@ -70,9 +72,18 @@ write_log() {
 # Function: install_package() [PKG Name]
 # Handle the -I switch.
 install_package() {
+    # Create the install database if it doesn't exist. The install database is a
+    # markdown file that contains a list of packages installed and the file
+    # mappings
+    if [[ ! -f "$INSTALL" ]]
+    then
+        echo "# Installed Packages" > $INSTALL
+    fi
+
     echo "=== New Log Entry: $(date) ===" >> $LOGFILE
     pkgname=${1%/}
     write_log "$(_info "Installing package $pkgname\n")"
+    echo -e "\n## $pkgname" > $TEMPDB
     local pkgdir="Packages/$pkgname"
     local pkgbuild="$pkgdir/InstallScript"
 
@@ -102,6 +113,7 @@ install_package() {
     fi
     echo "=== End of Log Entry ===" >> $LOGFILE
     echo "" >> $LOGFILE
+    cat $TEMPDB >> $INSTALL
 }
 
 # Function: list_package()

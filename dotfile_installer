@@ -101,6 +101,18 @@ _backup_target_dir() {
     fi
 }
 
+_log_installed() {
+    local srcfile="$1"
+    local dstfile="$2"
+    local lnktype="$3"
+
+    if [[ $lnktype == '-s ' ]]; then
+        echo -e "  * $srcfile\t->  $dstfile" >> $TEMPDB
+    else
+        echo -e "  * $srcfile\t--> $dstfile" >> $TEMPDB
+    fi
+}
+
 # Function: install_file()
 # Parameter List:
 #   $1 : Conf File Name
@@ -115,12 +127,15 @@ install_file() {
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
+    # TODO: Test if the linktype is possible. Else fallback to a copy and warn
+    # user about it.
 
     _test_source_file
     _backup_target
 
     _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
     ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+    _log_installed "$_LOC_FILE" "$_CONF_FILE" "$linktype"
     echo ""
 }
 
@@ -144,6 +159,7 @@ install_private_file() {
 
     _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
     ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
+    _log_installed "$_LOC_FILE" "$_CONF_FILE" "$linktype"
     echo ""
 }
 
@@ -160,6 +176,7 @@ install_directory() {
 
     _info "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
     $SUDO ln ${linktype}"${_LOC_DIR}" "${_CONF_DIR}"
+    _log_installed "$_LOC_DIR" "$_CONF_DIR" "$linktype"
     echo ""
 }
 
