@@ -11,15 +11,17 @@
 # This helper function gets the location of where the configuration file should
 # exist on the system based on the keywords passed to it. Supported keywords
 # are:
-#   * home: Stores the file in the user's $HOME dir with a dot (.) affixed to
-#   the filename.
 #   * etc: Attempts to store the file in the user's /etc directory. The command
 #   should be executed with superuser privileges. TODO: Automatically set
 #   SUDO when the location is /etc
+#   * home: Stores the file in the user's $HOME dir with a dot (.) affixed to
+#   the filename.
+#   * userconf: Stored the file in the user's configuration directory, i.e.
+#   ~/.config/.
 #   * bin: Symlink the file in the /usr/local/bin/ directory. TODO:
 #   Automatically set SUDO when location is bin
 #   * systemd-user: Attempts to install the file as a unit file in the systemd
-#   user configuration directory, ~/.config/systemd/user/. TODO: Automaically
+#   user configuration directory, ~/.config/systemd/user/. TODO: Automatically
 #   set the file to to create a hardlink when installing a systemd unit file
 #   * autostart: Install the file to ~/.config/autostart.
 #   If none of the above keywords are provided, the parameter is assumed to
