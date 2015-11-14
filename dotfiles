@@ -56,6 +56,8 @@ LOGFILE="dotfiles.log"
 INSTALL=".install_db"
 TEMPDB="/tmp/dotfile_tmp"
 
+BASEPKG=""
+
 # Redirect fd 3 to the logfile and redirect STDERR to STDOUT. This is set up for
 # easier logging. Redirecting STDERR to STDOUT allows us to simply write a
 # single redirection against the commands and all their output will be logged,
@@ -69,6 +71,23 @@ write_log() {
     tee -a /dev/fd/3 <<< "$*"
 }
 
+install_dependency() {
+    if [[ $BASEPKG == "" ]]; then
+        exit 1
+    fi
+    write_log "$(_info "Installing Dependency $1")"
+    echo -e "\n## $1 -> $BASEPKG" > $TEMPDB
+    install_package "$1"
+}
+
+install_direct() {
+    pkgname=${1%/}
+    write_log "$(_info "Installing package $pkgname\n")"
+    echo -e "\n## $pkgname" > $TEMPDB
+    install_package "$pkgname"
+}
+
+
 # Function: install_package() [PKG Name]
 # Handle the -I switch.
 install_package() {
@@ -80,12 +99,10 @@ install_package() {
         echo "# Installed Packages" > $INSTALL
     fi
 
-    echo "=== New Log Entry: $(date) ===" >> $LOGFILE
-    pkgname=${1%/}
-    write_log "$(_info "Installing package $pkgname\n")"
-    echo -e "\n## $pkgname" > $TEMPDB
+    local pkgname="$1"
     local pkgdir="Packages/$pkgname"
     local pkgbuild="$pkgdir/InstallScript"
+    echo "=== New Log Entry: $(date) ===" >> $LOGFILE
 
     if [[ -f $pkgbuild ]]
     then
@@ -135,7 +152,7 @@ list_packages() {
 print_help() {
     echo "Usage: $0 [Options]"
     echo "List of valid options:"
-    echo "-I package  : Install dotfiles package \"package\""
+    echo "-S package  : Install dotfiles package \"package\""
     echo "-l          : List available packages"
     echo "-h          : Print this help and exit"
     echo "Remember, this script must only be invoked from the root dir of the \
@@ -145,10 +162,12 @@ repository"
 # main()
 # The script begins here with parsing the command line arguments and invoking
 # the relevant functions
-while getopts "I:lh" options
+while getopts "S:b:d:lh" options
 do
     case $options in
-        I) install_package "$OPTARG";;
+        S) install_direct "$OPTARG";;
+        b) BASEPKG="$OPTARG";;
+        d) install_dependency "$OPTARG";;
         l) list_packages;;
         h) print_help;;
         *) print_help;;

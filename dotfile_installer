@@ -184,6 +184,10 @@ install_aur() {
     true
 }
 
+depends() {
+    ./dotfiles -b "$PACKAGE_NAME" -d "$1"
+}
+
 
 ################################################################################
 # Custom Functions for use by the dotfile package installers                   #
