@@ -4,7 +4,6 @@
 
 [alias]
     commits = commit --signoff
-    lg      = log --pretty=format:’%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset’
     unstage = reset HEAD --
     diffc   = diff --cached
     cpn     = cherry-pick -n
@@ -136,4 +135,4 @@
 [user]
     email = darnir@gmail.com
     name = Darshit Shah
-    signingkey = "4A9E67985E08BAD6"
+    signingkey = "2A1743EDA91A35B6"

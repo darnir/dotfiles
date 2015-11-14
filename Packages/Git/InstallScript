@@ -6,7 +6,6 @@ install() {
     install_file gitk home false true
     install_file gitconfig home false true
     install_file gitattributes home false true
-    install_private_file gitconfig_private home false true
 }
 
 post_install() {

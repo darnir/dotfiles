@@ -1,1 +1,18 @@
-ChangeLog       merge=merge-changelog
+# Assume all files to be text and normalize their line endings
+# Ideally, there should be no binary blobs in a git repository. If there is
+# one, remember to add an exception
+* text=auto
+*.pdf binary
+
+# These files are text and should be normalized (Convert crlf => lf)
+*.gitattributes text
+.gitignore text
+*.md text
+
+# Enable language awareness
+*.tex diff=tex
+*.bibtex diff=bibtex
+*.cpp diff=cpp
+*.java diff=java
+*.pl diff=perl
+*.py diff=python
