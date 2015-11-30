@@ -398,10 +398,10 @@ EOF
 }
 
 # Overload mutt to clean the aliases file first
-mutt() {
-    ~/.mutt/cleanalias.sh
-    /usr/bin/mutt
-}
+# mutt() {
+#     ~/.mutt/cleanalias.sh
+#     /usr/bin/mutt
+# }
 
 fork() {
     $* &> /dev/null &

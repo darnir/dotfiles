@@ -4,9 +4,7 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-export PATH="/usr/lib/ccache/bin/:$PATH"
 export PATH="$PATH:/opt/cov-analysis/bin/"
-export PATH="$PATH:/home/sauron/Coursera/Algo1-Princeton/bin"
 export CC=clang
 
 export BROWSER="/usr/bin/lynx"

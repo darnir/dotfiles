@@ -41,7 +41,6 @@ set skip-completed-text on
 [[ -f $HOME/.bash_functions ]] && . ~/.bash_functions
 [[ -f $HOME/.bash_completions ]] && . ~/.bash_completions
 [[ -f $HOME/.bash_colours ]] && . ~/.bash_colours
-[[ -f /media/truecrypt1/bash_secret ]] && . /media/truecrypt1/bash_secret
 
 source "/usr/share/doc/pkgfile/command-not-found.bash"
 source "/usr/share/git/completion/git-prompt.sh"
@@ -99,13 +98,9 @@ PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export PERL_LOCAL_LIB_ROOT="/home/sauron/perl5";
-export PERL_MB_OPT="--install_base /home/sauron/perl5";
-export PERL_MM_OPT="INSTALL_BASE=/home/sauron/perl5";
-export PERL5LIB="/home/sauron/perl5/lib/perl5/x86_64-linux-thread-multi:/home/sauron/perl5/lib/perl5";
-export PATH="/home/sauron/perl5/bin:$PATH";
+export PATH="/home/$(whoami)/perl5/bin:$PATH";
 
-export VISUAL=vim;
-export TERM=xterm-256color;
+export VISUAL=vim
+export TERM=xterm-256color
 export BROWSER="firefox"
-export TZ="Asia/Kolkata"
+export TZ="Europe/Berlin"
