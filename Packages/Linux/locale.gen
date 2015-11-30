@@ -285,7 +285,7 @@ en_US.UTF-8 UTF-8
 #iw_IL.UTF-8 UTF-8  
 #iw_IL ISO-8859-8  
 #ja_JP.EUC-JP EUC-JP  
-#ja_JP.UTF-8 UTF-8  
+ja_JP.UTF-8 UTF-8  
 #ka_GE.UTF-8 UTF-8  
 #ka_GE GEORGIAN-PS  
 #kk_KZ.UTF-8 UTF-8  
@@ -440,7 +440,7 @@ en_US.UTF-8 UTF-8
 #tn_ZA UTF-8  
 #tr_CY.UTF-8 UTF-8  
 #tr_CY ISO-8859-9  
-#tr_TR.UTF-8 UTF-8  
+tr_TR.UTF-8 UTF-8  
 #tr_TR ISO-8859-9  
 #ts_ZA UTF-8  
 #tt_RU UTF-8  
