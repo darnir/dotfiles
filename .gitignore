@@ -2,13 +2,3 @@
 *.un~
 dotfiles.log
 .install_db
-Packages/ViM/vim/.netrwhist
-Packages/ViM/vim/spell/en.utf-8.add.spl
-Packages/ViM/vim/bundle/*
-Packages/ViM/vim/thesaurus/
-Packages/ViM/vim/viminfo
-Packages/ViM/vim/viminfx.tmp
-Packages/ViM/vim/viminfy.tmp
-Packages/ViM/vim/viminfz.tmp
-Packages/Bash/bash_functions.pdf
-Packages/Pentadactyl/pentadactyl/info/
