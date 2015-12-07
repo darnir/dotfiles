@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Bash Utility Functions
 
 # Function: pastebin()
@@ -416,16 +418,18 @@ configwget() {
               --with-ssl=openssl
               --without-included-regex
               --enable-nls
-              -enable-assert"
+              --enable-assert
+              --prefix=/usr"
     _clang_CONFOPT="-C"
     _gcc_CONFOPT=""
 
     if [[ "$1" == "gcc" ]]; then
         _CC="gcc"
+        shift
     fi
 
     _CC_CONFOPT="_${_CC}_CONFOPT"
-    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} CFLAGS="$_CFLAGS"
+    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} $* CFLAGS="$_CFLAGS"
 }
 
 cleanswap() {
