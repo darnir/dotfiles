@@ -11,4 +11,4 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_MultipleCompileFormats='pdf, aux'
 let g:tex_comment_nospell = 1
 
-let g:syntastic_tex_checkers = ['lacheck']
+" let g:syntastic_tex_checkers = ['lacheck']

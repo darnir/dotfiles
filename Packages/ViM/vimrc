@@ -38,12 +38,12 @@ set hidden                  " Use hidden buffers
 set nojoinspaces            " Don't add an extra space between sentences when joining lines
 set nostartofline           " Don't move to start of line when moving around
 set viminfo=%,'9999,s512,n~/.vim/viminfo
-                            " Restore buffer list, marks are remembered for 9999 files,
-                            " registers up to 512Kb are remembered,et switchbuf=useopen,usetab
-set wrapscan                " Wrap searches around EOF
+                             " Restore buffer list, marks are remembered for 9999 files,
+                             " registers up to 512Kb are remembered,
+set switchbuf=useopen,usetab " Use existing open buffers and tabs to find file first
+set wrapscan                 " Wrap searches around EOF
 
-set directory=/tmp/         " Temp. swap files need not persist
-
+set directory=/tmp/          " Temp. swap files need not persist
 " }}}
 
 " Editor UI Settings {{{
@@ -55,12 +55,13 @@ set formatoptions+=tcroqlnj
 set wildmenu                " Use Wildcard expansion menu
 set display+=lastline       " When lines exceed the screen size, display as much
                             " as possible. Useful for HTML development.
-set so=7                    " Keep a buffer of 7 lines top and bottom when scrolling
+set so=6                    " Keep a buffer of 6 lines top and bottom when scrolling
 set relativenumber          " Show relative line numbers
 set noshowmode              " Airline already shows this
 set shortmess=atI           " Change the messages shown by vim
-set visualbell
-set noerrorbells
+set visualbell              " Use a visual bell instead of a beep
+set noerrorbells            " Disable bells on errors
+set laststatus=2            " Always show status bar
 " }}}
 
 " Indentation and Tab Settings {{{
@@ -71,7 +72,7 @@ set shiftwidth=4            " Number of columns to move at each indent level
 set softtabstop=4           " Number of columns moved on a <tab> key
 set tabstop=4               " Number of columns a Tab represents
 set smarttab                " Enable Smart tab'ing
-set textwidth=80            " Auto wrap at char 80
+set textwidth=79            " Auto wrap at char 80
 " }}}
 
 " Search Options {{{
@@ -88,102 +89,83 @@ set ttymouse=xterm2         " Set the terminal type on which we are running Vim
 set ttyfast                 " Improves Vim scrolling performance
 " }}}
 
-" Status Line {{{
-" We no longer use this status line. However it is a good fallback in case
-" vim-ailine breaks.
-set laststatus=2            " Always show status bar
-set statusline+=%<%F        " Full File path
-set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]
-                            " Display file encoding and format
-set statusline+=%h%m%r%y    " Various metadata
-set statusline+=%{fugitive#statusline()}
-                            " Git
-set statusline+=%=          " Begin Right aligned block
-set statusline+=%{TagName()}
-                            " Display current tag through Ctags
-set statusline+=\ %c,%l/%L\ %P
-                            " File Nav info
-" }}}
+" " Status Line {{{
+" " We no longer use this status line. However it is a good fallback in case
+" " vim-airline breaks.
+" " XXX: This status line relies too much on plugins. For a good fallback, clean
+" " it up to work with default ViM.
+" set laststatus=2            " Always show status bar
+" set statusline+=%<%F        " Full File path
+" set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]
+"                             " Display file encoding and format
+" set statusline+=%h%m%r%y    " Various metadata
+" set statusline+=%{fugitive#statusline()}
+"                             " Git
+" set statusline+=%=          " Begin Right aligned block
+" set statusline+=%{TagName()}
+"                             " Display current tag through Ctags
+" set statusline+=\ %c,%l/%L\ %P
+"                             " File Nav info
+" " }}}
 
 " Vundle Configuration {{{
 
 filetype off                " Required as a workaround. See #176
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
                             " Edits the runtime path to include vundle
-call vundle#rc()            " Initiate Vundle
+call vundle#begin()         " Initiate Vundle
 
 " Always ensure that vundle manages vundle
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
-" Plugin 'a.vim'
-" Plugin 'artnez/vim-wipeout'
-" Plugin 'bling/vim-airline'
-" Plugin 'bogado/file-line'
-" Plugin 'chazy/cscope_maps'
-" Plugin 'dwm.vim'
-" Plugin 'gabrielelana/vim-markdown'
-" Plugin 'godlygeek/tabular'
-" Plugin 'kien/ctrlp.vim'
-" Plugin 'kien/rainbow_parentheses.vim'
-" Plugin 'LanguageTool'
-" Plugin 'majutsushi/tagbar'
-" Plugin 'python.vim'
-" Plugin 'scrooloose/syntastic'
-" Plugin 'smancill/conky-syntax.vim'
-" Plugin 'tpope/vim-commentary'
-" Plugin 'tpope/vim-fugitive'
-" Plugin 'tpope/vim-git'
-" Plugin 'tpope/vim-surround'
-" Plugin 'Yggdroot/indentLine'
-" Plugin 'Firef0x/PKGBUILD.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-commentary'
+Plugin 'bogado/file-line'
+Plugin 'spolu/dwm.vim'
+Plugin 'godlygeek/tabular'
 
-" {{{ Disabled Plugins
-" These are good plugins that I'd like to use someday, but since I don't
-" remember any of their features / keybindings, they're disabled till I find the
-" time to learn how to use them.
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-vividchalk'
+Plugin 'scrooloose/syntastic'
+Plugin 'eapache/rainbow_parentheses.vim'
 
-" Plugin 'sk1418/blockit'
-" Plugin 'mrtazz/simplenote.vim'
-" Plugin 'Valloric/YouCompleteMe'
-" Plugin 'scrooloose/nerdtree'
-" Plugin 'szw/vim-ctrlspace'
-" Plugin 'rust-lang/rust.vim'
-" Plugin 'SirVer/ultisnips'
-" Plugin 'honza/vim-snippets'
-"}}}
+Plugin 'gabrielelana/vim-markdown'
+Plugin 'hdima/python-syntax'
+Plugin 'smancill/conky-syntax.vim'
+Plugin 'Firef0x/PKGBUILD.vim'
 
-" Manage Colourschemes {{{
-" Plugin 'flazz/vim-colorschemes'
-" Plugin 'xolox/vim-colorscheme-switcher'
-Plugin 'altercation/vim-colors-solarized'
-" }}}
-" LaTeX Plugins {{{
+Plugin 'a.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-git'
+
 Plugin 'gerw/vim-latex-suite'
 Plugin 'gerw/vim-tex-syntax'
-" }}}
 
-filetype plugin indent on   " required!
+call vundle#end()
+filetype plugin indent on
 " }}}
 
 " {{{ Set Colorscheme
-" We must the colorscheme only AFTER Vundle has been loaded so that the relevant
-" rtp has been set.
+" We must the colorscheme only AFTER Vundle has been loaded so that the
+" relevant rtp has been set.
 
 set background=dark
-colorscheme solarized          " Set the theme for Vim
+colorscheme vividchalk          " Set the theme for Vim
 "}}}
 
 " Reset autocmds {{{
 autocmd!
-" When a vimrc is sourced, the autocommands may be added again. Hence, clear all the autocommands
-" before defining any of our own
+" When a vimrc is sourced, the autocommands may be added again. Hence, clear
+" all the autocommands before defining any of our own
 "  }}}
 
 " Autocmd  Settings {{{
 
-" Set spell checking only on TeX files. Makes a lot more sense
+" Set spell checking only on files that make sense. Like TeX, mail and Markdown
 autocmd FileType tex setlocal spell spelllang=en_us
 autocmd FileType mail setlocal spell spelllang=en_us
+autocmd FileType markdown setlocal spell spelllang=en_us
 
 " When editing a file, always jump to the last cursor position
 autocmd BufReadPost *
@@ -212,27 +194,16 @@ augroup END
 " }}}
 
 " Airline settings {{{
-let g:airline_theme="solarized"
+let g:airline_theme="badwolf"
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}
 
 " CScope Settings {{{
-if has('cscope')
-  set cscopetag cscopeverbose
 
-  if has('quickfix')
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-  endif
+source ~/.vim/cscope_maps.vim
 
-  cnoreabbrev csa cs add
-  cnoreabbrev csf cs find
-  cnoreabbrev csk cs kill
-  cnoreabbrev csr cs reset
-  cnoreabbrev css cs show
-  cnoreabbrev csh cs help
-
-  command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
-endif
 " }}}
 
 " CTags Settings {{{
@@ -263,9 +234,6 @@ nnoremap <leader>O O<Esc>
 
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>c :CtrlP<CR>
-
 nnoremap t i<CR><ESC>
 nnoremap s :%s/\s\+$//e
 " }}}
@@ -276,9 +244,13 @@ let g:tagbar_show_linenumbers=-1
 "}}}
 
 " Syntastic Settings {{{
-let g:syntastic_mode_map = { 'mode': 'active',
-    \ 'active_filetypes': [],
-    \ 'passive_filetypes': [] }
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_c_checkers = []
 " }}}
 
 " Syntax highlighting {{{
@@ -287,8 +259,14 @@ let g:syntastic_mode_map = { 'mode': 'active',
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-  set t_co=256
 endif
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesActivate
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 " }}}
 
 " Custom Functions {{{
@@ -331,22 +309,6 @@ au! CursorMoved * call MySetCursor()
 au! CursorMovedI * call MyUnSetCursor()
 " }}}
 
-" Word Processing Mode {{{
-func! WordProcessorMode()
-  setlocal formatoptions=1
-  setlocal noexpandtab
-  map j gj
-  map k gk
-  setlocal spell spelllang=en_us
-  set thesaurus+=~/.vim/thesaurus/mthesaur.txt
-  set complete+=s
-  set formatprg=par
-  setlocal wrap
-  setlocal linebreak
-endfu
-com! WP call WordProcessorMode()
-" }}}
-
 " }}}
 
 " Highlight trailing whitespaces {{{
@@ -356,14 +318,6 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-" }}}
-
-" Custom filetype definations {{{
-au BufNewFile,BufRead CommitLog set filetype=changelog
-au BufNewFile,BufRead *.px set filetype=perl
-au BufNewFile,BufRead *.py set filetype=python
-au BufNewFile,BufRead *.tex set filetype=tex
-au BufNewFile,BufRead *.md set filetype=markdown
 " }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
