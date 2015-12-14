@@ -106,9 +106,6 @@
 [help]
     autocorrect = 1
 
-[include]
-    path = ~/.gitconfig_private
-
 [merge]
     tool = vimdiff
 
@@ -135,4 +132,3 @@
 [user]
     email = darnir@gmail.com
     name = Darshit Shah
-    signingkey = "2A1743EDA91A35B6"
