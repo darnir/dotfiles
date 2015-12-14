@@ -9,3 +9,4 @@ export CC=clang
 
 export BROWSER="/usr/bin/lynx"
 export EDITOR="vim"
+export TZ="Europe/Berlin"

@@ -409,8 +409,25 @@ fork() {
     $* &> /dev/null &
 }
 
+pintos() {
+    PIDF=/tmp/.pintos.lock
+    if [[ ! -f $PIDF ]]; then
+        {
+            qemu-system-x86_64 -enable-kvm -net user,hostfwd=tcp::8022-:22 \
+            -net nic -m 1G -vga none -display none -cpu host -M 1.6 \
+            -pidfile $PIDF -machine type=pc,accel=kvm \
+            -hda "$HOME/VirtualBox VMs/OS/OS-new2.img"
+            rm -f $PIDF
+        } &
+        echo "Started VM. Will now SSH..."
+        sleep 5
+    fi
+    ssh "pintos"
+}
+
 configwget() {
-    _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
+    # _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
+    _CFLAGS="-std=c89 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
     _CC="clang"
     _CONFOPT="--enable-option-checking
               --disable-silent-rules
