@@ -119,11 +119,8 @@ call vundle#begin()         " Initiate Vundle
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-surround'
-Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-commentary'
-Plugin 'bogado/file-line'
 Plugin 'spolu/dwm.vim'
-Plugin 'godlygeek/tabular'
 
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-vividchalk'
@@ -132,15 +129,10 @@ Plugin 'eapache/rainbow_parentheses.vim'
 
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'hdima/python-syntax'
-Plugin 'smancill/conky-syntax.vim'
 Plugin 'Firef0x/PKGBUILD.vim'
 
-Plugin 'a.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
-
-Plugin 'gerw/vim-latex-suite'
-Plugin 'gerw/vim-tex-syntax'
 
 call vundle#end()
 filetype plugin indent on
@@ -200,19 +192,6 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}
 
-" CScope Settings {{{
-
-source ~/.vim/cscope_maps.vim
-
-" }}}
-
-" CTags Settings {{{
-let g:ctags_statusline=1
-let g:generate_tags=1
-" C-\ will open in a new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-" }}}
-
 " Keyboard Shortcuts {{{
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
 " Pressing <leader>ss will toggle and untoggle spell checking
@@ -220,8 +199,6 @@ map <leader>ss :setlocal spell!<cr>
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
-
-map <F6> :TagbarToggle<CR>
 
 nnoremap <leader><leader> <Esc>
 inoremap <leader><leader> <Esc>
@@ -237,11 +214,6 @@ nnoremap <F5> :buffers<CR>:buffer<Space>
 nnoremap t i<CR><ESC>
 nnoremap s :%s/\s\+$//e
 " }}}
-
-"{{{ Tagbar Settings
-let g:tagbar_autoclose=1
-let g:tagbar_show_linenumbers=-1
-"}}}
 
 " Syntastic Settings {{{
 

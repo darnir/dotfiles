@@ -11,33 +11,14 @@ post_install() {
     echo "Now installing Vundle"
 
     mkdir "$HOME/.vim/bundle"
-    git clone https://github.com/VundleVim/vundle.git "$HOME/.vim/bundle/vundle.git"
+    git clone https://github.com/VundleVim/Vundle.vim "$HOME/.vim/bundle/Vundle.vim"
 
     echo "Vundle Installed. Installing plugins..."
     sleep 2
     vim +PluginInstall +qall
 
-    echo "Downloading thesaurus..."
-    OCD=${PWD}
-    cd /tmp
-    wget https://www.gutenberg.org/files/3202/files.zip
-    tar xf files.zip
-    mkdir ~/.vim/thesaurus
-    mv files/mthesaur.txt ~/.vim/thesaurus/mthesaur.txt
-    cd "$OCD"
-
     if isarchlinux
     then
-        # We are in Arch Linux
-        echo "Installing par from AUR"
-        OCD=$PWD
-        cd /tmp
-        wget https://aur.archlinux.org/cgit/aur.git/snapshot/par.tar.gz
-        tar -xvzf par.tar.gz
-        cd par
-        makepkg -si
-        cd "$OCD"
-
         echo "Installing systemd syntax files"
         sudo pacman -S vim-systemd
     fi
