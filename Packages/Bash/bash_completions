@@ -1,6 +1,3 @@
-complete -o dirnames -o filenames -f -X '!*.pdf' pdf
-complete -o filenames -f -X '!*.src.tar.gz' burp
-complete -o filenames -f -X '!*.tex' latexmk
 complete -C "perl -e '@w=split(/ /,\$ENV{COMP_LINE},-1);\$w=pop(@w);for(qx(screen -ls)){print qq/\$1\n/ if (/^\s*\$w/&&/(\d+\.\w+)/||/\d+\.(\$w\w*)/)}'" screen
 complete -o dirnames -o filenames -f -X '!*.@(t@(gz|lz|xz|B@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz))))|7z|Z|bz2|exe|gz|rar|xz|zip)' extract
 # vim: set ts=4 sts=4 sw=4 tw=80 ft=sh et :

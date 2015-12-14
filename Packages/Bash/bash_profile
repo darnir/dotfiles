@@ -4,9 +4,6 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-export PATH="$PATH:/opt/cov-analysis/bin/"
-export CC=clang
-
 export BROWSER="/usr/bin/lynx"
 export EDITOR="vim"
 export TZ="Europe/Berlin"

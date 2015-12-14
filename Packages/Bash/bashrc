@@ -45,19 +45,6 @@ set skip-completed-text on
 source "/usr/share/doc/pkgfile/command-not-found.bash"
 source "/usr/share/git/completion/git-prompt.sh"
 
-# Login greeting ------------------
-if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
-    detached_screens=$(screen -list | grep Detached)
-    if [ ! -z "$detached_screens" ]; then
-        echo "+---------------------------------------+"
-        echo "| Detached screens are available:       |"
-        echo "$detached_screens"
-        echo "+---------------------------------------+"
-
-        export SHOWED_SCREEN_MESSAGE="true"
-    fi
-fi
-
 GIT_PS1_SHOWDIRTYSTATE=1;
 GIT_PS1_SHOWCOLORHINTS=1;
 GIT_PS1_SHOWUNTRACKEDFILES=1;
@@ -72,9 +59,6 @@ BL_ANGLE="\342\224\224"
 TL_ANGLE="\342\224\214"
 HORIZ_LINE="\342\224\200"
 
-BATT="\$(acpi -b | awk '{print \$4}' | cut -b1-3)"
-FILES_STAT="\$(ls -1 | wc -l | sed 's: ::g')"
-FILES_SIZE="\$(ls -lah | grep -m 1 total | sed 's/1:total //')b"
 GIT_PS1='$(__git_ps1 "(%s)")'
 
 if [ -z $STY ]
@@ -86,20 +70,12 @@ else
     OUT_COL=$SH_GREEN
 fi
 
-if [ $UID -eq 0 ]; then
-    PS1=${SH_RED}"\u"${SH_WHITE}"@\h "${SH_BLUE}"\W "${SH_GREEN}"\$ "${OUT_COL}
-elif [ -n "$SSH_CLIENT" ]; then
-    PS1=${SH_RED}"(SSH)"${SH_WHITE}"\u@\h "${SH_BLUE}"\W "${SH_GREEN}${BATT}"\$ "${OUT_COL}
-else
-    PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${OUT_COL}
-fi
+PS1=${SH_RED}"(SSH)"${SH_WHITE}"\u@\h "${SH_BLUE}"\W "${SH_GREEN}${GIT_PS1}"\$ "${OUT_COL}
 trap 'echo -ne "\e[0m"' DEBUG
 PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export PATH="/home/$(whoami)/perl5/bin:$PATH";
-
 export VISUAL=vim
 export TERM=xterm-256color
-export BROWSER="firefox"
+export BROWSER="lynx"

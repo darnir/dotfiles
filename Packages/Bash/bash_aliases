@@ -14,7 +14,6 @@ alias vi="vim"
 # New Commands
 alias :q='exit'
 alias :wq='exit'
-alias alert='beep -f 5000 -l 60 -r 2'
 alias aur="cower -ddfuc --target=$HOME/AUR/"
 alias cleantex='rm *.{aux,bbl,blg,log,lot,out,toc,pdf,dvi,fdb_latexmk,fls} 2>/dev/null'
 alias da='date "+%A, %B %d, %Y [%T]"'
@@ -23,20 +22,11 @@ alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
 alias hist='history | grep'      # requires an argument
 alias la='ls -la'
 alias mirrorlist='reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
-alias musicdb='mpc update --wait && mpc ls | mpc add'
 alias netuse='sudo netstat -lantp | grep -i establ'
 alias openports='netstat --all --numeric --programs --inet --inet6'
 alias path='printf ${PATH//:/\\n}'
 alias pfind='ps aux | grep'
 alias vimup='vim +PluginUpdate'
-alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
-alias watchmail='watch systemctl --user status offlineimap.service'
-
-# Aliases for Wget
-alias proj='cd ~/Programming/wget/'
-alias resetproj='./bootstrap --skip-po && configwget'
-alias resetprojgcc='./bootstrap --skip-po && configwgetgcc'
-alias resetprojpar='./bootstrap --skip-po && parallelconfig'
 
 # Safety Features
 alias chgrp='chgrp --preserve-root'

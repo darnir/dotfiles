@@ -23,52 +23,6 @@ tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-# Function: cov-make()
-# This function is specifically geared towards creating a coverity build package
-# for my Wget code base. This function isn't portable since it was written to
-# simplify only my work.
-cov-make() {
-    _info "Running cov-make, the Coverity Wrapper for my Wget"
-    if [ $PWD != "$HOME/Programming/wget" ]
-    then
-        _error "This function should only be run from the Wget source dir \
-located at: ~/Programming/wget/"
-        return 100
-    elif [ -z ${COV_TOKEN+x} ]
-    then
-        _error "Bash secrets were not sourced. Please source the bash secrets"
-        return 100
-    fi
-    _info "Running `make clean`."
-    make clean
-    _info "Configure Wget with GCC."
-    configwget gcc
-    _info "Running cov-build..."
-    cov-build --dir cov-int make
-
-    COMPILED_UNITS=$(grep -o -e [0-9][0-9].% cov-int/build-log.txt)
-    if [[ $COMPILED_UNITS != "100%" ]]
-    then
-        _info "Compiled Units: $COMPILED_UNITS"
-        _error "Not all units compiled. Please check cov-int/build-log.txt"
-        return 100
-    fi
-
-    _info "Packing the coverity build files"
-    tar czvf wget.tgz cov-int
-
-    local version=$(git describe --always | sed 's|-|.|g')
-
-    _info "Uploading Coverity Build to the server"
-    curl --form project=GNU+Wget \
-  --form token=${COV_TOKEN}\
-  --form email=darnir@gmail.com \
-  --form file=@wget.tgz \
-  --form version="${version}"\
-  --form description="\"Coverity build for GNU Wget\"" \
-  https://scan.coverity.com/builds?project=GNU+Wget
-}
-
 # Function: calc()
 # This is a simple command line calculator for Bash. It uses bc to compute
 # various results. Give it a valid bc expression and this function will try to
@@ -88,22 +42,6 @@ calc() {
         printf "$result";
     fi;
     printf "\n";
-}
-
-# Function: pdflatex()
-# This function invokes the similarly named /usr/bin/pdflatex binary and uses
-# grep to colour the output and highlight the errors and warnings when running
-# pdflatex.
-pdflatex() {
-GREP="grep --color=always --line-buffered"
-LL=$*
-echo "$LL"
-(/usr/bin/pdflatex -file-line-error "$LL" 2>&1) \
- | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
- | GREP_COLOR="01;31" $GREP -P "(^[^:]*:\d+: )|(^l\.\d+ )|(^! LaTeX Error: )|$" \
- | GREP_COLOR="00;33" $GREP -P "(LaTeX Warning(:|))|(Package [^\s]+ Warning(:|))|$" \
- | GREP_COLOR="00;32" $GREP -P "^Output written on .*\.pdf \(.*\)\.$|$" \
- | uniq
 }
 
 # Function: man()
@@ -198,73 +136,6 @@ pack() {
   esac
 }
 
-# Function: note()
-# Another simple but extremely useful utlity function. This was copied from the
-# ArchWiki too. Expects a bunch of text as its parameters which is then stored
-# in ~/.notes file.
-# Commands:
-# Add a new note:  $ note <Enter note here>
-# Display notes:   $ note
-# Clean all notes: $ note -c
-note () {
-
-    NOTES="$HOME/.notes"
-    #if file doesn't exist, create it
-    [ -f "$NOTES" ] || touch "$NOTES"
-    #no arguments, print file
-    if [ $# = 0 ]
-    then
-        cat "$NOTES"
-    #clear file
-    elif [ "$1" = -c ]
-    then
-        > "$NOTES"
-    #add all arguments to file
-    else
-        echo "$@" >> "$NOTES"
-    fi
-}
-
-# Function: pdf()
-# Expects a pdf file as an argument
-# This is a simple helper function to asynchronously launch a pdf viewer from
-# the command line without polluting it.
-pdf() {
-    evince "$1" &>/dev/null &
-}
-
-pdftools() {
-    ACTION="$1"
-    case $ACTION in
-        compress) gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -sOutputFile="$2" "$3";;
-        join) gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="$2" "${@:3}";;
-    esac
-}
-
-# Function: timer()
-# Usage: timer [time] [message]
-# This function takes a time argument that is acceptable to sleep(1) and a
-# message. After a period of [time], the message is displayed on the screen and
-# a audio beep is generated. For the beep to be played, ensure that the beep
-# channel in ALSA is not muted.
-timer() {
-    if [ $# -ne 2 ]
-    then
-        echo "Usage: timer [time] [message]"
-        return 1
-    fi
-    sleep "$1" && alert && zenity --info --text="$2" &> /dev/null &
-}
-
-# Function: ddup()
-# Usage: ddup [file1] [file2]
-# dd's [file1] onto [file2] but also displays a progress bar showing the
-# progress of the operation.
-ddup() {
-    fsize=$(stat -c %s "$1")
-    su -c "dd if="$1" bs=4096 2> /dev/null | pv -petrb -s "${fsize}" | dd of="$2" bs=4096"
-}
-
 # Function: screen()
 # Usage: screen [preset]
 # This function overrides the call to /usr/bin/screen. There exist a number of
@@ -280,78 +151,6 @@ screen() {
     else
         /usr/bin/screen $*
     fi
-}
-
-ssh-genkey() {
-    if [[ -z $1 ]]
-    then
-        echo -e "${_LBLUE}Usage: ssh-genkey [name]"
-        return 1
-    fi
-    mkdir $HOME/.ssh/"$1"
-    ssh-keygen -C "darnir@gmail.com" -f $HOME/.ssh/"$1"/id_rsa
-
-    cat <<EOF >> $HOME/.ssh/config
-
-Host $1.com
-    User darnir
-    Hostname $1.com
-    PreferredAuthentications publickey
-    IdentityFile ~/.ssh/$1/id_rsa
-EOF
-
-    echo "Identity Settings written to config file. Please verify:"
-    vim $HOME/.ssh/config
-}
-
-# Overload mutt to clean the aliases file first
-# mutt() {
-#     ~/.mutt/cleanalias.sh
-#     /usr/bin/mutt
-# }
-
-fork() {
-    $* &> /dev/null &
-}
-
-pintos() {
-    PIDF=/tmp/.pintos.lock
-    if [[ ! -f $PIDF ]]; then
-        {
-            qemu-system-x86_64 -enable-kvm -net user,hostfwd=tcp::8022-:22 \
-            -net nic -m 1G -vga none -display none -cpu host -M 1.6 \
-            -pidfile $PIDF -machine type=pc,accel=kvm \
-            -hda "$HOME/VirtualBox VMs/OS/OS-new2.img"
-            rm -f $PIDF
-        } &
-        echo "Started VM. Will now SSH..."
-        sleep 5
-    fi
-    ssh "pintos"
-}
-
-configwget() {
-    # _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
-    _CFLAGS="-std=c89 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
-    _CC="clang"
-    _CONFOPT="--enable-option-checking
-              --disable-silent-rules
-              --enable-dependency-tracking
-              --with-ssl=openssl
-              --without-included-regex
-              --enable-nls
-              --enable-assert
-              --prefix=/usr"
-    _clang_CONFOPT="-C"
-    _gcc_CONFOPT=""
-
-    if [[ "$1" == "gcc" ]]; then
-        _CC="gcc"
-        shift
-    fi
-
-    _CC_CONFOPT="_${_CC}_CONFOPT"
-    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} $* CFLAGS="$_CFLAGS"
 }
 
 cleanswap() {
