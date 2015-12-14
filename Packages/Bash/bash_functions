@@ -23,26 +23,6 @@ tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-# Function: lsn()
-# This function takes a start number, an end number and other parameters for the
-# ls command and displays only the files between start and end. This is useful
-# when trying to use ls to see only a handful of files at a time.
-lsn() {
-    if [ $# -lt 2 ]
-    then
-        _usage "Usage: lsn [start no] [end no] [optional paramters]"
-        return 1
-    fi
-    BEGIN=$1
-    END=$2
-    PARAM=$3
-    while shift && [ -n "$3" ]; do
-        PARAM="${PARAM} $3"
-    done
-#    echo "ls ${PARAM} | head ${END} | tail $(($END - $BEGIN))"
-    /usr/bin/ls --color $PARAM | head -$END | tail -$(($END - $BEGIN))
-}
-
 # Function: cov-make()
 # This function is specifically geared towards creating a coverity build package
 # for my Wget code base. This function isn't portable since it was written to
@@ -110,18 +90,6 @@ calc() {
     printf "\n";
 }
 
-# Function: cat()
-# This function overrides the default cat executable. It uses pygmentize to
-# add colour support and then passes the output to cat for printing to screen.
-ccat() {
-    if [ `which pygmentize` ]
-    then
-        pygmentize -O style=monokai -f console256 -g "$@"
-    else
-        /usr/bin/cat "$@"
-    fi
-}
-
 # Function: pdflatex()
 # This function invokes the similarly named /usr/bin/pdflatex binary and uses
 # grep to colour the output and highlight the errors and warnings when running
@@ -166,50 +134,6 @@ resolve() {
     case $yn in
         [Yy]* ) _info "Deleting pacnew file"; sudo rm "$1.pacnew";;
     esac
-}
-
-# Function: algs4c()
-# Expects the filename WITHOUT extension of a java source file.
-# This is a helper function for automating the various steps involved in
-# compiling and checking a java source for errors before it can be submitted to
-# the Algorithms Course by Princeton University on Coursera. This function will
-# only compile and check for errors.
-algs4c() {
-    if (checkstyle-algs4 "$1.java")
-    then
-        echo "CheckStyle Passed..."
-        if (javac-algs4 "$1.java")
-        then
-            echo "Compilation Successful..."
-            if (findbugs-algs4 "$1.class")
-            then
-                echo "No bugs Found..."
-                return 0
-            else
-                echo "Findbugs Failed!"
-                return 103
-            fi
-        else
-            echo "Compilation Failed!"
-            return 102
-        fi
-    else
-        echo "CheckStyle Failed!"
-        return 101
-    fi
-}
-
-# Function: algs4cr()
-# Expects a filename WITHOUT the extension of a java source file.
-# This function invokes algs4c() to compile and check the source for errors and
-# then will also execute the compiled executable.
-algs4cr() {
-    if (algs4c "$1")
-    then
-        java-algs4 "$1"
-    else
-        reurn $?
-    fi
 }
 
 # Function: extract()
@@ -339,25 +263,6 @@ timer() {
 ddup() {
     fsize=$(stat -c %s "$1")
     su -c "dd if="$1" bs=4096 2> /dev/null | pv -petrb -s "${fsize}" | dd of="$2" bs=4096"
-}
-
-# Function: pacup()
-# Usage: pacup
-# A helper function. It invokes pacman to download the latest repository files
-# and gets a list of links for updated packages. Then feeds all the links to
-# wget in a single invokation. The advantage of this is that Wget can now
-# download all the files over a single HTTP/1.1 persistant connection. This
-# significantly helps on my network where creating a connection is a bottleneck.
-pacup() {
-    set -x
-    oldpwd=$PWD
-    sudo ~/testing/wget --timeout=5 --tries=2 -q --show-progress -i ~/pacmanrepo --directory-prefix='/var/lib/pacman/sync'
-    cd /var/lib/pacman/sync
-    sudo rename db.1 db *.db.1
-    cd -
-    pacman -Sup | tail -n +2 | sudo ~/testing/wget --timeout=5 --tries=15 -c -q --directory-prefix='/home/commonFiles/pacman/pkg' --show-progress -N --input-file -
-    sudo pacman -Su
-    set +x
 }
 
 # Function: screen()

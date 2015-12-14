@@ -2,26 +2,6 @@
 
 PACKAGE_NAME="Bash"
 
-prepare() {
-    _info "Checking if a2x exists..."
-    if ! which a2x &> /dev/null
-    then
-        _warn "a2x not found. Attempting to install"
-        if isarchlinux
-        then
-            sudo pacman -S asciidoc libxslt
-        else
-            _warn "a2x, asciidoc and xsltproc are required to generate man pages."
-            _info "Please insteall these packages before continuing"
-            exit 2
-        fi
-    fi
-
-    a2x -f manpage $pkgdir/bash_functions.txt
-    gzip $pkgdir/bash_functions.7
-    sudo mkdir -p /usr/local/man/man7
-}
-
 install() {
     install_file inputrc home false true
     install_file bash_profile home false true
@@ -30,17 +10,14 @@ install() {
     install_file bash_functions home false true
     install_file bash_completions home false true
     install_file bash_colours home false true
-    install_file bash_functions.7.gz /usr/local/man/man7 true false
 }
 
 post_install() {
-    rm Bash/bash_functions.7.gz
-    sudo mandb
 
     # Is this an Arch Linux System?
     if isarchlinux
     then
-        sudo pacman -S bash-completion time beep zenity python2-pygments pkgfile
+        sudo pacman -S bash-completion time beep zenity acpi pkgfile
         sudo chmod 4755 "$(which beep)"
         sudo pkgfile --update
     else
@@ -51,6 +28,6 @@ post_install() {
         echo "time:                   For certain wget aliases"
         echo "beep:                   For alias alert"
         echo "zenity:                 For timer() function"
-        echo "python2-pygments:       For ccat() function"
+        echo "acpi:                   For battery status in PS1"
     fi
 }
