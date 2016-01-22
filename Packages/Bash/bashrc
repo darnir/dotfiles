@@ -98,8 +98,6 @@ PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export PATH="/home/$(whoami)/perl5/bin:$PATH";
-
 export VISUAL=vim
 export TERM=xterm-256color
 export BROWSER="firefox"
