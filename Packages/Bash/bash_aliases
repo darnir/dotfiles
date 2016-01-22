@@ -31,6 +31,7 @@ alias pfind='ps aux | grep'
 alias vimup='vim +PluginUpdate'
 alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
 alias watchmail='watch systemctl --user status offlineimap.service'
+alias restartnet='sudo systemctl restart netctl-auto@wlp9s0.service'
 
 # Aliases for Wget
 alias proj='cd ~/Programming/wget/'
