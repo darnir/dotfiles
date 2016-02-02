@@ -1,80 +1,104 @@
-## Conky Configuration File by Darshit Shah <darnir@gmail.com>
-## Inspired by "Numix Ubuntu" by "Dobbie03" on DeviantArt
-## Weather Icons taken from Conky Google Now by the Numix Project
-## The Weather Icons are licensed under GPLv3.0+
-## License: MIT
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+--[[
+Conky, a system monitor, based on torsmo
 
-background yes
-use_xft yes
-xftfont 123:size=8
-xftalpha 0.1
-update_interval 1
-total_run_times 0
-own_window yes
-own_window_type desktop
-own_window_transparent yes
-#own_window_colour 2D2D2D
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-own_window_title conky
-own_window_argb_visual no
-#own_window_argb_value
-double_buffer yes
+Any original torsmo code is licensed under the BSD license
 
-border_inner_margin 10
-maximum_width 300
-minimum_size 250
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
-default_color FFFFFF
-default_shade_color red
-default_outline_color green
-alignment top_right
-gap_x 30
-gap_y 20
+All code written since the fork of torsmo is licensed under the GPL
 
-no_buffers yes
-uppercase no
-cpu_avg_samples 2
-net_avg_samples 2
-override_utf8_locale yes
-use_spacer none
+Please see COPYING for details
 
-#lua_load ~/.conky/draw_bg.lua
-#lua_draw_hook_pre draw_bg
-#draw_graph_borders yes
+Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+Copyright (c) 2005-2012 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+All rights reserved.
 
-color1 FFFFFF
-color2 0079BA
-color3 FFFFFF
-color4 555555
-color5 CD55CD
-color6 FFAA00
-color7 CEEE15
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-TEXT
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Conky Configuration File by Darshit Shah <darnir@gmail.com>
+# Inspired by "Numix Ubuntu" by "Dobbie03" on DeviantArt
+# Weather Icons taken from Conky Google Now by the Numix Project
+# The Weather Icons are licensed under GPLv3.0+
+License: MIT
+]]
+
+conky.config = {
+    background = true,
+    use_xft = true,
+    -- xftfont = "123:size=8",
+    xftalpha = 0.1,
+    update_interval = 1.0,
+    total_run_times = 0,
+    own_window = true,
+    own_window_class = "Conky",
+    own_window_type = "normal",
+    own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+    own_window_title = "conky",
+    double_buffer = true,
+
+    border_inner_margin = 10,
+    maximum_width = 300,
+    minimum_size = 250,
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+    default_color = "FFFFFF",
+    default_shade_color = "red",
+    default_outline_color = "green",
+    alignment = 'top_right',
+    gap_x = 30,
+    gap_y = 20,
+
+    no_buffers = true,
+    uppercase = false,
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+    override_utf8_locale = true,
+    use_spacer = "none"
+}
+
+
+conky.config = {
+    border_width = 1,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    stippled_borders = 0,
+    show_graph_scale = false,
+    show_graph_range = false,
+
+    color1 = "FFFFFF",
+    color2 = "0079BA",
+    color3 = "FFFFFF",
+    color4 = "555555",
+    color5 = "CD55CD",
+    color6 = "FFAA00",
+    color7 = "CEEE15"
+}
+
+conky.text = [[
 ${color1}${font Open Sans Light:size=42}${alignc}${time %R}${font}
 ${color1}${font Open Sans Light:size=9}${alignc}${time %A, %B %d, %Y}${font Open Sans Light:size=3}
 ${color1}${font Open Sans Light:size=9}${alignc}Uptime: ${uptime}${font}
 ${color4}${hr 1}${color}
-# Gets the location and prints it as a header
 ${font Open Sans Light:size=16}${execi 300 get_weather -l}${font}
-# Prints the large temperature
 ${font Open Sans Light:size=60}${alignr}${execi 300 get_weather -w temp}${font}${voffset -20}
-# Gets today's weather conditions icon
 ${image ~/.cache/weather.png -n -p 0,155 -s 60x60}
-# Gets the weather conditions (Haze, Partly Cloudy, etc)
 ${goto 30}${execi 300 get_weather -w text}
-# Gets the wind speed icon as well as the wind speed
 ${image ~/.conky-weather/wind.png -p 0,243 -s 15x15}${goto 35}${voffset 9}${execi 300 get_weather -w speed}
-#Gets the humidity image as well s the actual humidity
 ${image ~/.conky-weather/humidity.png -p 0,263 -s 15x15}${goto 35}${voffset 5}${execi 300 get_weather -w hum}
-# Gets the images for the next day's forecast
 ${image ~/.cache/weather-1.png -n -p 20,293 -s 30x30}${image ~/.cache/weather-2.png -n -p 150,293 -s 30x30}
-# Gets the names of the next two days
 ${goto 80}${execi 300 get_weather -d 1}${goto 210}${execi 300 get_weather -d 2}
-# Gets the temperatures of the next two days
 ${color1}${goto 80}${execi 300 get_weather -H -f 1} ${color6}${execi 300 get_weather -L -f 1}${color1}${goto 210}${execi 300 get_weather -H -f 2} ${color6}${execi 300 get_weather -L -f 2}${color}${voffset 5}
 ${color4}${hr 1}
 ${color3}${font Open Sans Light:size=16}Processors/Memory
@@ -95,8 +119,8 @@ ${color3}${font Open Sans Light:size=16}Network
 ${if_existing /proc/net/route wlp4s0}${color2}${font 123:size=9}Up: ${color7}${upspeed wlp4s0}${alignr}${color2}Down: ${color7}${downspeed wlp4s0}
 ${upspeedgraph wlp4s0 40,115 FFAA00 FFAA00}${alignr}${downspeedgraph wlp4s0 40,115 FFAA00 FFAA00}
 ${color2}${font 123:size=9}Total: ${color5}${totalup wlp4s0}${alignr}${color2}Total: ${color5}${totaldown wlp4s0}
-${image ~/.conky-weather/online.png -p 190,250 -s 48x23}
-${else}${image ~/.conky-weather/offline.png -p 190,250 -s 48x23}${endif}
+${endif}
 ${if_existing /proc/net/route enp8s0}${color2}${font 123:size=9}Up: ${color7}${upspeed enp8s0}${alignr}${color2}Down: ${color7}${downspeed enp8s0}
 ${upspeedgraph enp8s0 40,115 FFAA00 FFAA00}${alignr}${downspeedgraph enp8s0 40,115 FFAA00 FFAA00}
 ${color2}${font 123:size=9}Total: ${color5}${totalup enp8s0}${alignr}${color2}Total: ${color5}${totaldown enp8s0}${endif}${voffset -50}
+]]
