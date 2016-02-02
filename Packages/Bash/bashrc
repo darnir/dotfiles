@@ -98,6 +98,6 @@ PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export VISUAL=vim
+export VISUAL=nvim
 export TERM=xterm-256color
 export BROWSER="firefox"

@@ -346,7 +346,7 @@ pintos() {
 
 configwget() {
     # _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
-    _CFLAGS="-std=c89 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
+    _CFLAGS="-std=gnu99 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
     _CC="clang"
     _CONFOPT="--enable-option-checking
               --disable-silent-rules
