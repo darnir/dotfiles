@@ -18,4 +18,6 @@ post_install() {
         echo "perl-authen-sasl      For git send-email"
         echo "perl-net-smtp=ssl     For git send-email"
     fi
+
+    install_aur diff-so-fancy-git
 }

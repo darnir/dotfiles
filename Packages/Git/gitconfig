@@ -60,7 +60,7 @@
     whitespace = fix
 
 [core]
-    editor = vim
+    editor = nvim
     attributesfile = ~/.gitattributes
     # Treat spaces before tabs and all kinds of trailing whitespace as an error.
     # [default] trailing-space: looks for spaces at the end of a line
@@ -68,6 +68,7 @@
     # a line
     whitespace = space-before-tab,trailing-space
     eol = lf
+	pager = diff-so-fancy | less --tabs=1,5 -R
 
 [color]
     ui = auto
@@ -76,12 +77,21 @@
     current = yellow reverse
     local = yellow
     remote = green
+
 [color "diff"]
     meta = yellow bold
+    commit = green bold
     frag = magenta bold
     old = red bold
     new = green bold
     whitespace = red reverse
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
 [color "status"]
     added = yellow
     changed = green
@@ -106,31 +116,20 @@
 [help]
     autocorrect = 1
 
-[include]
-    path = ~/.gitconfig_private
-
 [merge]
-    tool = vimdiff
+    tool = nvimdiff
 
 [push]
     default = simple
 
+[remote-hg]
+	hg-git-compat = true
+
 [rerere]
     enabled = true
 
-# URL shorthands
-[url "git@github.com:"]
-    insteadOf = "gh:"
-    pushInsteadOf = "github:"
-    pushInsteadOf = "git://github.com/"
-[url "git://github.com/"]
-    insteadOf = "github:"
-[url "git@gist.github.com:"]
-    insteadOf = "gst:"
-    pushInsteadOf = "gist:"
-    pushInsteadOf = "git://gist.github.com/"
-[url "git://gist.github.com/"]
-    insteadOf = "gist:"
+[stash]
+    showPatch = true
 
 [user]
     email = darnir@gmail.com
