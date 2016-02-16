@@ -272,6 +272,9 @@ nnoremap <leader>r :RainbowParenthesesActivate<CR>
 nnoremap <leader>o o<ESC>
 nnoremap <leader>O O<Esc>
 
+nnoremap <leader>w :set formatoptions+=a<CR>
+nnoremap <leader>W :set formatoptions-=a<CR>
+
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
 nnoremap t i<CR><ESC>
