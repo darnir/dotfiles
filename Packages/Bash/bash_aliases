@@ -34,6 +34,9 @@ alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
 alias watchmail='watch systemctl --user status offlineimap.service'
 alias restartnet='sudo systemctl restart netctl-auto@wlp9s0.service'
 
+# Power Configuration
+
+
 # Aliases for Wget
 alias proj='cd ~/Programming/wget/'
 alias resetproj='./bootstrap --skip-po && configwget'

@@ -6,10 +6,13 @@
 [[ $- != *i* ]] && return
 
 # Ignore all duplicate lines AND commands that begin with a space in the history
-HISTCONTROL=ignoreboth
+HISTCONTROL="erasedups:ignoreboth"
 
 # Suffixes that should be ignored during completion
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:.o:
+
+# Don't record some commands
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # Shell Builtin Settings
 shopt -s autocd                  # No need to type cd anymore
@@ -26,13 +29,17 @@ shopt -s dirspell                # Fix simple typos in directory name expansion
 shopt -s no_empty_cmd_completion # Don't perform completions on empty lines
 shopt -u force_fignore           # We want to files in FIGNORE to appear uf they are only
                                  # possible completions
+# Automatically trim long paths in the prompt (requires Bash 4.x)
+PROMPT_DIRTRIM=2
+PROMPT_COMMAND='history -a'
 
 # Set Shell Settings
 set -o histexpand
 
 # Set Readline Settings
-set show-all-if-ambiguous on
-set completion-ignore-case on
+bind "set show-all-if-ambiguous on"
+bind "set completion-ignore-case on"
+bind "set completion-map-case on"
 set show-all-if-unmodified on
 set skip-completed-text on
 
