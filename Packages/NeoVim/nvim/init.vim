@@ -13,7 +13,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 					" Set a custom Spell File
 set modeline		" Enable modeline support
-let mapleader=","	" Remap the leader key to something more convenient
+let g:mapleader=','	" Remap the leader key to something more convenient
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~,*.aux,*.log,*.out,*.blg,*.lot,*.toc,*.pdf
 					" Ignore these filetypes from within Vim
 set lazyredraw		" Delay redrawing window during macro
@@ -25,6 +25,7 @@ set switchbuf=useopen,usetab
 					" Use existing open buffers and tabs to find file first
 set wrapscan		" Wrap searches around EOF
 set directory=/tmp/	" Temp. swap files need not persist
+set keywordprg=:Nman
 " }}}
 
 " Editor UI Settings {{{
@@ -33,7 +34,7 @@ set showcmd			" Show the command you are currently typing
 set formatoptions+=tcroqnj
 					" Set various options for formatting text.
 					" Check |fo-options| for information
-set so=6			" Keep a buffer of 6 lines top and bottom when scrolling
+set scrolloff=6			" Keep a buffer of 6 lines top and bottom when scrolling
 set relativenumber  " Show relative line numbers
 set shortmess+=atIoOtT
 					" Change the messages shown by vim
@@ -55,7 +56,7 @@ set smartcase		" Use smart case sensitivity when searching
 set incsearch		" Use incremental search
 set magic			" Use magic regex during searches
 "This unsets the 'last search pattern' register by hitting return
-nnoremap <CR> :noh<CR><CR>
+nnoremap <CR> :noh<CR>i<CR><ESC>
 " }}}
 
 " {{{ Markdown-Composer
@@ -94,6 +95,7 @@ Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
+Plug 'hrother/offlineimaprc.vim'
 
 Plug 'a.vim'
 Plug 'tpope/vim-fugitive'
@@ -101,6 +103,8 @@ Plug 'tpope/vim-git'
 
 Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
 Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
+
+Plug 'nhooyr/neoman.vim'
 call plug#end()
 " }}}
 
@@ -114,28 +118,90 @@ colorscheme vividchalk	" Set the theme for Vim
 
 " Autocmd  Settings {{{
 
-" Set spell checking only on files that make sense. Like TeX, mail and Markdown
-autocmd FileType tex setlocal spell spelllang=en_us
-autocmd FileType mail setlocal spell spelllang=en_us
-autocmd FileType markdown setlocal spell spelllang=en_us
-" autocmd FileType markdown,tex,mail setlocal formatoptions+=a
+augroup filetype_settings
+    autocmd!
+    " Set spell checking only on files that make sense. Like TeX, mail and Markdown
+    autocmd FileType tex setlocal spell spelllang=en_us
+    autocmd FileType mail setlocal spell spelllang=en_us
+    autocmd FileType markdown setlocal spell spelllang=en_us
+    " autocmd FileType markdown,tex,mail setlocal formatoptions+=a
+augroup END
 
-" When editing a file, always jump to the last cursor position
-autocmd BufReadPost *
-\ if line("'\"") > 0 && line ("'\"") <= line("$") |
-\   exe "normal! g'\"" |
-\ endif
+augroup cursor_positions
+    autocmd!
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal! g'\"" |
+    \ endif
 
-" Instead of reverting the cursor to the last position in the buffer, we
-" set it to the first line when editing a git commit message
-au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+    " Instead of reverting the cursor to the last position in the buffer, we
+    " set it to the first line when editing a git commit message
+    au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+    " Tip: Place the cursor in the optimal position, editing email messages.
+    " Author: Davide Alberani
+    " Version: 0.1
+    " Date: 24 May 2006
+    " Description: if you use Vim to edit your emails, having to manually
+    " move the cursor to the right position can be quite annoying.
+    " This command will place the cursor (and enter insert mode)
+    " in the more logical place: at the Subject header if it's
+    " empty or at the first line of the body (also taking
+    " care of the attribution, to handle replies messages).
+    " Usage: I like to call the Fip command by setting the command that is used
+    " by my mail reader (mutt) to execute Vim. E.g. in my muttrc I have:
+    " set editor="vim -c ':Fip'"
+    " Obviously you can prefer to call it using an autocmd:
+    " " Modify according to your needs and put this in your vimrc:
+    " au BufRead mutt* :Fip
+    " Hints: read the comments in the code and modify it according to your needs.
+    " Keywords: email, vim, edit, reply, attribution, subject, cursor, place.
+
+    " Function used to identify where to place the cursor, editing an email.
+    function FirstInPost (...) range
+      let l:cur = a:firstline
+      while l:cur <= a:lastline
+        let l:str = getline(l:cur)
+        " Found an _empty_ subject in the headers.
+        " NOTE: you can put similar checks to handle other empty headers
+        " like To, From, Newgroups, ...
+        if l:str == 'Subject: '
+          execute l:cur
+          :start!
+          break
+        endif
+        " We have reached the end of the headers.
+        if l:str == ''
+          let l:cur = l:cur + 1
+          " If the first line of the body is an attribution, put
+          " the cursor _after_ that line, otherwise the cursor is
+          " leaved right after the headers (assuming we're writing
+          " a new mail, and not editing a reply).
+          " NOTE: modify the regexp to match your mail client's attribution!
+          if strlen(matchstr(getline(l:cur), '^On.*wrote:.*')) > 0
+            let l:cur = l:cur + 1
+          endif
+          execute l:cur
+          :start
+          break
+        endif
+        let l:cur = l:cur + 1
+      endwhile
+    endfunction
+
+    " Command to be called.
+    com Fip :set tw=0<Bar>:%call FirstInPost()
+
+    au BufRead mutt* :Fip
+augroup END
 
 " Create non-existant directories
 function s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-        let dir=fnamemodify(a:file, ':h')
-        if !isdirectory(dir)
-            call mkdir(dir, 'p')
+        let l:dir=fnamemodify(a:file, ':h')
+        if !isdirectory(l:dir)
+            call mkdir(l:dir, 'p')
         endif
     endif
 endfunction
@@ -163,14 +229,17 @@ command! -nargs=+ Tg :T git <args>
 " }}}
 
 " {{{ Neomake Settings
-autocmd! BufWritePost * Neomake
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--config=flake8.ini'],
-    \ }
-let g:neomake_tex_enabled_makers = ['lacheck']
-let g:neomake_sh_enabled_makers = ['shellcheck']
-" let g:neomake_c_enabled_makers = ['gcc', 'clang-tidy']
+augroup NeomakeSettings
+    autocmd!
+    autocmd! BufWritePost * Neomake
+    let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_python_flake8_maker = {
+        \ 'args': ['--config=flake8.ini'],
+        \ }
+    let g:neomake_tex_enabled_makers = ['lacheck']
+    let g:neomake_sh_enabled_makers = ['shellcheck']
+    " let g:neomake_c_enabled_makers = ['gcc', 'clang-tidy']
+augroup END
 " }}}
 
 " {{{ Vim-Grepper Settings
@@ -184,7 +253,7 @@ nnoremap <leader># :Grepper -tool git -cword -noprompt<cr>
 " }}}
 
 " Airline settings {{{
-let g:airline_theme="badwolf"
+let g:airline_theme='badwolf'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -233,10 +302,13 @@ let g:rbpt_colorpairs = [
     \ ]
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
-au VimEnter * RainbowParenthesesActivate
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+augroup rainbow_paren
+    autocmd!
+    au VimEnter * RainbowParenthesesActivate
+    au Syntax * RainbowParenthesesLoadRound
+    au Syntax * RainbowParenthesesLoadSquare
+    au Syntax * RainbowParenthesesLoadBraces
+augroup END
 " }}}
 
 " CScope Settings {{{
@@ -277,7 +349,6 @@ nnoremap <leader>W :set formatoptions-=a<CR>
 
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
-nnoremap t i<CR><ESC>
 nnoremap s :%s/\s\+$//e
 " }}}
 
@@ -285,10 +356,10 @@ nnoremap s :%s/\s\+$//e
 " Append modeline after last line in buffer.  Use substitute() instead of
 " printf() to handle '%%s' modeline in LaTeX files.
 function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sts=%d sw=%d tw=%d %set :",
+  let l:modeline = printf(' vim: set ts=%d sts=%d sw=%d tw=%d %set :',
         \ &tabstop, &softtabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
+  let l:modeline = substitute(&commentstring, '%s', l:modeline, '')
+  call append(line('$'), l:modeline)
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " }}}
@@ -297,7 +368,7 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.  Only define it when not
 " defined already.
-if !exists(":DiffOrig")
+if !exists(':DiffOrig')
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
             \ | wincmd p | diffthis
 endif
@@ -315,18 +386,24 @@ function! MyUnSetCursor()
 	set nocursorcolumn
 endfunction
 
-au! CursorHold * call MyUnSetCursor()
-au! CursorMoved * call MySetCursor()
-au! CursorMovedI * call MyUnSetCursor()
+augroup CursorSniper
+    autocmd!
+    au! CursorHold * call MyUnSetCursor()
+    au! CursorMoved * call MySetCursor()
+    au! CursorMovedI * call MyUnSetCursor()
+augroup END
 " }}}
 
 " Highlight trailing whitespaces {{{
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+augroup highlight_whitespace
+    autocmd!
+    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
+augroup END
 " }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
