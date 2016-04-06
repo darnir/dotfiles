@@ -79,6 +79,9 @@ Plug 'kassio/neoterm'
 Plug 'mhinz/vim-grepper'
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
 Plug 'benekastah/neomake'
+Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -240,6 +243,26 @@ augroup NeomakeSettings
     let g:neomake_sh_enabled_makers = ['shellcheck']
     " let g:neomake_c_enabled_makers = ['gcc', 'clang-tidy']
 augroup END
+" }}}
+
+" {{{ NeoSnippet Settings
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" " For conceal markers.
+" if has('conceal')
+"   set conceallevel=2 concealcursor=niv
+" endif
 " }}}
 
 " {{{ Vim-Grepper Settings
