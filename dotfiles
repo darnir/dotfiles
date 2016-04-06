@@ -46,6 +46,10 @@
 # For more information, please refer to the README file available in the
 # repository.
 
+set -e
+set -u
+set -o pipefail
+
 # Source the variables and functions for displaying coloured output
 source .bash_colours || exit
 # Soure the various functions that are called by the install scripts
@@ -62,15 +66,33 @@ BASEPKG=""
 # easier logging. Redirecting STDERR to STDOUT allows us to simply write a
 # single redirection against the commands and all their output will be logged,
 # including errors and warnings
+# TODO: Find a better way to redirect all output and log it. We should not
+# redirect STDERR to STDOUT for this
 exec 3>>$LOGFILE 2>&1
 
-# Function: write_log [Text]
-# This is a helper function to output a message to the console AND print it to
-# the log file too.
+# #######################################
+# Print a message to console AND write it to a logfile
+# Globals:
+#	None
+# Arguments:
+#   Text
+# Returns:
+#   None
+#######################################
 write_log() {
     tee -a /dev/fd/3 <<< "$*"
 }
 
+# #######################################
+# Install a package as a dependency of another
+# Globals:
+#	BASEPKG
+#	TEMPDB
+# Arguments:
+#   Package_Name: Name of package to be installed as a dependency
+# Returns:
+#   None
+#######################################
 install_dependency() {
     if [[ $BASEPKG == "" ]]; then
         exit 1
@@ -119,7 +141,7 @@ install_package() {
 
     if [[ $(type -t prepare) == "function" ]]
     then
-        prepare  2>&1 | tee -a /dev/fd/3
+        prepare 2>&1 | tee -a /dev/fd/3
     fi
 
     install 2>&1 | tee -a /dev/fd/3
@@ -152,8 +174,9 @@ list_packages() {
 print_help() {
     echo "Usage: $0 [Options]"
     echo "List of valid options:"
-    echo "-S package  : Install dotfiles package \"package\""
-    echo "-l          : List available packages"
+
+	echo "-S package  : Install dotfiles package \"package\""
+    echo "-Q          : List available packages"
     echo "-h          : Print this help and exit"
     echo "Remember, this script must only be invoked from the root dir of the \
 repository"
@@ -162,13 +185,13 @@ repository"
 # main()
 # The script begins here with parsing the command line arguments and invoking
 # the relevant functions
-while getopts "S:b:d:lh" options
+while getopts "S:b:d:Qh" options
 do
     case $options in
         S) install_direct "$OPTARG";;
         b) BASEPKG="$OPTARG";;
         d) install_dependency "$OPTARG";;
-        l) list_packages;;
+        Q) list_packages;;
         h) print_help;;
         *) print_help;;
    esac
