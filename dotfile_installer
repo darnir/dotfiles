@@ -62,24 +62,27 @@ _set_linktype() {
 }
 
 _test_source_file() {
-    log_info "Checking if ${_CONF_NAME} exists in package"
+    log_info_n "Checking if ${_CONF_NAME} exists in package\t"
     if [ ! -f "${_LOC_FILE}" ]
     then
-        log_warn "Source file not found. Will create empty symlink"
+		log_warn "[404]"
+        # log_warn "Source file not found. Will create empty symlink"
     fi
+	log_okay "[Done]"
 }
 
 _backup_target() {
-    log_info "Checking if ${_CONF_FILE} exists"
+    log_info_n "Checking if ${_CONF_FILE} exists\t"
     if [ -f "${_CONF_FILE}" ]
     then
+		log_warn "[Exists]"
         _BACKUPNAME="${_BCK_FILE}"
         _BCKNO=1
         while [ -f "${_BACKUPNAME}" ]; do
             _BACKUPNAME="${_BCK_FILE}.${_BCKNO}"
             _BCKNO=$((_BCKNO+1))
         done
-        log_info "Target file found, saving to ${_BACKUPNAME}"
+        log_info_n "Target file found, saving to ${_BACKUPNAME}\t"
         if [ -L "${_CONF_FILE}" ]
         then
             REAL_CONF=$(realpath "${_CONF_FILE}")
@@ -88,20 +91,24 @@ _backup_target() {
         else
             ${SUDO} mv "${_CONF_FILE}" "${_BACKUPNAME}"
         fi
+		log_okay "[Done]"
     else
         ${SUDO} rm "${_CONF_FILE}" 2>/dev/null || true
-        log_info "Target file not found"
+		log_okay "[Done]"
     fi
 }
 
+# Reuse backup code from backupfile method
 _backup_target_dir() {
-    log_info "Checking if ${_CONF_DIR} exists"
+    log_info_n "Checking if ${_CONF_DIR} exists\t"
     if [ -d "${_CONF_DIR}" ]
     then
-        log_info "Target directory found, saving to ${_BCK_DIR}"
+		log_warn "[Exists]"
+        log_info_n "Target directory found, saving to ${_BCK_DIR}\t"
         $SUDO mv -v "${_CONF_DIR}" "${_BCK_DIR}"
+		log_okay "[Done]"
     else
-        log_info "Target directory not found"
+		log_okay "[Done]"
     fi
 }
 
@@ -123,6 +130,8 @@ _real_install() {
 	local loc_file="$3"
 	local conf_file="$4"
 
+    log_info_n "Linking dotfile ${_CONF_NAME} to ${conf_file}\t"
+
     # TODO: Test if the linktype is possible. Else fallback to a copy and warn
     # user about it.
 	#
@@ -131,6 +140,7 @@ _real_install() {
 	# be empty sometimes. Doublequoting will pass an empty parameter to ln
 	# causing the command to fail.
     ${sudo} ln ${linktype}"${loc_file}" "${conf_file}"
+	log_okay "[Done]"
 }
 
 _begin_install() {
@@ -163,7 +173,6 @@ install_file() {
     _test_source_file
     _backup_target
 
-    log_info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
 	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
 	_end_install
 }
@@ -180,16 +189,15 @@ install_private_file() {
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
 
-    log_info "Checking if ${_LOC_FILE} is mounted"
+    log_info_n "Checking if ${_LOC_FILE} is mounted\t"
     if [[ ! -f "${_LOC_FILE}" ]]
     then
-        log_warn "Private configuration file not found."
+        log_warn "[404]"
         log_info "Will continue and create symlink to location"
     else
         _backup_target
     fi
 
-    log_info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
 	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
 	_end_install
 }
@@ -206,7 +214,6 @@ install_directory() {
 
     _backup_target_dir
 
-    _info "Linking directory ${_CONF_NAME} to ${_CONF_DIR}"
 	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
 	_end_install
 }

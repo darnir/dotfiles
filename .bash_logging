@@ -63,6 +63,10 @@ log_info() {
 	__printf "white" "$@" >> "${_LOGFILE_}"
 }
 
+log_info_n() {
+	__printf_n "white" "$@" >> "${_LOGFILE_}"
+}
+
 log_warn() {
 	__printf "yellow" "$@" >> "${_LOGFILE_}"
 }
@@ -73,6 +77,10 @@ log_error() {
 
 log_colour() {
 	__printf "$1" "${@:2}" >> "${_LOGFILE_}"
+}
+
+log_okay() {
+	__printf "green" "$@" >> "${_LOGFILE_}"
 }
 
 log_colour_n() {
