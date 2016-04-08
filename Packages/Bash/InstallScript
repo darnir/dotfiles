@@ -13,32 +13,18 @@ install() {
 }
 
 post_install() {
-
-    install_packages bash-completion time beep zenity acpi 
+    install_packages bash-completion time beep zenity acpi
 
     sudo chmod 4755 "$(which beep)"
+
+	if [[ ! -f "/usr/share/git/completion/git-prompt.sh" ]]
+	then
+		wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -O ~/.git-prompt.sh
+	fi
 
     if isarchlinux
     then
         sudo pacman --noconfirm -S pkgfile
         sudo pkgfile --update
     fi
-
-#    # Is this an Arch Linux System?
-#    if isarchlinux
-#    then
-#        sudo pacman -S bash-completion time beep zenity acpi pkgfile
-#        sudo chmod 4755 "$(which beep)"
-#        sudo pkgfile --update
-#    else
-#        # We are not in Arch Linux. Install manually
-#        _warn "Please install the following optional dependencies:"
-#        echo "Optional Dependencies:  "
-#        echo "bash-completion:        For bash completion"
-#        echo "time:                   For certain wget aliases"
-#        echo "beep:                   For alias alert"
-#        echo "zenity:                 For timer() function"
-#        echo "acpi:                   For battery status in PS1"
-#    fi
-
 }

@@ -68,7 +68,6 @@ _test_source_file() {
     if [ ! -f "${_LOC_FILE}" ]
     then
 		log_warn "[404]"
-        # log_warn "Source file not found. Will create empty symlink"
     fi
 	log_okay "[Done]"
 }
@@ -231,14 +230,6 @@ depends() {
 
 install_packages() {
     sudo ./pacapt --noconfirm -S $*
-
-#	if ! isarchlinux; then
-#		log_warn "System is not ArchLinux. Packages not installed."
-#		log_info "Please install $* manually"
-#		return
-#	fi
-
-#	sudo pacma -S $*
 }
 
 install_aur() {
@@ -282,7 +273,6 @@ isarchlinux() {
     if which pacman &> /dev/null
     then
         log_okay "[Done]"
-        _info "System is Arch Linux. Continuing..."
         return 0
     else
         log_warn "[NotArch]"

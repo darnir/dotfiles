@@ -49,8 +49,14 @@ set skip-completed-text on
 [[ -f $HOME/.bash_completions ]] && . ~/.bash_completions
 [[ -f $HOME/.bash_colours ]] && . ~/.bash_colours
 
-source "/usr/share/doc/pkgfile/command-not-found.bash"
-source "/usr/share/git/completion/git-prompt.sh"
+[[ -f "/usr/share/doc/pkgfile/command-not-found.bash" ]] && . "/usr/share/doc/pkgfile/command-not-found.bash"
+
+if [[ -f "/usr/share/git/completion/git-prompt.sh" ]]
+then
+	source "/usr/share/git/completion/git-prompt.sh"
+else
+    source $HOME/.git-prompt.sh
+fi
 
 # Login greeting ------------------
 if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
