@@ -147,7 +147,7 @@ _real_install() {
 
 _begin_install() {
 	log_all_n "white" "Installing: "
-	log_all_n "nc" "$(eval printf "%-15s" "$1")"
+	log_all_n "nc" "$(eval printf "%-25s" "$1")"
 	log_std ""
 }
 
@@ -230,13 +230,15 @@ depends() {
 ################################################################################
 
 install_packages() {
-	if ! isarchlinux; then
-		log_warn "System is not ArchLinux. Packages not installed."
-		log_info "Please install $* manually"
-		return
-	fi
+    sudo ./pacapt --noconfirm -S $*
 
-	sudo pacman -S $*
+#	if ! isarchlinux; then
+#		log_warn "System is not ArchLinux. Packages not installed."
+#		log_info "Please install $* manually"
+#		return
+#	fi
+
+#	sudo pacma -S $*
 }
 
 install_aur() {
@@ -259,10 +261,10 @@ install_aur() {
 safetouch() {
     if [ ! -f "$1" ]
     then
-        _info "Touching $1"
+        log_info "Touching $1"
         touch "$1"
     else
-        _info "$1 exists, not touching"
+        log_info "$1 exists, not touching"
     fi
 }
 
@@ -276,13 +278,14 @@ is_in_path() {
 }
 
 isarchlinux() {
-    _info "Checking if current system is Arch Linux..."
+    log_info_n "Checking if current system is Arch Linux\t"
     if which pacman &> /dev/null
     then
+        log_okay "[Done]"
         _info "System is Arch Linux. Continuing..."
         return 0
     else
-        _warn "System is not Arch Linux."
+        log_warn "[NotArch]"
         return 1
     fi
 }
