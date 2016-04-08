@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+set -u
+
+# Source the variables and functions for displaying coloured output
+source .bash_colours || exit
+
+_LOGFILE_=
+
+log_init() {
+	# local logfile="$1"
+	_LOGFILE_="$1"
+
+    # Redirect fd 3 to the logfile and redirect STDERR to STDOUT. This is set up for
+    # easier logging. Redirecting STDERR to STDOUT allows us to simply write a
+    # single redirection against the commands and all their output will be logged,
+    # including errors and warnings
+	# exec 3>>"${logfile}" 2>&1
+}
+
+log_test() {
+	log_user "white" "Line in White"
+	log_user "red" "Red Text"
+	log_user_n "yellow" "White text... Wait...  "
+
+	log_user "green" "DONE!"
+
+	log_error "red" "Only in log file"
+	log_all "green" "For user and log"
+}
+
+__printf_n() {
+	local COLOR="$1"
+	local CLR="_${COLOR^^}"
+	local TEXT="${*:2}"
+	printf "%b%b%b" "${!CLR}" "$TEXT" "${_NC}"
+}
+
+__printf() {
+	local COLOR="$1"
+	local CLR="_${COLOR^^}"
+	local TEXT="${*:2}"
+	printf "%b%b%b\n" "${!CLR}" "$TEXT" "${_NC}"
+}
+
+## Unify into a single log call with parameters for log level and colour
+
+log_user() {
+	__printf "$@"
+}
+
+log_user_n() {
+	__printf_n "$@"
+}
+
+log_std() {
+	__printf "nc" "$@" >> "${_LOGFILE_}"
+}
+
+log_info() {
+	__printf "white" "$@" >> "${_LOGFILE_}"
+}
+
+log_warn() {
+	__printf "yellow" "$@" >> "${_LOGFILE_}"
+}
+
+log_error() {
+	__printf "red" "$@" >> "${_LOGFILE_}"
+}
+
+log_colour() {
+	__printf "$1" "${@:2}" >> "${_LOGFILE_}"
+}
+
+log_colour_n() {
+	__printf_n "$1" "${@:2}" >> "${_LOGFILE_}"
+}
+
+log_all() {
+	log_user "$@"
+	log_colour "$@"
+}
+
+log_all_n() {
+	log_user_n "$@"
+	log_colour_n "$@"
+}
