@@ -8,6 +8,8 @@
 # Author: Darshit Shah  <darnir@gmail.com>
 # License: MIT
 
+#XXX: Bash strict mode is not in effect during backup operations. Investigate
+
 # This helper function gets the location of where the configuration file should
 # exist on the system based on the keywords passed to it. Supported keywords
 # are:
@@ -85,7 +87,7 @@ _backup_target() {
         log_info_n "Target file found, saving to ${_BACKUPNAME}\t"
         if [ -L "${_CONF_FILE}" ]
         then
-            REAL_CONF=$(realpath "${_CONF_FILE}")
+            REAL_CONF=$(readlink -m "${_CONF_FILE}")
             ${SUDO} cp -R "${REAL_CONF}" "${_BACKUPNAME}"
             ${SUDO} rm "${_CONF_FILE}"
         else
