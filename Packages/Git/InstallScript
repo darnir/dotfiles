@@ -9,6 +9,10 @@ install() {
 }
 
 post_install() {
+
+    # This cannot currently be updated to pacapt since package name
+    # translations haven't yet been implemented. The package names here differ
+    # from those in Debian.
     if isarchlinux
     then
         _info "Installing essential Perl packages for git send-email..."
@@ -16,8 +20,21 @@ post_install() {
     else
         _warn "Please install the following optional dependencies:"
         echo "perl-authen-sasl      For git send-email"
-        echo "perl-net-smtp=ssl     For git send-email"
+        echo "perl-net-smtp-ssl     For git send-email"
+        echo "diff-so-fancy			For better looking git diff"
     fi
 
-    install_aur diff-so-fancy-git
+    if isarchlinux
+    then
+        install_aur diff-so-fancy-git
+    else
+        pushd /tmp
+        mkdir -p dotfiles_tmp
+        pushd dotfiles_tmp
+        git clone https://github.com/so-fancy/diff-so-fancy.git
+        pushd diff-so-fancy
+        install -Dm755 'diff-so-fancy' "/usr/bin/diff-so-fancy"
+        install -Dm755 'lib/diff-so-fancy.pl' "/usr/bin/lib/diff-so-fancy.pl"
+        install -Dm755 'third_party/diff-highlight/diff-highlight' "/usr/bin/diff-highlight"
+    fi
 }
