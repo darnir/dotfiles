@@ -15,13 +15,13 @@ post_install() {
     # from those in Debian.
     if isarchlinux
     then
-        _info "Installing essential Perl packages for git send-email..."
+        log_info "Installing essential Perl packages for git send-email..."
         sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
     else
-        _warn "Please install the following optional dependencies:"
+        log_warn "Please install the following optional dependencies:"
         echo "perl-authen-sasl      For git send-email"
         echo "perl-net-smtp-ssl     For git send-email"
-        echo "diff-so-fancy			For better looking git diff"
+        echo "diff-so-fancy         For better looking git diff"
     fi
 
     if isarchlinux
@@ -31,10 +31,11 @@ post_install() {
         pushd /tmp
         mkdir -p dotfiles_tmp
         pushd dotfiles_tmp
-        git clone https://github.com/so-fancy/diff-so-fancy.git
+        #rm -rf diff-so-fancy
+        #git clone https://github.com/so-fancy/diff-so-fancy.git
         pushd diff-so-fancy
-        install -Dm755 'diff-so-fancy' "/usr/bin/diff-so-fancy"
-        install -Dm755 'lib/diff-so-fancy.pl' "/usr/bin/lib/diff-so-fancy.pl"
-        install -Dm755 'third_party/diff-highlight/diff-highlight' "/usr/bin/diff-highlight"
+        sudo install -Dvm755 'diff-so-fancy' "/usr/bin/diff-so-fancy"
+        sudo install -Dvm755 'lib/diff-so-fancy.pl' "/usr/bin/lib/diff-so-fancy.pl"
+        sudo install -Dvm755 'third_party/diff-highlight/diff-highlight' "/usr/bin/diff-highlight"
     fi
 }
