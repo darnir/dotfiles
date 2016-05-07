@@ -58,6 +58,8 @@ else
     source $HOME/.git-prompt.sh
 fi
 
+[[ -f "$HOME/.config/ranger/bash.sh" ]] && . "$HOME/.config/ranger/bash.sh"
+
 # Login greeting ------------------
 if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
     detached_screens=$(screen -list | grep Detached)
