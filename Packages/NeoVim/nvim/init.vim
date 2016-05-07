@@ -82,6 +82,8 @@ Plug 'benekastah/neomake'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'jiangmiao/auto-pairs'
+Plug 'easymotion/vim-easymotion'
 
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -90,6 +92,7 @@ Plug 'bogado/file-line'
 Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
@@ -275,6 +278,10 @@ nnoremap <leader>git :Grepper -tool git -noswitch<cr>
 nnoremap <leader># :Grepper -tool git -cword -noprompt<cr>
 " }}}
 
+" {{{ Easymotion Settings
+" map <Leader> <Plug>(easymotion-prefix)
+" }}}
+
 " Airline settings {{{
 let g:airline_theme='badwolf'
 let g:airline_powerline_fonts = 1
@@ -290,6 +297,7 @@ let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#tagbar#flags = 'f'
+let g:airline_section_section_a = '%{gutentags#statusline()}'
 " }}}
 
 " {{{ NERD Settings
