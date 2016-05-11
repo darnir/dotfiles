@@ -70,9 +70,9 @@ endfunction
 
 " Vim Plugin Management {{{
 call plug#begin('~/.config/nvim/plugged')
+
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColorScheme' }
 Plug 'tpope/vim-vividchalk'
-" Plug 'morhetz/gruvbox'
 Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
 
 Plug 'kassio/neoterm'
@@ -97,7 +97,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
 
-Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
+" Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
@@ -107,8 +107,9 @@ Plug 'a.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
-Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
-Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
+" Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
+" Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
 
 Plug 'nhooyr/neoman.vim'
 call plug#end()
@@ -268,6 +269,10 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 " endif
 " }}}
 
+" {{{ Markdown Composer Settings
+let g:markdown_composer_autostart=0
+" }}}
+
 " {{{ Vim-Grepper Settings
 let g:grepper = {
     \ 'tools': ['git', 'grep'],
@@ -354,6 +359,7 @@ let g:generate_tags=1
 " C-\ will open in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
+
 
 " Keyboard Shortcuts {{{
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
