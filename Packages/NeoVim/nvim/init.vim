@@ -9,7 +9,7 @@
 
 
 " General Editor Settings {{{
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 					" Set a custom Spell File
 set modeline		" Enable modeline support
@@ -29,6 +29,7 @@ set keywordprg=:Nman
 " }}}
 
 " Editor UI Settings {{{
+set termguicolors   " Use True Colours for Terminal
 set ruler			" Show the cursor position all the time
 set showcmd			" Show the command you are currently typing
 set formatoptions+=tcroqnj
@@ -98,6 +99,7 @@ Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
 
 " Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
