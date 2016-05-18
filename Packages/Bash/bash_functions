@@ -226,13 +226,26 @@ note () {
 }
 
 # Function: pdf()
-# Expects a pdf file as an argument
-# This is a simple helper function to asynchronously launch a pdf viewer from
-# the command line without polluting it.
+#
+# Expects a pdf file as an argument.
+# This is a simple helper function to asynchronously launch a pdf viewer (evince) from
+# the command line without polluting it. If the "-o" switch is passed, then Okular
+# will be used as the PDF viewer.
 pdf() {
-    evince "$1" &>/dev/null &
+    if [[ "$1" == "-o" ]]; then
+        okular "$2" &> /dev/null &
+    else
+        evince "$1" &>/dev/null &
+    fi
 }
 
+# Function: pdftools()
+#
+# Simple common operations to perform on a (set of) PDF file(s) +
+
+# Actions:
+#   compress:  Compress a PDF to reduce quality and space
+#   join:      Join multiple PDF files into a single file
 pdftools() {
     ACTION="$1"
     case $ACTION in
@@ -256,15 +269,6 @@ timer() {
     sleep "$1" && alert && zenity --info --text="$2" &> /dev/null &
 }
 
-# Function: ddup()
-# Usage: ddup [file1] [file2]
-# dd's [file1] onto [file2] but also displays a progress bar showing the
-# progress of the operation.
-ddup() {
-    fsize=$(stat -c %s "$1")
-    su -c "dd if="$1" bs=4096 2> /dev/null | pv -petrb -s "${fsize}" | dd of="$2" bs=4096"
-}
-
 # Function: screen()
 # Usage: screen [preset]
 # This function overrides the call to /usr/bin/screen. There exist a number of
@@ -276,7 +280,7 @@ screen() {
     filepath="$HOME/$filename"
     if [[ -f $filepath ]]
     then
-        /usr/bin/screen -c $filepath
+        /usr/bin/screen -c "$filepath"
     else
         /usr/bin/screen $*
     fi
@@ -285,11 +289,11 @@ screen() {
 ssh-genkey() {
     if [[ -z $1 ]]
     then
-        echo -e "${_LBLUE}Usage: ssh-genkey [name]"
+        echo -e "Usage: ssh-genkey [name]"
         return 1
     fi
-    mkdir $HOME/.ssh/"$1"
-    ssh-keygen -C "darnir@gmail.com" -f $HOME/.ssh/"$1"/id_rsa
+    mkdir "$HOME/.ssh/$1"
+    ssh-keygen -C "darnir@gmail.com" -f "$HOME/.ssh/$1/id_rsa"
 
     cat <<EOF >> $HOME/.ssh/config
 
@@ -301,7 +305,7 @@ Host $1.com
 EOF
 
     echo "Identity Settings written to config file. Please verify:"
-    vim $HOME/.ssh/config
+    vim "$HOME/.ssh/config"
 }
 
 # Overload mutt to clean the aliases file first
