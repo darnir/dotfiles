@@ -1,8 +1,7 @@
-#1/bin/bash
+#!/bin/bash
 
 if tput colors > /dev/null
 then
-
     _BLACK='\e[0;30m'
     _RED='\e[0;31m'
     _GREEN='\e[0;32m'
@@ -20,21 +19,4 @@ then
     _LCYAN='\e[1;36m'
     _WHITE='\e[1;37m'
     _NC='\e[0m' # No Colo
-
 fi
-
-_info() {
-    echo -e "${_WHITE}$*${_NC}"
-}
-
-_error() {
-    echo -e "${_RED}$*${_NC}"
-}
-
-_usage() {
-    echo -e "${_LBLUE}$*${_NC}"
-}
-
-_warn() {
-    echo -e "${_YELLOW}$*${_NC}"
-}

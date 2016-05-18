@@ -46,10 +46,16 @@
 # For more information, please refer to the README file available in the
 # repository.
 
-# Source the variables and functions for displaying coloured output
-source .bash_colours || exit
+set -e
+set -u
+set -o pipefail
+# set -x
+
 # Soure the various functions that are called by the install scripts
 source dotfile_installer || exit
+
+# Logging Framework
+source .bash_logging || exit
 
 # Location and name of the log file
 LOGFILE="dotfiles.log"
@@ -58,31 +64,34 @@ TEMPDB="/tmp/dotfile_tmp"
 
 BASEPKG=""
 
-# Redirect fd 3 to the logfile and redirect STDERR to STDOUT. This is set up for
-# easier logging. Redirecting STDERR to STDOUT allows us to simply write a
-# single redirection against the commands and all their output will be logged,
-# including errors and warnings
-exec 3>>$LOGFILE 2>&1
+log_init ${LOGFILE}
 
-# Function: write_log [Text]
-# This is a helper function to output a message to the console AND print it to
-# the log file too.
-write_log() {
-    tee -a /dev/fd/3 <<< "$*"
-}
 
+# #######################################
+# Install a package as a dependency of another
+# Globals:
+#	BASEPKG
+#	TEMPDB
+# Arguments:
+#   Package_Name: Name of package to be installed as a dependency
+# Returns:
+#   None
+#######################################
 install_dependency() {
     if [[ $BASEPKG == "" ]]; then
         exit 1
     fi
-    write_log "$(_info "Installing Dependency $1")"
+	log_std "=== New Log Entry: $(date) ==="
+    log_info "Installing Dependency $1"
     echo -e "\n## $1 -> $BASEPKG" > $TEMPDB
     install_package "$1"
 }
 
 install_direct() {
     pkgname=${1%/}
-    write_log "$(_info "Installing package $pkgname\n")"
+	log_std "=== New Log Entry: $(date) ==="
+	log_info "Installing package $pkgname"
+    # write_log "$(_info "Installing package $pkgname\n")"
     echo -e "\n## $pkgname" > $TEMPDB
     install_package "$pkgname"
 }
@@ -102,34 +111,35 @@ install_package() {
     local pkgname="$1"
     local pkgdir="Packages/$pkgname"
     local pkgbuild="$pkgdir/InstallScript"
-    echo "=== New Log Entry: $(date) ===" >> $LOGFILE
 
     if [[ -f $pkgbuild ]]
     then
         source "$pkgbuild"
     else
-        write_log "$(_error "Cannot find Install Script for $pkgname")"
+		log_error "Cannot find Install Script for $pkgname"
         return 2
     fi
     if [[ ! -d "$pkgdir" ]]
     then
-        write_log "$(_error "Unable to locate package $pkgname")"
+		log_error "Unable to locate package $pkgname"
         return 2
     fi
 
     if [[ $(type -t prepare) == "function" ]]
     then
-        prepare  2>&1 | tee -a /dev/fd/3
+		log_all "white" "Running Pre-Install Hooks"
+		log_all "nc" "$(eval prepare 2>&1)"
+		log_std ""
     fi
 
-    install 2>&1 | tee -a /dev/fd/3
+	log_user "nc" "$(eval install 2>&1)"
 
     if [[ $(type -t post_install) == "function" ]]
     then
-        post_install 2>&1 | tee -a /dev/fd/3
+		log_all "white" "\nRunning Post-Install Hooks"
+		log_all "nc" "$(eval post_install 2>&1)"
     fi
-    echo "=== End of Log Entry ===" >> $LOGFILE
-    echo "" >> $LOGFILE
+	log_std "=== End of Log Entry ==="
     cat $TEMPDB >> $INSTALL
 }
 
@@ -152,8 +162,9 @@ list_packages() {
 print_help() {
     echo "Usage: $0 [Options]"
     echo "List of valid options:"
-    echo "-S package  : Install dotfiles package \"package\""
-    echo "-l          : List available packages"
+
+	echo "-S package  : Install dotfiles package \"package\""
+    echo "-Q          : List available packages"
     echo "-h          : Print this help and exit"
     echo "Remember, this script must only be invoked from the root dir of the \
 repository"
@@ -162,14 +173,15 @@ repository"
 # main()
 # The script begins here with parsing the command line arguments and invoking
 # the relevant functions
-while getopts "S:b:d:lh" options
+while getopts "S:b:d:Qht" options
 do
     case $options in
         S) install_direct "$OPTARG";;
         b) BASEPKG="$OPTARG";;
         d) install_dependency "$OPTARG";;
-        l) list_packages;;
+        Q) list_packages;;
         h) print_help;;
+		t) log_test;;
         *) print_help;;
    esac
 done

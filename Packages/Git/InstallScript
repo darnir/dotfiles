@@ -6,3 +6,21 @@ install() {
     install_file gitconfig home false true
     install_file gitattributes home false true
 }
+
+post_install() {
+
+    if isarchlinux
+    then
+        install_aur diff-so-fancy-git
+    else
+        pushd /tmp
+        mkdir -p dotfiles_tmp
+        pushd dotfiles_tmp
+        #rm -rf diff-so-fancy
+        #git clone https://github.com/so-fancy/diff-so-fancy.git
+        pushd diff-so-fancy
+        sudo install -Dvm755 'diff-so-fancy' "/usr/bin/diff-so-fancy"
+        sudo install -Dvm755 'lib/diff-so-fancy.pl' "/usr/bin/lib/diff-so-fancy.pl"
+        sudo install -Dvm755 'third_party/diff-highlight/diff-highlight' "/usr/bin/diff-highlight"
+    fi
+}

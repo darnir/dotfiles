@@ -5,5 +5,5 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 export BROWSER="/usr/bin/lynx"
-export EDITOR="vim"
+export EDITOR="nvim"
 export TZ="Europe/Berlin"

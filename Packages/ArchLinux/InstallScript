@@ -4,20 +4,13 @@ PACKAGE_NAME="ArchLinux"
 
 if ! isarchlinux
 then
-    _error "This system does not seem to be ArchLinux."
-    _error "Exiting installer for ArchLinux"
+    log_error "This system does not seem to be ArchLinux."
+    log_error "Exiting installer for ArchLinux"
     exit 1
-else
-    echo "" # For a cleaner output. We add a newline here
 fi
 
 prepare() {
-
-    if ! which wget &> /dev/null
-    then
-        _info "Wget not found. Installing Wget from official repositories"
-        sudo pacman -S wget
-    fi
+	install_packages wget
 }
 
 install() {
@@ -26,7 +19,7 @@ install() {
 }
 
 post_install() {
-    _info "Initializing pacman's keyring"
+    log_info "Initializing pacman's keyring"
     sudo pacman-key --init
     sudo pacman-key -r 962DDE58
     sudo pacman-key --lsign-key 962DDE58
@@ -35,13 +28,14 @@ post_install() {
 
     if ! is_in_path cower
     then
-        _info "Installing Cower from the AUR"
+        log_info "Installing Cower from the AUR"
         mkdir /tmp/aur
         pushd /tmp/aur
         wget https://aur.archlinux.org/cgit/aur.git/snapshot/cower.tar.gz
         tar -xvf cower.tar.gz
-        cd cower
+        pushd cower
         makepkg -si
         popd
+		popd
     fi
 }

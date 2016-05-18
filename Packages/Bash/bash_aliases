@@ -9,7 +9,8 @@ alias more='less'
 alias nano='vim'
 alias ping='ping -c 5'
 alias rm='rm -v'
-alias vi="vim"
+alias vi="nvim"
+alias vim="nvim"
 
 # New Commands
 alias :q='exit'

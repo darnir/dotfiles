@@ -8,6 +8,8 @@
 # Author: Darshit Shah  <darnir@gmail.com>
 # License: MIT
 
+#XXX: Bash strict mode is not in effect during backup operations. Investigate
+
 # This helper function gets the location of where the configuration file should
 # exist on the system based on the keywords passed to it. Supported keywords
 # are:
@@ -30,14 +32,16 @@
 _get_conf_file() {
     local confpath
     case "$1" in
-        etc) confpath="/etc/${_CONF_NAME}";;
-        home) confpath="$HOME/.${_CONF_NAME}";;
-        userconf) confpath="$HOME/.config/${_CONF_NAME}";;
-        bin) confpath="/usr/local/bin/${_CONF_NAME}";;
-        systemd-user) confpath="$HOME/.config/systemd/user/${_CONF_NAME}";;
-        autostart) confpath="$HOME/.config/autostart/${_CONF_NAME}";;
-        *) confpath="$1/${_CONF_NAME}"
+        etc) confpath="/etc/";;
+        home) confpath="$HOME/.";;
+        userconf) confpath="$HOME/.config/";;
+        bin) confpath="/usr/local/bin/";;
+        systemd-user) confpath="$HOME/.config/systemd/user/";;
+        autostart) confpath="$HOME/.config/autostart/";;
+        *) confpath="$1/"
     esac
+	mkdir -p "$confpath"
+	confpath="${confpath}${_CONF_NAME}"
     echo "$confpath"
 }
 
@@ -60,46 +64,52 @@ _set_linktype() {
 }
 
 _test_source_file() {
-    _info "Checking if ${_CONF_NAME} exists in package"
+    log_info_n "Checking if ${_CONF_NAME} exists in package\t"
     if [ ! -f "${_LOC_FILE}" ]
     then
-        _warn "Source file not found. Will create empty symlink"
+		log_warn "[404]"
     fi
+	log_okay "[Done]"
 }
 
 _backup_target() {
-    _info "Checking if ${_CONF_FILE} exists"
+    log_info_n "Checking if ${_CONF_FILE} exists\t"
     if [ -f "${_CONF_FILE}" ]
     then
+		log_warn "[Exists]"
         _BACKUPNAME="${_BCK_FILE}"
         _BCKNO=1
         while [ -f "${_BACKUPNAME}" ]; do
             _BACKUPNAME="${_BCK_FILE}.${_BCKNO}"
             _BCKNO=$((_BCKNO+1))
         done
-        _warn "Target file found, saving to ${_BACKUPNAME}"
+        log_info_n "Target file found, saving to ${_BACKUPNAME}\t"
         if [ -L "${_CONF_FILE}" ]
         then
-            REAL_CONF=$(realpath "${_CONF_FILE}")
-            ${SUDO} cp -v -R "${REAL_CONF}" "${_BACKUPNAME}"
-            ${SUDO} rm -v "${_CONF_FILE}"
+            REAL_CONF=$(readlink -m "${_CONF_FILE}")
+            ${SUDO} cp -R "${REAL_CONF}" "${_BACKUPNAME}"
+            ${SUDO} rm "${_CONF_FILE}"
         else
-            ${SUDO} mv -v "${_CONF_FILE}" "${_BACKUPNAME}"
+            ${SUDO} mv "${_CONF_FILE}" "${_BACKUPNAME}"
         fi
+		log_okay "[Done]"
     else
-        ${SUDO} rm "${_CONF_FILE}"
-        _info "Target file not found"
+        ${SUDO} rm "${_CONF_FILE}" 2>/dev/null || true
+		log_okay "[Done]"
     fi
 }
 
+# Reuse backup code from backupfile method
 _backup_target_dir() {
-    _info "Checking if ${_CONF_DIR} exists"
+    log_info_n "Checking if ${_CONF_DIR} exists\t"
     if [ -d "${_CONF_DIR}" ]
     then
-        _warn "Target directory found, saving to ${_BCK_DIR}"
+		log_warn "[Exists]"
+        log_info_n "Target directory found, saving to ${_BCK_DIR}\t"
         $SUDO mv -v "${_CONF_DIR}" "${_BCK_DIR}"
+		log_okay "[Done]"
     else
-        _info "Target directory not found"
+		log_okay "[Done]"
     fi
 }
 
@@ -109,10 +119,40 @@ _log_installed() {
     local lnktype="$3"
 
     if [[ $lnktype == '-s ' ]]; then
-        echo -e "  * $srcfile\t->  $dstfile" >> $TEMPDB
+        echo -e "  * $srcfile\t->  $dstfile" >> "$TEMPDB"
     else
-        echo -e "  * $srcfile\t--> $dstfile" >> $TEMPDB
+        echo -e "  * $srcfile\t--> $dstfile" >> "$TEMPDB"
     fi
+}
+
+_real_install() {
+	local sudo="$1"
+	local linktype="$2"
+	local loc_file="$3"
+	local conf_file="$4"
+
+    log_info_n "Linking dotfile ${_CONF_NAME} to ${conf_file}\t"
+
+    # TODO: Test if the linktype is possible. Else fallback to a copy and warn
+    # user about it.
+	#
+	# Shellcheck gives a warning here asking to doublequote the linktype
+	# variable. However, that will break the ln command since the variable may
+	# be empty sometimes. Doublequoting will pass an empty parameter to ln
+	# causing the command to fail.
+    ${sudo} ln ${linktype}"${loc_file}" "${conf_file}"
+	log_okay "[Done]"
+}
+
+_begin_install() {
+	log_all_n "white" "Installing: "
+	log_all_n "nc" "$(eval printf "%-25s" "$1")"
+	log_std ""
+}
+
+_end_install() {
+    _log_installed "$_LOC_FILE" "$_CONF_FILE" "$linktype"
+	log_all "green" "[Done]"
 }
 
 # Function: install_file()
@@ -122,6 +162,7 @@ _log_installed() {
 #   $3 : Needs root privileges to install?
 #   $4 : Is a symlink? (Default: Yes)
 install_file() {
+	_begin_install "$@"
     local _CONF_NAME="$1"
     local _CONF_FILE=$(_get_conf_file "$2")
     local _BCK_FILE=${_CONF_FILE}.bck
@@ -129,19 +170,18 @@ install_file() {
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
-    # TODO: Test if the linktype is possible. Else fallback to a copy and warn
-    # user about it.
 
     _test_source_file
     _backup_target
 
-    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-    ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
-    _log_installed "$_LOC_FILE" "$_CONF_FILE" "$linktype"
-    echo ""
+	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
+	_end_install
 }
 
+# TODO: Use a param to end_install to cause a yellow warning or red failed
+# output
 install_private_file() {
+	_begin_install "$@"
     local _CONF_NAME="$1"
     local _CONF_FILE=$(_get_conf_file "$2")
     local _BCK_FILE=${_CONF_FILE}.bck
@@ -150,22 +190,21 @@ install_private_file() {
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
 
-    _info "Checking if ${_LOC_FILE} is mounted"
+    log_info_n "Checking if ${_LOC_FILE} is mounted\t"
     if [[ ! -f "${_LOC_FILE}" ]]
     then
-        _warn "Private configuration file not found."
-        _info "Will continue and create symlink to location"
+        log_warn "[404]"
+        log_info "Will continue and create symlink to location"
     else
         _backup_target
     fi
 
-    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_FILE}"
-    ${SUDO} ln ${linktype}"${_LOC_FILE}" "${_CONF_FILE}"
-    _log_installed "$_LOC_FILE" "$_CONF_FILE" "$linktype"
-    echo ""
+	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
+	_end_install
 }
 
 install_directory() {
+	_begin_install "$@"
     local _CONF_NAME="$1"
     local _CONF_DIR=$(_get_conf_file "$2")
     local _BCK_DIR=${_CONF_DIR}bck
@@ -176,14 +215,8 @@ install_directory() {
 
     _backup_target_dir
 
-    _info "Linking dotfile ${_CONF_NAME} to ${_CONF_DIR}"
-    $SUDO ln ${linktype}"${_LOC_DIR}" "${_CONF_DIR}"
-    _log_installed "$_LOC_DIR" "$_CONF_DIR" "$linktype"
-    echo ""
-}
-
-install_aur() {
-    true
+	_real_install "${SUDO}" "${linktype}" "${_LOC_FILE}" "${_CONF_FILE}"
+	_end_install
 }
 
 depends() {
@@ -195,19 +228,40 @@ depends() {
 # Custom Functions for use by the dotfile package installers                   #
 ################################################################################
 
+install_packages() {
+    sudo ./pacapt --noconfirm -S $*
+}
+
+install_aur() {
+    if ! isarchlinux; then
+		log_warn "System is not ArchLinux. Packages not installed."
+		log_info "Please install $1 manually"
+		return
+	fi
+
+    # We are in Arch Linux
+    echo "Installing $1 from AUR"
+    pushd /tmp
+    wget https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz
+    tar -xvzf "$1".tar.gz
+    pushd "$1"
+    makepkg -si
+    popd
+    popd
+}
 safetouch() {
     if [ ! -f "$1" ]
     then
-        _info "Touching $1"
+        log_info "Touching $1"
         touch "$1"
     else
-        _info "$1 exists, not touching"
+        log_info "$1 exists, not touching"
     fi
 }
 
 is_in_path() {
     exec_name="$1"
-    if ! which $exec_name &> /dev/null; then
+    if ! which "$exec_name" &> /dev/null; then
         return 1
     else
         return 0
@@ -215,13 +269,13 @@ is_in_path() {
 }
 
 isarchlinux() {
-    _info "Checking if current system is Arch Linux..."
+    log_info_n "Checking if current system is Arch Linux\t"
     if which pacman &> /dev/null
     then
-        _info "System is Arch Linux. Continuing..."
+        log_okay "[Done]"
         return 0
     else
-        _warn "System is not Arch Linux."
+        log_warn "[NotArch]"
         return 1
     fi
 }

@@ -153,6 +153,30 @@ screen() {
     fi
 }
 
+configwget() {
+    # _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
+    _CFLAGS="-std=gnu99 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
+    _CC="clang"
+    _CONFOPT="--enable-option-checking
+              --disable-silent-rules
+              --enable-dependency-tracking
+              --with-ssl=openssl
+              --without-included-regex
+              --enable-nls
+              --enable-assert
+              --prefix=/usr"
+    _clang_CONFOPT="-C"
+    _gcc_CONFOPT=""
+
+    if [[ "$1" == "gcc" ]]; then
+        _CC="gcc"
+        shift
+    fi
+
+    _CC_CONFOPT="_${_CC}_CONFOPT"
+    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} $* CFLAGS="$_CFLAGS"
+}
+
 cleanswap() {
     SWDEV=$(swapon -s | tail -1 | awk '{print $1}')
     sudo swapoff $SWDEV
