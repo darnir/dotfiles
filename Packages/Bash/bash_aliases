@@ -54,3 +54,6 @@ alias chown='chown --preserve-root'
 # Allows one to use bash aliases with superuser permissions. See bash(1) for
 # details
 alias sudo='sudo '
+
+# Load other temporary aliases
+[[ -f ~/.temp_aliases ]] && . ~/.temp_aliases
