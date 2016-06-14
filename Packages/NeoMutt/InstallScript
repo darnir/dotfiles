@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PACKAGE_NAME="NeoMutt"
+
+prepare() {
+	install_aur neomutt-git
+	install_aur urlscan-git
+}
+
+install() {
+	install_file muttrc home false true
+    install_directory mutt home false true
+}

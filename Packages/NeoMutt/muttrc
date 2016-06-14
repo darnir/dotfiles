@@ -1,0 +1,173 @@
+# Main muttrc file.
+# This file will define the main configuration options for Mutt and source the
+# configurations for interacting with other applications
+
+# Source the Mutt gpg variables.
+source ~/.mutt/gpg.muttrc
+
+# Source the details for offlineimap
+source ~/.mutt/offlineimap.muttrc
+
+# Source the configurations for each different account
+# TODO: Check and fix. Set up msmtp for UdS
+folder-hook UdS/*            source ~/.mutt/UdS.muttrc
+folder-hook gmail/*          source ~/.mutt/gmail.muttrc
+folder-hook MPIINF/*         source ~/.mutt/MPIINF.muttrc
+
+# Source the Mutt Colorscheme
+source ~/.mutt/colors.muttrc
+
+# Source the Mutt-Sidebaar settings. Since Sidebar isn't part of vanilla mutt,
+# but is an external patch, we keep its settings separate.
+source ~/.mutt/sidebar.muttrc
+
+# Directories and Programs
+set header_cache            = "~/.mutt/cache/headers"   # Cache of all message headers
+# set message_cachedir        = "~/.mutt/cache/bodies"    # Cache of all message bodies
+# set certificate_file        = "~/.mutt/certificates"    # Store user trusted certs here
+set mailcap_path            = "~/.mutt/mailcap"         # Teach Mutt how to handle attachments
+set signature               = "~/.mutt/sig"             # Signature at the end of each message
+set tmpdir                  = "/tmp"                    # Location for storing att. temporarily
+set editor                  = "nvim -c 'set fo+=aw'"     # Editor to be used for composing emails
+
+# Set the alias information
+set alias_file              = "~/.mutt/aliases"         # Mutt aliases
+set sort_alias              = alias                     # Sort aliases by alias name
+set reverse_alias           = yes                       # Show Name from alias when possible
+source $alias_file                                      # Stupid, but required
+set display_filter          = "~/.mutt/aliasgen.sh"
+
+# Main Options
+set realname                = "Darshit Shah"            # Set the Real Name to be used when sending emails
+set timeout                 = 10                        # Wait for $timeout secs. for a keypress, then check for mail
+set mail_check              = 10                        # Check mail every $mail_check seconds
+set charset                 = "utf-8"
+set sig_dashes                                          # Add dahses, '--' before signature
+set use_envelope_from                                   # Derive the envelope_from value and send to sendmail
+set delete                                              # Delete, don't ask
+set quit                                                # Quit, don't ask
+set pipe_decode                                         # Decode the messages before sending to pipe-message
+set thorough_search                                     # Decode headers and mattachments before searching
+unset move                                              # Move, don't ask! Activates when moving messages from spool to mbox under mbox-hook
+unset record                                            # Don't save sent messages. Gmail does that
+unset confirmappend                                     # Append messages, don't ask!
+unset mark_old                                          # Read / Unread is enough for me.
+unset wait_key                                          # Don't wait for a keypress after external commands
+
+# Index Options
+set sort                    = threads                   # Threaded Index. Like Gmail
+set sort_aux                = reverse-last-date-received
+                                                        # Like Gmail
+set reply_regexp            = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+                                                        # Regex to identify replies
+set strict_threads                                      # Use In-Reply-To header to identify threads
+set uncollapse_jump                                     # Jump to next unread when uncollapsing a thread
+set beep_new                                            # Beep on new messages
+folder-hook . "exec collapse-all"                       # Collapse all threads by default
+
+# Formats
+set date_format             = "%m/%d"                   # Prefer to keep a simple date
+set index_format            = "[%Z]  %D  %-20.20L  %s"  # Format of the index page
+
+# Pager Options
+set pager_index_lines       = 9                         # number of index lines to show
+set pager_context           = 5                         # number of context lines to show
+set quote_regexp            = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+                                                        # Regex to identify quoted part of message
+set pager_stop                                          # don't go to next message automatically
+set menu_scroll                                         # scroll in menus
+set smart_wrap                                          # Wrap lines are words only
+set tilde                                               # Pad blank lines with ~
+unset markers                                           # no ugly plus signs
+alternative_order text/plain text/enriched text/html    # Order for multipart MIME attachments
+
+set skip_quoted_offset = 3
+
+# Compose Mail
+set forward_format          = "Fwd: %s"                 # format of subject when forwarding
+set ispell 		            = "aspell -e -c"		    # use aspell as ispell
+set send_charset            = "utf-8"                   # Use UTF-8 when sending messages
+set attribution             = "On %d, %n wrote:"        # Message added before quoted section
+set text_flowed                                         # Use format=flowed
+set edit_headers                                        # show headers when composing
+set fast_reply                                          # skip to compose when replying
+set fcc_attach                                          # save attachments with the body
+set reply_to                                            # reply to Reply to: field
+set include                                             # include message in replies
+set forward_quote                                       # include message in forwards
+set forward_decode                                      # decode when forwarding
+set reverse_name                                        # reply as whomever it was to, usefule when using email aliases
+set abort_nosubject                                     # Refuse to create messages without a subject
+unset mime_forward                                      # forward attachments as part of body
+unset metoo                                             # Remove address from receipients list
+unset reply_self                                        # Always reply to receipients
+
+# Status Bar Format
+set status_chars            = " *%A"                    # ' ': Normal, '*': Changed, '%': Read-Only, 'A': Attach-Message mode
+set status_format           = "───[ Folder: %f ]───[%r%m messages%?u? (%u unread)?%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+# Headers to show in mail
+ignore *                                                # Ignore all headers in pager.
+unignore from date subject to cc                        # Whitelist headers to show
+unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
+unignore posted-to:
+unhdr_order *                                           # some distros order things by default
+hdr_order from: to: cc: date: subject:                  # and in this order
+
+## Keybindings
+
+# Index Keybindings
+bind index gg       first-entry
+bind index G        last-entry
+bind index <tab>    sync-mailbox
+bind index <space>  collapse-thread
+bind index <Esc>v   collapse-all
+bind index n        next-new-then-unread
+
+# Pager Keybindings
+bind pager k  previous-line
+bind pager j  next-line
+bind pager gg top
+bind pager G  bottom
+
+bind index,pager r group-reply
+# Sidebar Navigation
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+
+# Macros
+macro index i       "<change-folder>!<enter>"       "go to inbox"
+macro index <Tab>   "<next-unread-mailbox><enter>"  "Open next mailbox with new mail"
+macro index,pager A "<delete-message>"              "Delete Message"
+# Sync email
+macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+folder-hook . "bind attach s save-entry"
+folder-hook trash "macro index,pager d <delete-message>"
+folder-hook Wget "macro attach s <save-entry><kill-line>~/Programming/wget/patches/<enter>"
+
+# Leftover Options
+# message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
+auto_view text/html
+# View attachments properly.
+bind attach <return> view-mailcap
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+bind compose p pgp-menu
+bind index p recall-message
+
+set crypt_autosign = yes
+set crypt_replyencrypt = yes
+set crypt_replysign = yes
+set crypt_replysignencrypted = yes
+set crypt_verify_sig = yes
+set pgp_use_gpg_agent = yes
+set pgp_sign_as = darnir@gmail.com
+set pgp_auto_decode

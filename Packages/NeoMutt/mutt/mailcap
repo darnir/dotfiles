@@ -1,0 +1,27 @@
+# From the attachment menu, if X is running, HTML attachments are sent
+# to netscape for viewing; otherwise, they are sent to w3m.  For
+# in-line viewing, the HTML is converted to text.
+#
+text/html;                      ~/..mutt/mutt_bgrun firefox %s; test=runningx
+text/html;                      elinks %s; nametemplate=%s.html
+text/html;                      elinks -dump %s; nametemplate=%s.html; copiousoutput
+
+# Images
+image/jpg; feh %s
+image/jpeg; feh %s
+image/pjpeg; feh %s
+image/png; feh %s
+image/gif; feh %s
+
+# PDFs
+application/pdf;                ~/.mutt/mutt_bgrun evince %s; test=runningx
+
+# HTML
+text/x-patch; ~/.mutt/mutt_bgrun nvim %s
+text/x-patch; cat %s; copiousoutput
+
+# text/plain; ~/.mutt/mutt_bgrun gvim %s; test=runningx
+text/plain; ~/.mutt/mutt_bgrun nvim %s
+application/x-perl; ~/.mutt/mutt_bgrun nvim %s
+text/plain; cat %s; copiousoutput
+application/x-perl; cat %s; copiousoutput
