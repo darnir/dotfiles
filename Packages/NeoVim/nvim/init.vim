@@ -95,6 +95,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
 
+Plug 'tpope/vim-liquid'
+Plug 'rust-lang/rust.vim'
+
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
 
