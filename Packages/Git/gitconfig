@@ -68,7 +68,8 @@
     # a line
     whitespace = space-before-tab,trailing-space
 	eol = lf
-	pager = diff-so-fancy | less --tabs=1,5 -R
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	excludesfile = ~/.gitignore_global
 
 [color]
     ui = auto
