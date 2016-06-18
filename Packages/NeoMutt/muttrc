@@ -48,6 +48,7 @@ set delete                                              # Delete, don't ask
 set quit                                                # Quit, don't ask
 set pipe_decode                                         # Decode the messages before sending to pipe-message
 set thorough_search                                     # Decode headers and mattachments before searching
+set allow_ansi
 unset move                                              # Move, don't ask! Activates when moving messages from spool to mbox under mbox-hook
 unset record                                            # Don't save sent messages. Gmail does that
 unset confirmappend                                     # Append messages, don't ask!
@@ -67,7 +68,7 @@ folder-hook . "exec collapse-all"                       # Collapse all threads b
 
 # Formats
 set date_format             = "%m/%d"                   # Prefer to keep a simple date
-set index_format            = "[%Z]  %D  %-20.20L  %s"  # Format of the index page
+set index_format            = "%4C  [%Z]  %D  %-20.20L  %s"  # Format of the index page
 
 # Pager Options
 set pager_index_lines       = 9                         # number of index lines to show
@@ -154,6 +155,10 @@ folder-hook Wget "macro attach s <save-entry><kill-line>~/Programming/wget/patch
 # Leftover Options
 # message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
 auto_view text/html
+# auto_view text/plain
+auto_view text/x-patch
+auto_view application/x-perl
+
 # View attachments properly.
 bind attach <return> view-mailcap
 macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
