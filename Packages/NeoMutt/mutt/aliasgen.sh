@@ -1,14 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
-MESSAGE=$(cat)
+set -e
+set -u
+set -o pipefail
 
-NEWALIAS=$(echo "${MESSAGE}" | grep ^"From: " | sed s/[\,\"\']//g | awk '{$1=""; if (NF == 3) {print "alias" $0;} else if (NF == 2) {print "alias" $0 $0;} else if (NF > 3) {print "alias", tolower($(NF-1))"-"tolower($2) $0;}}')
+ALIASFILE="$HOME/.mutt/aliases"
 
-if grep -Fxq "$NEWALIAS" $HOME/.mutt/aliases
-then
-    :
+MSG=$(cat)
+
+FROM=$(grep ^"From: " <<< "$MSG")
+ALIASLINE=$(awk -f $HOME/.mutt/printalias.awk <<< "$FROM")
+MAIL=$(awk '{print $(NF)}' <<< "$ALIASLINE" | tr -d '<>')
+# ALIAS=$(awk '{print $2}' <<< "$ALIASLINE")
+
+# We never want to create some aliases
+NOALIAS_PAT="facebook|twitter|emirates|amazon|gnu|github"
+
+if grep -Eq "$NOALIAS_PAT" <<< "$ALIASLINE"; then
+	:
+elif grep -Fq "$MAIL" "$ALIASFILE"; then
+	:
 else
-    echo "$NEWALIAS" >> $HOME/.mutt/aliases
+	echo "$ALIASLINE" >> "$ALIASFILE"
 fi
 
-echo "${MESSAGE}"
+sort -d -i -o "$ALIASFILE" "$ALIASFILE"
+
+echo "$MSG"
