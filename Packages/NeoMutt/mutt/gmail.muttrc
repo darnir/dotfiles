@@ -1,0 +1,9 @@
+set from = "darnir@gmail.com"
+set sendmail  = "/usr/bin/msmtp -a gmail"
+set postponed = "+gmail/drafts"
+set trash = "+gmail/trash"
+unset record
+
+bind index D purge-message
+
+# color status green default

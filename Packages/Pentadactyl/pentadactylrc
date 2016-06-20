@@ -47,6 +47,11 @@ map -count -modes=n,v k -builtin <count>4k
 map -count -modes=n,v l -builtin <count>4l
 map -count -modes=n,v h -builtin <count>4h
 map -count -modes=I,input_multiline,v ,, <Esc>
+" }}}
+
+" {{{ Website Shortcuts
+
+" {{{ Favourite websites
 nmap <leader>mg :tabopen mail.google.com<Cr>
 nmap <leader>fb :tabopen www.facebook.com<Cr>
 nmap <leader>gh :tabopen www.github.com<Cr>
@@ -56,10 +61,18 @@ nmap <leader>ar :tabopen www.arstechnica.com<Cr>
 nmap <leader>tv :tabopen www.theverge.com<Cr>
 nmap <leader>so :tabopen www.stackoverflow.com<Cr>
 nmap <leader>we :tabopen https://webmail.uni-saarland.de<Cr>
-nmap <leader>os :tabopen http://courses.mpi-sws.org/os-ws15/<Cr>
-nmap <leader>sh :tabopen http://embedded.cs.uni-saarland.de/sharing.php<Cr>
-nmap <leader>se :tabopen https://www.st.cs.uni-saarland.de/edu/se/2015/index.php<Cr>
-nmap <leader>re :tabopen https://se.st.cs.uni-saarland.de/projects/refmod-miner-cli-re-design<Cr>
-"}}}
+" }}}
+
+" {{{ UdS Summer 2016
+nmap <leader>bs :tabopen http://backstage.pms.ifi.lmu.de:8080/#/login<Cr>
+nmap <leader>la :tabopen https://www.sps.cs.uni-saarland.de/teaching/16SS/security/ladmin/index.php<Cr>
+nmap <leader>pi :tabopen https://piazza.com/uni-saarland.de/spring2016/cs81908<Cr>
+nmap <leader>se :tabopen https://www.sps.cs.uni-saarland.de/teaching/16SS/security/index.html<Cr>
+nmap <leader>if :tabopen https://www.mpi-sws.org/~dg/teaching/ifcs2016/ifcs2016.html<Cr>
+nmap <leader>ap :tabopen http://courses.mpi-sws.org/approx-ss16/schedule.html<Cr>
+nmap <leader>crp :tabopen https://approx-ss16.mpi-sws.org/<Cr>
+" }}}
+
+" }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker ft=pentadactyl et :

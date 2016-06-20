@@ -101,12 +101,12 @@ _backup_target() {
 
 # Reuse backup code from backupfile method
 _backup_target_dir() {
-    log_info_n "Checking if ${_CONF_DIR} exists\t"
-    if [ -d "${_CONF_DIR}" ]
+    log_info_n "Checking if ${_CONF_FILE} exists\t"
+    if [ -d "${_CONF_FILE}" ]
     then
 		log_warn "[Exists]"
-        log_info_n "Target directory found, saving to ${_BCK_DIR}\t"
-        $SUDO mv -v "${_CONF_DIR}" "${_BCK_DIR}"
+        log_info_n "Target directory found, saving to ${_BCK_FILE}\t"
+        $SUDO mv -v "${_CONF_FILE}" "${_BCK_FILE}"
 		log_okay "[Done]"
     else
 		log_okay "[Done]"
@@ -206,9 +206,9 @@ install_private_file() {
 install_directory() {
 	_begin_install "$@"
     local _CONF_NAME="$1"
-    local _CONF_DIR=$(_get_conf_file "$2")
-    local _BCK_DIR=${_CONF_DIR}bck
-    local _LOC_DIR=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
+    local _CONF_FILE=$(_get_conf_file "$2")
+    local _BCK_FILE=${_CONF_FILE}bck
+    local _LOC_FILE=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
@@ -240,6 +240,12 @@ install_aur() {
 	fi
 
     # We are in Arch Linux
+	echo "Testing if $1 is installed"
+	if pacman -Q "$1" &> /dev/null; then
+		echo "Package already installed"
+		return
+	fi
+
     echo "Installing $1 from AUR"
     pushd /tmp
     wget https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz

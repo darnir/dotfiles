@@ -1,0 +1,10 @@
+# Supporting file for Mutt and OfflineIMAP
+
+# Main Options
+
+set mbox_type = Maildir
+set folder = "~/.maildir"
+set spoolfile = "+gmail/inbox"
+
+# IMAP: offlineimap
+source ~/.mutt/mailboxes

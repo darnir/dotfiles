@@ -22,12 +22,13 @@ alias du1='du --max-depth=1'
 alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
 alias hist='history | grep'      # requires an argument
 alias la='ls -la'
-alias mirrorlist='reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
+alias mirrorlist='sudo reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
 alias netuse='sudo netstat -lantp | grep -i establ'
 alias openports='netstat --all --numeric --programs --inet --inet6'
 alias path='printf ${PATH//:/\\n}'
 alias pfind='ps aux | grep'
-alias vimup='vim +PluginUpdate'
+alias vimup='vim +PlugUpdate'
+
 
 # Safety Features
 alias chgrp='chgrp --preserve-root'
@@ -37,3 +38,6 @@ alias chown='chown --preserve-root'
 # Allows one to use bash aliases with superuser permissions. See bash(1) for
 # details
 alias sudo='sudo '
+
+# Load other temporary aliases
+[[ -f ~/.temp_aliases ]] && . ~/.temp_aliases

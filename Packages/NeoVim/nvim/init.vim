@@ -9,7 +9,7 @@
 
 
 " General Editor Settings {{{
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 					" Set a custom Spell File
 set modeline		" Enable modeline support
@@ -29,6 +29,7 @@ set keywordprg=:Nman
 " }}}
 
 " Editor UI Settings {{{
+set termguicolors   " Use True Colours for Terminal
 set ruler			" Show the cursor position all the time
 set showcmd			" Show the command you are currently typing
 set formatoptions+=tcroqnj
@@ -70,9 +71,9 @@ endfunction
 
 " Vim Plugin Management {{{
 call plug#begin('~/.config/nvim/plugged')
+
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColorScheme' }
 Plug 'tpope/vim-vividchalk'
-" Plug 'morhetz/gruvbox'
 Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
 
 Plug 'kassio/neoterm'
@@ -82,6 +83,8 @@ Plug 'benekastah/neomake'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'jiangmiao/auto-pairs'
+Plug 'easymotion/vim-easymotion'
 
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -90,11 +93,16 @@ Plug 'bogado/file-line'
 Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ludovicchabant/vim-gutentags'
+
+Plug 'tpope/vim-liquid'
+Plug 'rust-lang/rust.vim'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
 
-Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
+" Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
@@ -104,8 +112,9 @@ Plug 'a.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
-Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
-Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
+" Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
+" Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
 
 Plug 'nhooyr/neoman.vim'
 call plug#end()
@@ -265,6 +274,10 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 " endif
 " }}}
 
+" {{{ Markdown Composer Settings
+let g:markdown_composer_autostart=0
+" }}}
+
 " {{{ Vim-Grepper Settings
 let g:grepper = {
     \ 'tools': ['git', 'grep'],
@@ -273,6 +286,10 @@ let g:grepper = {
     \ }
 nnoremap <leader>git :Grepper -tool git -noswitch<cr>
 nnoremap <leader># :Grepper -tool git -cword -noprompt<cr>
+" }}}
+
+" {{{ Easymotion Settings
+" map <Leader> <Plug>(easymotion-prefix)
 " }}}
 
 " Airline settings {{{
@@ -290,6 +307,7 @@ let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#tagbar#flags = 'f'
+let g:airline_section_section_a = '%{gutentags#statusline()}'
 " }}}
 
 " {{{ NERD Settings
@@ -346,6 +364,7 @@ let g:generate_tags=1
 " C-\ will open in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
+
 
 " Keyboard Shortcuts {{{
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
