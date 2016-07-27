@@ -116,3 +116,4 @@ PS4='+ '
 export VISUAL=nvim
 export TERM=xterm-256color
 export BROWSER="firefox"
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
