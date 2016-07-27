@@ -14,7 +14,9 @@ MAIL=$(awk '{print $(NF)}' <<< "$ALIASLINE" | tr -d '<>')
 # ALIAS=$(awk '{print $2}' <<< "$ALIASLINE")
 
 # We never want to create some aliases
-NOALIAS_PAT="facebook|twitter|emirates|amazon|gnu|github"
+NOALIAS_PAT="facebook|twitter|emirates|amazon|gnu|github|sofort|paypal| \
+	notebooksbilliger|online.net|no[,-]reply|meetup|jetprivilege| \
+	stackexchange|shopping"
 
 if grep -Eq "$NOALIAS_PAT" <<< "$ALIASLINE"; then
 	:
