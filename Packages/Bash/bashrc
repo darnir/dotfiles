@@ -43,6 +43,8 @@ bind "set completion-map-case on"
 set show-all-if-unmodified on
 set skip-completed-text on
 
+have() { command -v "$1" >&/dev/null; }
+
 # Source the utlity files containing aliases and functions for Bash
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f $HOME/.bash_functions ]] && . ~/.bash_functions

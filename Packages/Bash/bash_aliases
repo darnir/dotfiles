@@ -55,5 +55,28 @@ alias chown='chown --preserve-root'
 # details
 alias sudo='sudo '
 
+# Make Systemd Easier
+if have systemctl && [[ -d /run/systemd/system ]]; then
+	_status()	{ sudo systemctl status -a -n0 "$@"; }
+	start()		{ sudo systemctl start "$@";	_status "$@"; }
+	stop()		{ sudo systemctl start "$@";	_status "$@"; }
+	restart()	{ sudo systemctl restart "$@";	_status "$@"; }
+	reload()	{ sudo systemctl reload "$@";	_status "$@"; }
+	status()	{ systemctl status -a "$@"; }
+
+	alias enable="sudo systemctl enable"
+	alias disable="sudo systemctl disable"
+	alias list='systemctl list-units -t path,service,socket --no-legend'
+	alias userctl='systemctl --user'
+	ustart()   { userctl start "$@";   userctl status -a "$@"; }
+	ustop()    { userctl stop "$@";    userctl status -a "$@"; }
+	urestart() { userctl restart "$@"; userctl status -a "$@"; }
+	ureload()  { userctl reload "$@";  userctl status -a "$@"; }
+	ustatus()  { userctl status -a "$@"; }
+	alias ulist='userctl list-units -t path,service,socket --no-legend'
+fi
+
 # Load other temporary aliases
 [[ -f ~/.temp_aliases ]] && . ~/.temp_aliases
+
+# vim: set ts=4 sts=4 sw=4 tw=79 noet ft=sh :
