@@ -53,23 +53,11 @@
     rh = reset --hard HEAD
 
 [am]
-    messageid = True
+    messageid = true
 
 [apply]
     # Detect whitespace errors when applying a patch
     whitespace = fix
-
-[core]
-    editor = nvim
-    attributesfile = ~/.gitattributes
-    # Treat spaces before tabs and all kinds of trailing whitespace as an error.
-    # [default] trailing-space: looks for spaces at the end of a line
-    # [default] space-before-tab: looks for spaces before tabs at the beginning of
-    # a line
-    whitespace = space-before-tab,trailing-space
-	eol = lf
-	pager = diff-so-fancy | less --tabs=4 -RFX
-	excludesfile = ~/.gitignore_global
 
 [color]
     ui = auto
@@ -78,6 +66,9 @@
     current = yellow reverse
     local = yellow
     remote = green
+
+[color "decorate"]
+	remoteBranch = 202
 
 [color "diff"]
     meta = yellow bold
@@ -100,15 +91,38 @@
 
 [column]
     ui = auto
+	tag = auto dense
+
+[core]
+	askpass =
+    editor = nvim
+    attributesfile = ~/.gitattributes
+    # Treat spaces before tabs and all kinds of trailing whitespace as an error.
+    # [default] trailing-space: looks for spaces at the end of a line
+    # [default] space-before-tab: looks for spaces before tabs at the beginning of
+    # a line
+    whitespace = space-before-tab,trailing-space,blank-at-eof
+	eol = lf
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	excludesfile = ~/.gitignore_global
 
 [credential]
     helper = cache --socket $XDG_RUNTIME_DIR/git-credential-cache.socket
     helper = store
+	useHttpPath = false
 
 [diff]
     renames = copies
     mnemonicprefix = true
     submodule = log
+	compactionHeuristic = true
+
+[diff "gpg"]
+	textconv = gpg -v
+	xfuncname = "^((pub|uid) .*)"
+
+[diff-so-fancy]
+	changeHunkIndicators = true
 
 [grep]
     lineNumber = true
@@ -117,8 +131,15 @@
 [help]
     autocorrect = 1
 
+[log]
+	showSignature = true
+
 [merge]
-    tool = nvimdiff
+	tool = vimdiff
+	conflictStyle = diff3
+
+[mergetool]
+	path = nvim
 
 [push]
     default = simple
@@ -131,6 +152,9 @@
 
 [stash]
     showPatch = true
+
+[tag]
+	forceSignAnnotated = true
 
 [user]
     email = darnir@gmail.com
