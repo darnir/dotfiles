@@ -107,6 +107,8 @@ Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
 Plug 'hrother/offlineimaprc.vim'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'mgrabovsky/vim-xverif'
 
 Plug 'a.vim'
 Plug 'tpope/vim-fugitive'
