@@ -9,7 +9,6 @@ source ~/.mutt/gpg.muttrc
 source ~/.mutt/offlineimap.muttrc
 
 # Source the configurations for each different account
-# TODO: Check and fix. Set up msmtp for UdS
 folder-hook UdS/*            source ~/.mutt/UdS.muttrc
 folder-hook gmail/*          source ~/.mutt/gmail.muttrc
 folder-hook MPIINF/*         source ~/.mutt/MPIINF.muttrc
@@ -17,14 +16,11 @@ folder-hook MPIINF/*         source ~/.mutt/MPIINF.muttrc
 # Source the Mutt Colorscheme
 source ~/.mutt/colors.muttrc
 
-# Source the Mutt-Sidebaar settings. Since Sidebar isn't part of vanilla mutt,
+# Source the Mutt-Sidebar settings. Since Sidebar isn't part of vanilla mutt,
 # but is an external patch, we keep its settings separate.
 source ~/.mutt/sidebar.muttrc
 
 # Directories and Programs
-set header_cache            = "~/.mutt/cache/headers"   # Cache of all message headers
-# set message_cachedir        = "~/.mutt/cache/bodies"    # Cache of all message bodies
-# set certificate_file        = "~/.mutt/certificates"    # Store user trusted certs here
 set mailcap_path            = "~/.mutt/mailcap"         # Teach Mutt how to handle attachments
 set signature               = "~/.mutt/sig"             # Signature at the end of each message
 set tmpdir                  = "/tmp"                    # Location for storing att. temporarily
@@ -39,16 +35,17 @@ set display_filter          = "~/.mutt/aliasgen.sh"
 
 # Main Options
 set realname                = "Darshit Shah"            # Set the Real Name to be used when sending emails
-set timeout                 = 10                        # Wait for $timeout secs. for a keypress, then check for mail
-set mail_check              = 10                        # Check mail every $mail_check seconds
-set charset                 = "utf-8"
-set sig_dashes                                          # Add dahses, '--' before signature
+set timeout                 = 10                        # Wait for $timeout secs. for a keypress before performing other actions
+set charset                 = "utf-8"					# Set the character set to UTF-8 by default
+set sleep_time				= 0							# Don't pause to show messages
+set sig_dashes                                          # Add dashes, '--' before signature
 set use_envelope_from                                   # Derive the envelope_from value and send to sendmail
 set delete                                              # Delete, don't ask
 set quit                                                # Quit, don't ask
 set pipe_decode                                         # Decode the messages before sending to pipe-message
 set thorough_search                                     # Decode headers and mattachments before searching
-set allow_ansi
+set allow_ansi											# Print ANSI color codes as colors to screen
+set mail_check_stats		= yes
 unset move                                              # Move, don't ask! Activates when moving messages from spool to mbox under mbox-hook
 unset record                                            # Don't save sent messages. Gmail does that
 unset confirmappend                                     # Append messages, don't ask!
@@ -67,8 +64,9 @@ set beep_new                                            # Beep on new messages
 folder-hook . "exec collapse-all"                       # Collapse all threads by default
 
 # Formats
-set date_format             = "%m/%d"                   # Prefer to keep a simple date
-set index_format            = "%4C  [%Z]  %D  %-20.20L  %s"  # Format of the index page
+set date_format             = "%m/%d"					# Prefer to keep a simple date
+set index_format            = "%4C  [%Z]  %D  %-20.20L  %s"
+														# Format of the index page
 
 # Pager Options
 set pager_index_lines       = 9                         # number of index lines to show
@@ -86,9 +84,10 @@ set skip_quoted_offset = 3
 
 # Compose Mail
 set forward_format          = "Fwd: %s"                 # format of subject when forwarding
-set ispell 		            = "aspell -e -c"		    # use aspell as ispell
+set ispell					= "aspell -e -c"			# use aspell as ispell
 set send_charset            = "utf-8"                   # Use UTF-8 when sending messages
 set attribution             = "On %d, %n wrote:"        # Message added before quoted section
+set recall					= no						# Do not ask to recall postponed message when composing
 set text_flowed                                         # Use format=flowed
 set edit_headers                                        # show headers when composing
 set fast_reply                                          # skip to compose when replying
@@ -109,7 +108,7 @@ set status_format           = "───[ Folder: %f ]───[%r%m messages%?u
 
 # Headers to show in mail
 ignore *                                                # Ignore all headers in pager.
-unignore from date subject to cc                        # Whitelist headers to show
+unignore from date subject to cc reply-to               # Whitelist headers to show
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 unhdr_order *                                           # some distros order things by default
@@ -117,33 +116,56 @@ hdr_order from: to: cc: date: subject:                  # and in this order
 
 ## Keybindings
 
-# Index Keybindings
-bind index gg       first-entry
-bind index G        last-entry
-bind index <tab>    sync-mailbox
-bind index <space>  collapse-thread
-bind index <Esc>v   collapse-all
-bind index n        next-new-then-unread
+# Movement
+bind browser,index			gg	first-entry
+bind browser,index			G	last-entry
+bind pager					gg	top
+bind pager					G	bottom
+bind pager					k	previous-line
+bind pager					j	next-line
+bind browser,pager,index	\CF	next-page
+bind browser,pager,index	\CB	previous-page
+bind browser,pager,index	\CE	next-line
+bind browser,pager,index	\CY previous-line
+bind browser,pager,index	\CU	half-up
+bind browser,pager,index	\CD	half-down
 
-# Pager Keybindings
-bind pager k  previous-line
-bind pager j  next-line
-bind pager gg top
-bind pager G  bottom
+bind pager,index			dd	delete-message
+
+# Threads
+bind browser,pager,index	N	search-opposite
+bind pager,index			dt	delete-thread
+bind pager,index			dT	delete-subthread
+bind pager,index			gt	next-thread
+bind pager,index			gT	previous-thread
+bind index					za	collapse-thread
+bind index					zA	collapse-all
+
+# Index Keybindings
+bind index <space>  collapse-thread
+bind index n        next-new-then-unread
+bind index S		decode-copy
 
 bind index,pager r group-reply
+
 # Sidebar Navigation
 bind index,pager <down>   sidebar-next
 bind index,pager <up>     sidebar-prev
 bind index,pager <right>  sidebar-open
 
+# View attachments properly.
+bind attach <return> view-mailcap
+macro index,pager \cL "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cL "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+bind compose p pgp-menu
+bind index p recall-message
+
 # Macros
 macro index i       "<change-folder>!<enter>"       "go to inbox"
 macro index <Tab>   "<next-unread-mailbox><enter>"  "Open next mailbox with new mail"
 macro index,pager A "<delete-message>"              "Delete Message"
-# Sync email
-macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
-macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
+
 # Saner copy/move dialogs
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
@@ -154,19 +176,11 @@ folder-hook Wget "macro attach s <save-entry><kill-line>~/Programming/wget/patch
 
 # Leftover Options
 # message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
-auto_view text/html
+set implicit_autoview
+auto_view text/html application/x-pgp-message
 # auto_view text/plain
 auto_view text/x-patch
 auto_view application/x-perl
-
-# View attachments properly.
-bind attach <return> view-mailcap
-macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
-
-macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
-
-bind compose p pgp-menu
-bind index p recall-message
 
 set crypt_autosign = yes
 set crypt_replyencrypt = yes
