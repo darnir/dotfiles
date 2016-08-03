@@ -63,12 +63,16 @@ fi
 [[ -f "$HOME/.config/ranger/bash.sh" ]] && . "$HOME/.config/ranger/bash.sh"
 
 # Login greeting ------------------
-if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
-    detached_screens=$(screen -list | grep Detached)
-    if [ ! -z "$detached_screens" ]; then
+if [[ -z "$STY" && ! "$SHOWED_SCREEN_MESSAGE" == "true" ]]; then
+	detached_screens=($(screen -list | grep Detached | awk '{print $1}'))
+	pad=$(printf '%0.1s' " "{1..60})
+	padlength=34
+    if [ ! ${#detached_screens[@]} -eq 0 ]; then
         echo "+---------------------------------------+"
         echo "| Detached screens are available:       |"
-        echo "$detached_screens"
+		for screenitem in "${detached_screens[@]}"; do
+			printf "|   %s %*.*s |\n" "$screenitem" 0 $((padlength - ${#screenitem})) "$pad"
+		done
         echo "+---------------------------------------+"
 
         export SHOWED_SCREEN_MESSAGE="true"
@@ -119,3 +123,5 @@ export VISUAL=nvim
 export TERM=xterm-256color
 export BROWSER="firefox"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+[[ -f ~/.bash_ssh ]] && . ~/.bash_ssh
