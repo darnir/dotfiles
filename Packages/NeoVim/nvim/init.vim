@@ -29,14 +29,14 @@ set keywordprg=:Nman
 " }}}
 
 " Editor UI Settings {{{
-set termguicolors   " Use True Colours for Terminal
+set termguicolors	" Use True Colours for Terminal
 set ruler			" Show the cursor position all the time
 set showcmd			" Show the command you are currently typing
 set formatoptions+=tcroqnj
 					" Set various options for formatting text.
 					" Check |fo-options| for information
-set scrolloff=6			" Keep a buffer of 6 lines top and bottom when scrolling
-set relativenumber  " Show relative line numbers
+set scrolloff=6		" Keep a buffer of 6 lines top and bottom when scrolling
+set relativenumber	" Show relative line numbers
 set shortmess+=atIoOtT
 					" Change the messages shown by vim
 set visualbell		" Use a visual bell instead of a beep
@@ -76,13 +76,13 @@ Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColo
 Plug 'tpope/vim-vividchalk'
 Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
 
-Plug 'kassio/neoterm'
-Plug 'mhinz/vim-grepper'
+" Plug 'kassio/neoterm'
+" Plug 'mhinz/vim-grepper'
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
 Plug 'benekastah/neomake'
 Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets'
 Plug 'jiangmiao/auto-pairs'
 Plug 'easymotion/vim-easymotion'
 
@@ -96,10 +96,10 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'tpope/vim-liquid'
-Plug 'rust-lang/rust.vim'
+" Plug 'rust-lang/rust.vim'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'eapache/rainbow_parentheses.vim'
+" Plug 'eapache/rainbow_parentheses.vim'
 
 " Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
@@ -107,8 +107,8 @@ Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
 Plug 'hrother/offlineimaprc.vim'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'mgrabovsky/vim-xverif'
+" Plug 'tmux-plugins/vim-tmux'
+" Plug 'mgrabovsky/vim-xverif'
 
 Plug 'a.vim'
 Plug 'tpope/vim-fugitive'
@@ -118,7 +118,7 @@ Plug 'tpope/vim-git'
 " Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
-Plug 'nhooyr/neoman.vim'
+" Plug 'nhooyr/neoman.vim'
 call plug#end()
 " }}}
 
@@ -324,35 +324,35 @@ let g:tagbar_autoclose=1
 let g:tagbar_show_linenumbers=-1
 "}}}
 
-" Rainbow Parentheses Settings {{{
-" TODO: FIX. Doesn't currently work
-let g:rbpt_colorpairs = [
-    \ ['red',         'RoyalBlue3'],
-    \ ['brown',       'SeaGreen3'],
-    \ ['blue',        'DarkOrchid3'],
-    \ ['gray',        'firebrick3'],
-    \ ['green',       'RoyalBlue3'],
-    \ ['magenta',     'SeaGreen3'],
-    \ ['cyan',        'DarkOrchid3'],
-    \ ['darkred',     'firebrick3'],
-    \ ['brown',       'RoyalBlue3'],
-    \ ['darkblue',    'DarkOrchid3'],
-    \ ['gray',        'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkmagenta', 'SeaGreen3'],
-    \ ['darkcyan',    'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-augroup rainbow_paren
-    autocmd!
-    au VimEnter * RainbowParenthesesActivate
-    au Syntax * RainbowParenthesesLoadRound
-    au Syntax * RainbowParenthesesLoadSquare
-    au Syntax * RainbowParenthesesLoadBraces
-augroup END
-" }}}
+" " Rainbow Parentheses Settings {{{
+" " TODO: FIX. Doesn't currently work
+" let g:rbpt_colorpairs = [
+"     \ ['red',         'RoyalBlue3'],
+"     \ ['brown',       'SeaGreen3'],
+"     \ ['blue',        'DarkOrchid3'],
+"     \ ['gray',        'firebrick3'],
+"     \ ['green',       'RoyalBlue3'],
+"     \ ['magenta',     'SeaGreen3'],
+"     \ ['cyan',        'DarkOrchid3'],
+"     \ ['darkred',     'firebrick3'],
+"     \ ['brown',       'RoyalBlue3'],
+"     \ ['darkblue',    'DarkOrchid3'],
+"     \ ['gray',        'firebrick3'],
+"     \ ['darkgreen',   'RoyalBlue3'],
+"     \ ['darkmagenta', 'SeaGreen3'],
+"     \ ['darkcyan',    'DarkOrchid3'],
+"     \ ['red',         'firebrick3'],
+"     \ ]
+" let g:rbpt_max = 16
+" let g:rbpt_loadcmd_toggle = 0
+" augroup rainbow_paren
+"     autocmd!
+"     au VimEnter * RainbowParenthesesActivate
+"     au Syntax * RainbowParenthesesLoadRound
+"     au Syntax * RainbowParenthesesLoadSquare
+"     au Syntax * RainbowParenthesesLoadBraces
+" augroup END
+" " }}}
 
 " CScope Settings {{{
 
@@ -366,7 +366,6 @@ let g:generate_tags=1
 " C-\ will open in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
-
 
 " Keyboard Shortcuts {{{
 set pastetoggle=<F2>        " Toggle paste mode with <F2>
@@ -431,10 +430,10 @@ function! MyUnSetCursor()
 endfunction
 
 augroup CursorSniper
-    autocmd!
-    au! CursorHold * call MyUnSetCursor()
-    au! CursorMoved * call MySetCursor()
-    au! CursorMovedI * call MyUnSetCursor()
+	autocmd!
+	au! CursorHold * call MyUnSetCursor()
+	au! CursorMoved * call MySetCursor()
+	au! CursorMovedI * call MyUnSetCursor()
 augroup END
 " }}}
 
