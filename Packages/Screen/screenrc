@@ -17,3 +17,5 @@ bindkey ";5D" prev  # change window with ctrl-left
 bindkey ";5C" next  # change window with ctrl-right
 
 altscreen on
+
+zombie kr
