@@ -69,6 +69,12 @@ function! BuildComposer(info)
 endfunction
 " }}}
 
+" {{{ Update Remote Plugins
+function! DoRemote(arg)
+    UpdateRemotePlugins
+endfunction
+" }}}
+
 " Vim Plugin Management {{{
 call plug#begin('~/.config/nvim/plugged')
 
@@ -76,16 +82,13 @@ Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColo
 Plug 'tpope/vim-vividchalk'
 Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
 
-" Plug 'kassio/neoterm'
-" Plug 'mhinz/vim-grepper'
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
 Plug 'benekastah/neomake'
-Plug 'Shougo/deoplete.nvim'
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet-snippets' | Plug 'Shougo/neosnippet'
+Plug 'honza/vim-snippets'
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'jiangmiao/auto-pairs'
 Plug 'easymotion/vim-easymotion'
-
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-commentary'
@@ -99,7 +102,7 @@ Plug 'tpope/vim-liquid'
 " Plug 'rust-lang/rust.vim'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-" Plug 'eapache/rainbow_parentheses.vim'
+Plug 'eapache/rainbow_parentheses.vim'
 
 " Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
@@ -110,12 +113,10 @@ Plug 'hrother/offlineimaprc.vim'
 " Plug 'tmux-plugins/vim-tmux'
 " Plug 'mgrabovsky/vim-xverif'
 
-Plug 'a.vim'
+Plug 'a.vim', { 'for': 'c' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
-" Plug 'gerw/vim-latex-suite', { 'for': 'tex' }
-" Plug 'gerw/vim-tex-syntax', { 'for': 'tex' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
 " Plug 'nhooyr/neoman.vim'
@@ -226,22 +227,6 @@ augroup END
 
 " }}}
 
-" {{{ Neoterm Settings
-let g:neoterm_position = 'horizontal'
-let g:neoterm_automap_keys = ',tt'
-
-" Useful maps
-" hide/close terminal
-nnoremap <silent> <leader>th :call neoterm#close()<cr>
-" clear terminal
-nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
-" kills the current job (send a <c-c>)
-nnoremap <silent> <leader>tc :call neoterm#kill()<cr>
-
-" Git commands
-command! -nargs=+ Tg :T git <args>
-" }}}
-
 " {{{ Neomake Settings
 augroup NeomakeSettings
     autocmd!
@@ -252,6 +237,7 @@ augroup NeomakeSettings
         \ }
     let g:neomake_tex_enabled_makers = ['lacheck']
     let g:neomake_sh_enabled_makers = ['shellcheck']
+    let g:neomake_vim_enabled_makers = ['vint']
     " let g:neomake_c_enabled_makers = ['gcc', 'clang-tidy']
 augroup END
 " }}}
@@ -263,10 +249,10 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <expr><TAB>
+ \ pumvisible() ? "\<C-n>" :
+ \ neosnippet#expandable_or_jumpable() ?
+ \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
@@ -274,6 +260,10 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 " if has('conceal')
 "   set conceallevel=2 concealcursor=niv
 " endif
+" }}}
+
+" {{{ Deoplete Settings
+command EnableDeoplete exec deoplete#enable()
 " }}}
 
 " {{{ Markdown Composer Settings
