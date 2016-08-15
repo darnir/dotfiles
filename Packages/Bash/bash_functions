@@ -403,6 +403,50 @@ rtems() {
     alias kill-qemu="killall qemu-system-arm"
 }
 
+stream() {
+    local URL="$1"
+    local MPV_PARAM="${@:2}"
+
+    local USER="go7box"
+    local PASS=$(pass seedbox/rutorrent/${USER})
+
+    local _final_url=$(sed -e "s#\(https://\)#\1${USER}:${PASS}@#" <<< "$URL")
+
+    echo "$_final_url"
+
+    # mpv --cache=204800 --cache-initial=10240 --cache-secs=100 "$_final_url"
+    mpv --cache=204800 --cache-secs=100 $MPV_PARAM "$_final_url"
+}
+
+buildmutt() {
+    if [[ $1 == "prepare" ]]; then
+        ./prepare                   \
+            --prefix=/usr           \
+            --sysconfdir=/etc       \
+            --enable-debug          \
+            --enable-pgp            \
+            --enable-smime          \
+            --enable-sidebar        \
+            --enable-gpgme          \
+            --enable-notmuch        \
+            --enable-compressed     \
+            --enable-pop            \
+            --enable-imap           \
+            --enable-smtp           \
+            --enable-nntp           \
+            --enable-exact-address  \
+            --enable-hcache         \
+            --with-curses=/usr      \
+            --with-regex            \
+            --with-gss              \
+            --with-ssl              \
+            --with-sasl             \
+            --with-idn
+    elif [[ $1 == "build" ]]; then
+        make
+    fi
+}
+
 rustos() {
 
 _ARCH="x86_64"
