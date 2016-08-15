@@ -11,6 +11,7 @@ alias ping='ping -c 5'
 alias rm='rm -v'
 alias vi="nvim"
 alias vim="nvim"
+alias irssi="screen irssi"
 
 # New Commands
 alias :q='exit'
@@ -67,7 +68,7 @@ if have systemctl && [[ -d /run/systemd/system ]]; then
 	alias enable="sudo systemctl enable"
 	alias disable="sudo systemctl disable"
 	alias list='systemctl list-units -t path,service,socket --no-legend'
-	alias userctl='systemctl --user'
+	alias userctl='systemctl --user '
 	ustart()   { userctl start "$@";   userctl status -a "$@"; }
 	ustop()    { userctl stop "$@";    userctl status -a "$@"; }
 	urestart() { userctl restart "$@"; userctl status -a "$@"; }
