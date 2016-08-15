@@ -314,35 +314,35 @@ let g:tagbar_autoclose=1
 let g:tagbar_show_linenumbers=-1
 "}}}
 
-" " Rainbow Parentheses Settings {{{
-" " TODO: FIX. Doesn't currently work
-" let g:rbpt_colorpairs = [
-"     \ ['red',         'RoyalBlue3'],
-"     \ ['brown',       'SeaGreen3'],
-"     \ ['blue',        'DarkOrchid3'],
-"     \ ['gray',        'firebrick3'],
-"     \ ['green',       'RoyalBlue3'],
-"     \ ['magenta',     'SeaGreen3'],
-"     \ ['cyan',        'DarkOrchid3'],
-"     \ ['darkred',     'firebrick3'],
-"     \ ['brown',       'RoyalBlue3'],
-"     \ ['darkblue',    'DarkOrchid3'],
-"     \ ['gray',        'firebrick3'],
-"     \ ['darkgreen',   'RoyalBlue3'],
-"     \ ['darkmagenta', 'SeaGreen3'],
-"     \ ['darkcyan',    'DarkOrchid3'],
-"     \ ['red',         'firebrick3'],
-"     \ ]
-" let g:rbpt_max = 16
-" let g:rbpt_loadcmd_toggle = 0
-" augroup rainbow_paren
-"     autocmd!
-"     au VimEnter * RainbowParenthesesActivate
-"     au Syntax * RainbowParenthesesLoadRound
-"     au Syntax * RainbowParenthesesLoadSquare
-"     au Syntax * RainbowParenthesesLoadBraces
-" augroup END
-" " }}}
+" Rainbow Parentheses Settings {{{
+" TODO: FIX. Doesn't currently work
+let g:rbpt_colorpairs = [
+    \ ['red',         'RoyalBlue3'],
+    \ ['brown',       'SeaGreen3'],
+    \ ['blue',        'DarkOrchid3'],
+    \ ['gray',        'firebrick3'],
+    \ ['green',       'RoyalBlue3'],
+    \ ['magenta',     'SeaGreen3'],
+    \ ['cyan',        'DarkOrchid3'],
+    \ ['darkred',     'firebrick3'],
+    \ ['brown',       'RoyalBlue3'],
+    \ ['darkblue',    'DarkOrchid3'],
+    \ ['gray',        'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkmagenta', 'SeaGreen3'],
+    \ ['darkcyan',    'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+augroup rainbow_paren
+    autocmd!
+    au VimEnter * RainbowParenthesesActivate
+    au Syntax * RainbowParenthesesLoadRound
+    au Syntax * RainbowParenthesesLoadSquare
+    au Syntax * RainbowParenthesesLoadBraces
+augroup END
+" }}}
 
 " CScope Settings {{{
 
