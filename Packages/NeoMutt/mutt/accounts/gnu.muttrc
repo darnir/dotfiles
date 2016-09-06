@@ -1,0 +1,12 @@
+set from = "darnir@gnu.org"
+set sendmail  = "/usr/bin/msmtp -a GNU"
+
+set postponed = "+GNU/Drafts"
+set trash = "+GNU/Trash"
+set record = "+GNU/Sent"
+set spoolfile = "+GNU/INBOX"
+
+macro index g "<shell-escape>systemctl --user start getmail.service<enter>" "Sync mail"
+
+color status yellow default
+# vim: set ts=4 sts=4 sw=4 tw=79 ft=muttrc noet :

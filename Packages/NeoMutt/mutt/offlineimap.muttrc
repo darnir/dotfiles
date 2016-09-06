@@ -7,5 +7,5 @@ set folder = "~/.maildir"
 set spoolfile = "+gmail/inbox"
 
 # IMAP: offlineimap
-# source ~/.mutt/mailboxes
-mailboxes `find ~/.maildir/ -type d -name cur -printf '%h '`
+source ~/.mutt/mailboxes
+# mailboxes `find ~/.maildir/ -type d -name cur -printf '%h '`
