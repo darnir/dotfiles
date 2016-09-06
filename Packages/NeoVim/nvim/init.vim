@@ -110,6 +110,7 @@ Plug 'hdima/python-syntax', { 'for': 'python' }
 Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
 Plug 'hrother/offlineimaprc.vim'
+Plug 'muttrc.vim'
 " Plug 'tmux-plugins/vim-tmux'
 " Plug 'mgrabovsky/vim-xverif'
 
@@ -119,7 +120,7 @@ Plug 'tpope/vim-git'
 
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
-" Plug 'nhooyr/neoman.vim'
+Plug 'nhooyr/neoman.vim'
 call plug#end()
 " }}}
 
