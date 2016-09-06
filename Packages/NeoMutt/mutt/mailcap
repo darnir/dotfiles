@@ -1,28 +1,35 @@
+# Mailcap File for Mutt
+# Author: Darshit Shah <darnir [at] gmail [dot] com>
+
 # From the attachment menu, if X is running, HTML attachments are sent
-# to netscape for viewing; otherwise, they are sent to w3m.  For
+# to firefox for viewing; otherwise, they are sent to elinks.  For
 # in-line viewing, the HTML is converted to text.
-#
-text/html;                      ~/..mutt/mutt_bgrun firefox %s; test=runningx
-text/html;                      elinks %s; nametemplate=%s.html
-text/html;                      elinks -dump %s; nametemplate=%s.html; copiousoutput
+text/html            ; ~/..mutt/mutt_bgrun firefox %s ; test=runningx
+text/html            ; elinks %s                      ; nametemplate=%s.html
+text/html            ; elinks -dump %s                ; nametemplate=%s.html ; copiousoutput
+text/htm             ; ~/.mutt/mutt_bgrun firefox %s  ; test=runningx
+text/htm             ; elinks %s                      ; nametemplate=%s.htm
+text/htm             ; elinks -dump %s                ; nametemplate=%s.htm  ; copiousoutput
 
 # Images
-image/jpg; feh %s
-image/jpeg; feh %s
-image/pjpeg; feh %s
-image/png; feh %s
-image/gif; feh %s
+image/jpg            ; feh %s                         ; test=runningx
+image/jpeg           ; feh %s                         ; test=runningx
+image/png            ; feh %s                         ; test=runningx
+image/gif            ; feh %s                         ; test=runningx
 
 # PDFs
-application/pdf;                ~/.mutt/mutt_bgrun evince %s; test=runningx
+application/pdf      ; ~/.mutt/mutt_bgrun evince %s   ; test=runningx
 
-# HTML
-text/x-patch; ~/.mutt/mutt_bgrun nvim %s
-text/x-patch; cat %s; copiousoutput
+# Patch / Diff Files
+text/x-patch         ; ~/.mutt/mutt_bgrun nvim-qt %s  ; test=runningx
+text/x-patch         ; pygmentize -l diff %s          ; copiousoutput
+application/x-patch  ; ~/.mutt/mutt_bgrun nvim-qt %s  ; test=runningx
+application/x-patch  ; pygmentize -l diff %s          ; copiousoutput
+text/x-diff          ; ~/.mutt/mutt_bgrun nvim-qt %s  ; test=runningx
+text/x-diff          ; pygmentize -l diff %s          ; copiousoutput
 
-# text/plain; ~/.mutt/mutt_bgrun gvim %s; test=runningx
-text/plain; ~/.mutt/mutt_bgrun nvim %s
-application/x-perl; ~/.mutt/mutt_bgrun nvim %s
-# application/x-perl; vim -R -- %s; copiousoutput; needsterminal
-text/plain; cat %s; copiousoutput
-application/x-perl; cat %s; copiousoutput
+text/plain           ; ~/.mutt/mutt_bgrun nvim-qt %s  ; test=runningx
+text/plain           ; cat %s                         ; needsterminal
+
+application/x-perl   ; ~/.mutt/mutt_bgrun nvim-qt %s  ; test=runningx
+application/x-perl   ; cat %s                         ; copiousoutput
