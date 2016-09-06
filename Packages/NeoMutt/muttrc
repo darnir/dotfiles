@@ -2,57 +2,80 @@
 # This file will define the main configuration options for Mutt and source the
 # configurations for interacting with other applications
 
-# Source the Mutt gpg variables.
-source ~/.mutt/gpg.muttrc
+# Set Program and Directory Paths =================================================================
 
-# Source the details for offlineimap
+## Custom Path Variables --------------------------------------------------------------------------
+set my_muttconfdir         = "~/.mutt"			              # Location of Mutt config files
+set my_attachdir           = "~/.maildir/attachments"         # Save attachments here
+set my_accountsdir		   = "~/.mutt/accounts"               # Account specific config files
+
+
+## Directories and Programs -----------------------------------------------------------------------
+set mailcap_path            = $my_muttconfdir/mailcap         # Entries for dealing with filetypes
+set signature               = $my_muttconfdir/sig             # Signature at end of each message
+set alias_file              = $my_muttconfdir/aliases         # Mutt aliases
+set header_cache            = $my_muttconfdir/hcache
+set tmpdir                  = "/tmp"                          # Location for storing temp files
+set editor                  = "nvim -c 'set fo+=aw'"          # Editor used for composing emails
+
+
+# Account Details =================================================================================
+
+## Source the details for offlineimap -------------------------------------------------------------
 source ~/.mutt/offlineimap.muttrc
+## Add some Mailboxes that are not synchronized using Offlineimap ---------------------------------
+mailboxes "+GNU" "+GNU/INBOX" "+GNU/Sent" "+GNU/Archive" "+GNU/Drafts" "+GNU/Trash"
 
-# Source the configurations for each different account
-folder-hook UdS/*            source ~/.mutt/UdS.muttrc
-folder-hook gmail/*          source ~/.mutt/gmail.muttrc
-folder-hook MPIINF/*         source ~/.mutt/MPIINF.muttrc
+# Multi-Account Setup =============================================================================
+## For each Email Account that is handled via Mutt, a separate
+## %accountname.muttrc file should be created in the directory pointed to by
+## %my_accountsdir
 
-# Source the Mutt Colorscheme
+folder-hook UdS/*            source $my_accountsdir/UdS.muttrc
+folder-hook gmail/*          source $my_accountsdir/gmail.muttrc
+folder-hook darnirmlist/*    source $my_accountsdir/darnirmlist.muttrc
+folder-hook GNU/*            source $my_accountsdir/gnu.muttrc
+
+
+# Source the Mutt Colorscheme =====================================================================
 source ~/.mutt/colors.muttrc
 
-# Source the Mutt-Sidebar settings. Since Sidebar isn't part of vanilla mutt,
-# but is an external patch, we keep its settings separate.
-source ~/.mutt/sidebar.muttrc
 
-# Directories and Programs
-set mailcap_path            = "~/.mutt/mailcap"         # Teach Mutt how to handle attachments
-set signature               = "~/.mutt/sig"             # Signature at the end of each message
-set tmpdir                  = "/tmp"                    # Location for storing att. temporarily
-set editor                  = "nvim -c 'set fo+=aw'"     # Editor to be used for composing emails
-
-# Set the alias information
-set alias_file              = "~/.mutt/aliases"         # Mutt aliases
+# Set the alias information =======================================================================
 set sort_alias              = alias                     # Sort aliases by alias name
 set reverse_alias           = yes                       # Show Name from alias when possible
 source $alias_file                                      # Stupid, but required
-set display_filter          = "~/.mutt/aliasgen.sh"
+set display_filter          = "~/.mutt/aliasgen.sh"     # Pass all incoming emails to this script
+                                                        # which generates the alias file based on
+														# the sender
 
-# Main Options
-set realname                = "Darshit Shah"            # Set the Real Name to be used when sending emails
-set timeout                 = 10                        # Wait for $timeout secs. for a keypress before performing other actions
+
+# Main Options ====================================================================================
+set realname                = "Darshit Shah"            # Set Name to be used when sending emails
+set timeout                 = 10                        # Time to wait for a keypress
 set charset                 = "utf-8"					# Set the character set to UTF-8 by default
 set sleep_time				= 0							# Don't pause to show messages
+set mbox_type               = Maildir					# Set mailbox type
 set sig_dashes                                          # Add dashes, '--' before signature
-set use_envelope_from                                   # Derive the envelope_from value and send to sendmail
+set use_envelope_from                                   # Derive the envelope_from value
 set delete                                              # Delete, don't ask
 set quit                                                # Quit, don't ask
-set pipe_decode                                         # Decode the messages before sending to pipe-message
-set thorough_search                                     # Decode headers and mattachments before searching
-set allow_ansi											# Print ANSI color codes as colors to screen
-set mail_check_stats		= yes
-unset move                                              # Move, don't ask! Activates when moving messages from spool to mbox under mbox-hook
+set pipe_decode                                         # Decode messages before sending to pipe
+set thorough_search                                     # Decode messages before searching
+set allow_ansi											# Print ANSI codes as colors to screen
+set mail_check_stats		= yes						# Update the Mailbox stats periodically
+set mail_check_stats_interval = 30						# Update the Mailbox stats every 30 seconds
+unset move                                              # Move, don't ask!
 unset record                                            # Don't save sent messages. Gmail does that
 unset confirmappend                                     # Append messages, don't ask!
 unset mark_old                                          # Read / Unread is enough for me.
-unset wait_key                                          # Don't wait for a keypress after external commands
+unset wait_key                                          # Don't wait for keypress after commands
 
-# Index Options
+
+# Index Options ===================================================================================
+set date_format             = "%m/%d"					# Prefer to keep a simple date
+set index_format            = "%4C  [%Z] (%3M)  %D %-20.20F  %s"
+														# Format of the index page
 set sort                    = threads                   # Threaded Index. Like Gmail
 set sort_aux                = reverse-last-date-received
                                                         # Like Gmail
@@ -61,12 +84,9 @@ set reply_regexp            = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set strict_threads                                      # Use In-Reply-To header to identify threads
 set uncollapse_jump                                     # Jump to next unread when uncollapsing a thread
 set beep_new                                            # Beep on new messages
+unset arrow_cursor                                      # Show selected mail with inverse colors
 folder-hook . "exec collapse-all"                       # Collapse all threads by default
 
-# Formats
-set date_format             = "%m/%d"					# Prefer to keep a simple date
-set index_format            = "%4C  [%Z]  %D  %-20.20L  %s"
-														# Format of the index page
 
 # Pager Options
 set pager_index_lines       = 9                         # number of index lines to show
@@ -79,6 +99,7 @@ set smart_wrap                                          # Wrap lines are words o
 set tilde                                               # Pad blank lines with ~
 unset markers                                           # no ugly plus signs
 alternative_order text/plain text/enriched text/html    # Order for multipart MIME attachments
+set implicit_autoview									# Automatically view attachments in plaintext if possible
 
 set skip_quoted_offset = 3
 
@@ -86,7 +107,8 @@ set skip_quoted_offset = 3
 set forward_format          = "Fwd: %s"                 # format of subject when forwarding
 set ispell					= "aspell -e -c"			# use aspell as ispell
 set send_charset            = "utf-8"                   # Use UTF-8 when sending messages
-set attribution             = "On %d, %n wrote:"        # Message added before quoted section
+set attribution				= "* %n <%a> [%(%y%m%d %H:%M)]:"
+														# Attribution message added before the quoted section
 set recall					= no						# Do not ask to recall postponed message when composing
 set text_flowed                                         # Use format=flowed
 set edit_headers                                        # show headers when composing
@@ -98,9 +120,20 @@ set forward_quote                                       # include message in for
 set forward_decode                                      # decode when forwarding
 set reverse_name                                        # reply as whomever it was to, usefule when using email aliases
 set abort_nosubject                                     # Refuse to create messages without a subject
+set followup_to											# Create a Followup-to header when sending an eamil to a list
+set honor_followup_to									# Honor the Followup-to Headers. Send mail to mailing list even when using group-reply
+set ignore_list_reply_to								# Ignore reply-to lines when sending to a list
+set ignore_list_reply_to								# Ignore reply-to lines when sending to a list
 unset mime_forward                                      # forward attachments as part of body
+set use_from											# Generate the From: header
+set rfc2047_parameters									# Read the RFC2-47 MIME headers correctly
+set reply_with_xorig        = yes
+set abort_noattach          = ask-yes
+set attach_keyword        = "attached"
 unset metoo                                             # Remove address from receipients list
 unset reply_self                                        # Always reply to receipients
+
+set sort_browser			= reverse-date
 
 # Status Bar Format
 set status_chars            = " *%A"                    # ' ': Normal, '*': Changed, '%': Read-Only, 'A': Attach-Message mode
@@ -111,8 +144,29 @@ ignore *                                                # Ignore all headers in 
 unignore from date subject to cc reply-to               # Whitelist headers to show
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
+unignore list-unsubscribe
 unhdr_order *                                           # some distros order things by default
 hdr_order from: to: cc: date: subject:                  # and in this order
+
+# Mutt Sidebar Settings
+
+# set sidebar_delim   = '  │'
+set sidebar_divider_char   = '  │'
+set sidebar_visible = yes
+set sidebar_width   = 28
+set sidebar_short_path = yes
+set sidebar_folder_indent = yes
+set sidebar_sort_method = alpha
+set sidebar_new_mail_only = no
+# set sidebar_delim_chars = "/."
+
+set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats = yes
+set mail_check_stats_interval = 60
+
+color sidebar_highlight black color8
+color sidebar_new green black
+color sidebar_ordinary color245 default
 
 ## Keybindings
 
@@ -147,6 +201,8 @@ bind index n        next-new-then-unread
 bind index S		decode-copy
 
 bind index,pager r group-reply
+bind index,pager DD purge-message
+bind pager,index	Dt		  purge-thread
 
 # Sidebar Navigation
 bind index,pager <down>   sidebar-next
@@ -155,6 +211,8 @@ bind index,pager <right>  sidebar-open
 
 # View attachments properly.
 bind attach <return> view-mailcap
+
+# Extract URLs from email for viewing in an external browser
 macro index,pager \cL "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 macro attach,compose \cL "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
@@ -163,30 +221,42 @@ bind index p recall-message
 
 # Macros
 macro index i       "<change-folder>!<enter>"       "go to inbox"
-macro index <Tab>   "<next-unread-mailbox><enter>"  "Open next mailbox with new mail"
-macro index,pager A "<delete-message>"              "Delete Message"
+macro index,pager <Tab>   "<next-unread-mailbox><enter>"  "Open next mailbox with new mail"
+
+macro index	,n		"<limit>~N\n"					"Show only new messages"
+macro index	,f		"<limit>~F\n"					"Show only flagged messages"
+macro index ,a		"<limit>all\n"					"Show all messages"
 
 # Saner copy/move dialogs
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
-folder-hook . "bind attach s save-entry"
-folder-hook trash "macro index,pager d <delete-message>"
-folder-hook Wget "macro attach s <save-entry><kill-line>~/Programming/wget/patches/<enter>"
+macro index dG "<Esc>VT*<enter>;dd" "Delete all messages"
 
-# Leftover Options
-# message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
-set implicit_autoview
-auto_view text/html application/x-pgp-message
-# auto_view text/plain
-auto_view text/x-patch
-auto_view application/x-perl
+# Always save attachments to a constant directory
+macro attach s "<save-entry><kill-line>$my_attachdir<enter>y" "Save attachment"
 
+# Subscribe to Mailing Lists
+subscribe	gnu-prog-discuss
+subscribe	bug-wget
+subscribe	neomutt-devel
+subscribe	neomutt-users
+
+# Set PGP and Crypto Options
+set crypt_autopgp = yes
 set crypt_autosign = yes
+set crypt_autosmime = yes
+set crypt_opportunistic_encrypt = no
 set crypt_replyencrypt = yes
 set crypt_replysign = yes
 set crypt_replysignencrypted = yes
+set crypt_use_gpgme = yes
+set crypt_use_pka = yes
 set crypt_verify_sig = yes
+set pgp_auto_decode = yes
+set pgp_check_exit = yes
+set pgp_long_ids = yes
 set pgp_use_gpg_agent = yes
-set pgp_sign_as = darnir@gmail.com
-set pgp_auto_decode
+set pgp_sign_as = 0x2A1743EDA91A35B6
+
+#  vim: set ts=4 sts=4 sw=4 tw=99 noet :
