@@ -52,6 +52,8 @@
     ro = reset --hard origin/HEAD
     rh = reset --hard HEAD
 
+	uds = "config user.email \"s8dashah@stud.uni-saarland.de\""
+
 [am]
     messageid = true
 
