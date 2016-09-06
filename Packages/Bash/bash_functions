@@ -112,14 +112,14 @@ echo "$LL"
 # easier to scan visually.
 man() {
     env \
-        LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
-        LESS_TERMCAP_md="$(printf '\e[1;31m')" \
-        LESS_TERMCAP_me="$(printf '\e[0m')" \
-        LESS_TERMCAP_se="$(printf '\e[0m')" \
-        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
-        LESS_TERMCAP_ue="$(printf '\e[0m')" \
-        LESS_TERMCAP_us="$(printf '\e[1;32m')" \
-            man "$@"
+        LESS_TERMCAP_mb=$'\x1b[38;2;255;200;200m' \
+    	LESS_TERMCAP_md=$'\x1b[38;2;20;240;240m' \
+    	LESS_TERMCAP_me=$'\x1b[0m' \
+    	LESS_TERMCAP_so=$'\x1b[38;2;60;90;90;48;2;40;40;40m' \
+    	LESS_TERMCAP_se=$'\x1b[0m' \
+    	LESS_TERMCAP_us=$'\x1b[38;2;150;100;200m' \
+    	LESS_TERMCAP_ue=$'\x1b[0m' \
+    	man "$@"
 }
 
 # Function: resolve()
@@ -308,30 +308,8 @@ EOF
     vim "$HOME/.ssh/config"
 }
 
-# Overload mutt to clean the aliases file first
-# mutt() {
-#     ~/.mutt/cleanalias.sh
-#     /usr/bin/mutt
-# }
-
 fork() {
     $* &> /dev/null &
-}
-
-pintos() {
-    PIDF=/tmp/.pintos.lock
-    if [[ ! -f $PIDF ]]; then
-        {
-            qemu-system-x86_64 -enable-kvm -net user,hostfwd=tcp::8022-:22 \
-            -net nic -m 1G -vga none -display none -cpu host -M 1.6 \
-            -pidfile $PIDF -machine type=pc,accel=kvm \
-            -hda "$HOME/VirtualBox VMs/OS/OS-new2.img"
-            rm -f $PIDF
-        } &
-        echo "Started VM. Will now SSH..."
-        sleep 5
-    fi
-    ssh "pintos"
 }
 
 configwget() {
@@ -364,24 +342,6 @@ cleanswap() {
     sudo swapon $SWDEV
 }
 
-_print_dockerclean_help() {
-    echo "Usage: dockerclean [action]"
-    echo "\n ACTIONS:"
-    echo "  dangling    : Delete all orphaned images"
-    echo "  volumes     : Delete all orphaned volumes"
-    echo "  exited      : Delete all exited images"
-}
-
-# dockerclean() {
-#     local ACTION="$1"
-#     case $ACTION in
-#         dangling) sudo docker images -q -f dangling=true | xargs sudo docker rmi;;
-#         volumes) sudo docker volume ls -f dangling=true -q | xargs -r sudo docker volume rm;;
-#         exited) sudo docker ps -a -f status=exited -q | xargs sudo docker rm -v;;
-#         *) _print_dockerclean_help();;
-#     esac
-# }
-
 rtems() {
     if [[ $# -eq 0 ]]; then
         _ver="4.12"
@@ -408,7 +368,7 @@ stream() {
     local MPV_PARAM="${@:2}"
 
     local USER="go7box"
-    local PASS=$(pass seedbox/rutorrent/${USER})
+    local PASS=$(pass Server/rutorrent/${USER})
 
     local _final_url=$(sed -e "s#\(https://\)#\1${USER}:${PASS}@#" <<< "$URL")
 
@@ -449,12 +409,12 @@ buildmutt() {
 
 rustos() {
 
-_ARCH="x86_64"
+    _ARCH="x86_64"
 
-export RUSTOSDEV=true
-export PATH="$HOME/Programming/Rust-OS/toolchain/install/arch/${_ARCH}/bin":$PATH
+    export RUSTOSDEV=true
+    export PATH="$HOME/Programming/Rust-OS/toolchain/install/arch/${_ARCH}/bin":$PATH
 
-export PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")"${HORIZ_LINE}"("${SH_RED}"RUSTOS"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${OUT_COL}
+    export PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")"${HORIZ_LINE}"("${SH_RED}"RUSTOS"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${OUT_COL}
 }
 
 # vim: set ft=sh ts=4 sts=4 sw=4 tw=80 et :

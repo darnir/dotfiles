@@ -5,8 +5,6 @@ alias du='du -c -h'
 alias less='less -r'
 alias ls='ls --color'
 alias mkdir='mkdir -p -v'
-alias more='less'
-alias nano='vim'
 alias ping='ping -c 5'
 alias rm='rm -v'
 alias vi="nvim"
@@ -23,7 +21,7 @@ alias da='date "+%A, %B %d, %Y [%T]"'
 alias du1='du --max-depth=1'
 alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
 alias hist='history | grep'      # requires an argument
-alias la='ls -la'
+alias la='ls -lah'
 alias mirrorlist='sudo reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
 alias musicdb='mpc update --wait && mpc ls | mpc add'
 alias netuse='sudo netstat -lantp | grep -i establ'
@@ -31,14 +29,12 @@ alias openports='netstat --all --numeric --programs --inet --inet6'
 alias path='printf ${PATH//:/\\n}'
 alias pfind='ps aux | grep'
 alias vimup='vim +PlugUpdate'
-alias syncmail='kill -10 `cat ~/.offlineimap/pid`'
+alias syncmail="kill -10 `systemctl --user status offlineimap | grep "Main PID" | awk '{print \$3}'`"
 alias watchmail='watch systemctl --user status offlineimap.service'
+alias stopmail="systemctl --user stop offlineimap.service"
 alias restartmail='systemctl --user restart offlineimap.service'
 alias restartnet='sudo systemctl restart netctl-auto@wlp9s0.service'
 alias netstatus="systemctl status netctl-auto@wlp9s0.service"
-alias stopmail="systemctl --user stop offlineimap.service"
-
-# Power Configuration
 
 
 # Aliases for Wget
@@ -58,7 +54,7 @@ alias sudo='sudo '
 
 # Make Systemd Easier
 if have systemctl && [[ -d /run/systemd/system ]]; then
-	_status()	{ sudo systemctl status -a -n0 "$@"; }
+	_status()	{ systemctl status -a -n0 "$@"; }
 	start()		{ sudo systemctl start "$@";	_status "$@"; }
 	stop()		{ sudo systemctl start "$@";	_status "$@"; }
 	restart()	{ sudo systemctl restart "$@";	_status "$@"; }
