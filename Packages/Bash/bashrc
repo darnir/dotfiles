@@ -121,7 +121,7 @@ PS4='+ '
 
 export VISUAL=nvim
 export TERM=xterm-256color
-export BROWSER="firefox"
+export BROWSER="/usr/bin/firefox"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 [[ -f ~/.bash_ssh ]] && . ~/.bash_ssh
