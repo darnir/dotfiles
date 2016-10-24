@@ -81,6 +81,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColorScheme' }
 Plug 'tpope/vim-vividchalk'
 Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
+Plug 'jacoborus/tender'
 
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
 Plug 'benekastah/neomake'
@@ -97,6 +98,7 @@ Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'zchee/deoplete-jedi'
 
 Plug 'tpope/vim-liquid'
 " Plug 'rust-lang/rust.vim'
@@ -129,7 +131,7 @@ call plug#end()
 " relevant rtp has been set.
 
 set background=dark
-colorscheme vividchalk	" Set the theme for Vim
+colorscheme tender	" Set the theme for Vim
 "}}}
 
 " Autocmd  Settings {{{
@@ -286,7 +288,7 @@ nnoremap <leader># :Grepper -tool git -cword -noprompt<cr>
 " }}}
 
 " Airline settings {{{
-let g:airline_theme='badwolf'
+let g:airline_theme='tenderplus'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
