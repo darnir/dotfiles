@@ -29,19 +29,13 @@ alias openports='netstat --all --numeric --programs --inet --inet6'
 alias path='printf ${PATH//:/\\n}'
 alias pfind='ps aux | grep'
 alias vimup='vim +PlugUpdate'
-alias syncmail="kill -10 `systemctl --user status offlineimap | grep "Main PID" | awk '{print \$3}'`"
 alias watchmail='watch systemctl --user status offlineimap.service'
 alias stopmail="systemctl --user stop offlineimap.service"
 alias restartmail='systemctl --user restart offlineimap.service'
 alias restartnet='sudo systemctl restart netctl-auto@wlp9s0.service'
 alias netstatus="systemctl status netctl-auto@wlp9s0.service"
-
-
-# Aliases for Wget
-alias proj='cd ~/Programming/wget/'
-alias resetproj='./bootstrap --skip-po && configwget'
-alias resetprojgcc='./bootstrap --skip-po && configwgetgcc'
-alias resetprojpar='./bootstrap --skip-po && parallelconfig'
+alias weather="wget -O- -q wttr.in"
+alias csp="lp -d CS_FS_Printer"
 
 # Safety Features
 alias chgrp='chgrp --preserve-root'
@@ -51,27 +45,6 @@ alias chown='chown --preserve-root'
 # Allows one to use bash aliases with superuser permissions. See bash(1) for
 # details
 alias sudo='sudo '
-
-# Make Systemd Easier
-if have systemctl && [[ -d /run/systemd/system ]]; then
-	_status()	{ systemctl status -a -n0 "$@"; }
-	start()		{ sudo systemctl start "$@";	_status "$@"; }
-	stop()		{ sudo systemctl start "$@";	_status "$@"; }
-	restart()	{ sudo systemctl restart "$@";	_status "$@"; }
-	reload()	{ sudo systemctl reload "$@";	_status "$@"; }
-	status()	{ systemctl status -a "$@"; }
-
-	alias enable="sudo systemctl enable"
-	alias disable="sudo systemctl disable"
-	alias list='systemctl list-units -t path,service,socket --no-legend'
-	alias userctl='systemctl --user '
-	ustart()   { userctl start "$@";   userctl status -a "$@"; }
-	ustop()    { userctl stop "$@";    userctl status -a "$@"; }
-	urestart() { userctl restart "$@"; userctl status -a "$@"; }
-	ureload()  { userctl reload "$@";  userctl status -a "$@"; }
-	ustatus()  { userctl status -a "$@"; }
-	alias ulist='userctl list-units -t path,service,socket --no-legend'
-fi
 
 # Load other temporary aliases
 [[ -f ~/.temp_aliases ]] && . ~/.temp_aliases
