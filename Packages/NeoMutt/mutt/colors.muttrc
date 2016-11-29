@@ -44,11 +44,11 @@ mono  error         bold
 
 # index ----------------------------------------------------------------
 
-color index         red             default         "~D(!~p|~p)"               # deleted
-color index         black           default         ~F                         # flagged
-color index         brightred       default         ~=                         # duplicate messages
-color index         brightgreen     default         "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
-color index         brightgreen		default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
+# color index         red             default         "~D(!~p|~p)"               # deleted
+# color index         black           default         ~F                         # flagged
+# color index         brightred       default         ~=                         # duplicate messages
+# color index         brightgreen     default         "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
+# color index         brightgreen		default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
 color index         red             default         "~A"                        # all messages
 color index         brightred       default         "~E"                        # expired messages
 color index         blue            default         "~N"                        # new messages
@@ -69,9 +69,9 @@ color index         red             default         "~N~F"                      
 color index         red             default         "~N~F~p"                    # new flagged messages to me
 color index         red             default         "~U~F~p"                    # new flagged messages to me
 color index         black           red             "~D"                        # deleted messages
-color index         brightcyan      default         "~v~(!~N)"                  # collapsed thread with no unread
-color index         yellow          default         "~v~(~N)"                   # collapsed thread with some unread
-color index         green           default         "~N~v~(~N)"                 # collapsed thread with unread parent
+# color index         brightcyan      default         "~v~(!~N)"                  # collapsed thread with no unread
+# color index         yellow          default         "~v~(~N)"                   # collapsed thread with some unread
+# color index         green           default         "~N~v~(~N)"                 # collapsed thread with unread parent
 # statusbg used to indicated flagged when foreground color shows other status
 # for collapsed thread
 color index         red             black           "~v~(~F)!~N"                # collapsed thread with flagged, no unread

@@ -33,8 +33,8 @@ mailboxes "+GNU" "+GNU/INBOX" "+GNU/Sent" "+GNU/Archive" "+GNU/Drafts" "+GNU/Tra
 
 folder-hook UdS/*            source $my_accountsdir/UdS.muttrc
 folder-hook gmail/*          source $my_accountsdir/gmail.muttrc
-folder-hook darnirmlist/*    source $my_accountsdir/darnirmlist.muttrc
 folder-hook GNU/*            source $my_accountsdir/gnu.muttrc
+folder-hook darnirmlist/*    source $my_accountsdir/darnirmlist.muttrc
 
 
 # Source the Mutt Colorscheme =====================================================================
@@ -241,6 +241,7 @@ subscribe	gnu-prog-discuss
 subscribe	bug-wget
 subscribe	neomutt-devel
 subscribe	neomutt-users
+subscribe	ds-ws16
 
 # Set PGP and Crypto Options
 set crypt_autopgp = yes
