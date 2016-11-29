@@ -12,7 +12,7 @@ HISTCONTROL="erasedups:ignoreboth"
 export FIGNORE=$FIGNORE:.aux:.bbl:.blg:.toc:.o:
 
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:cd:\:q"
 
 # Shell Builtin Settings
 shopt -s autocd                  # No need to type cd anymore
@@ -43,7 +43,6 @@ bind "set completion-map-case on"
 set show-all-if-unmodified on
 set skip-completed-text on
 
-have() { command -v "$1" >&/dev/null; }
 
 # Source the utlity files containing aliases and functions for Bash
 [[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
@@ -58,25 +57,6 @@ then
 	source "/usr/share/git/completion/git-prompt.sh"
 else
     source $HOME/.git-prompt.sh
-fi
-
-[[ -f "$HOME/.config/ranger/bash.sh" ]] && . "$HOME/.config/ranger/bash.sh"
-
-# Login greeting ------------------
-if [[ -z "$STY" && ! "$SHOWED_SCREEN_MESSAGE" == "true" ]]; then
-	detached_screens=($(screen -list | grep Detached | awk '{print $1}'))
-	pad=$(printf '%0.1s' " "{1..60})
-	padlength=34
-    if [ ! ${#detached_screens[@]} -eq 0 ]; then
-        echo "+---------------------------------------+"
-        echo "| Detached screens are available:       |"
-		for screenitem in "${detached_screens[@]}"; do
-			printf "|   %s %*.*s |\n" "$screenitem" 0 $((padlength - ${#screenitem})) "$pad"
-		done
-        echo "+---------------------------------------+"
-
-        export SHOWED_SCREEN_MESSAGE="true"
-    fi
 fi
 
 GIT_PS1_SHOWDIRTYSTATE=1;
@@ -98,6 +78,10 @@ FILES_STAT="\$(ls -1 | wc -l | sed 's: ::g')"
 FILES_SIZE="\$(ls -lah | grep -m 1 total | sed 's/1:total //')b"
 GIT_PS1='$(__git_ps1 "(%s)")'
 
+export CTX_START=${HORIZ_LINE}"("
+export CTX_END=${SH_WHITE}")"
+CONTEXT=
+
 if [ -z $STY ]
 then
     # We are not in a Screen Session
@@ -112,16 +96,14 @@ if [ $UID -eq 0 ]; then
 elif [ -n "$SSH_CLIENT" ]; then
     PS1=${SH_RED}"(SSH)"${SH_WHITE}"\u@\h "${SH_BLUE}"\W "${SH_GREEN}"\$ "${OUT_COL}
 else
-    PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${OUT_COL}
+    PS1="\n"${SH_WHITE}${TL_ANGLE}"("${SH_BLUE}"\u"${SH_WHITE}"@"${SH_RED}"\h"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\$?"${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}${BATT}${SH_WHITE}")"${HORIZ_LINE}"("${SH_GREEN}"\@ \d"${SH_WHITE}")"\${CONTEXT}"\n"${BL_ANGLE}${HORIZ_LINE}"("${SH_GREEN}"\w"${SH_WHITE}")"${HORIZ_LINE}"("${SH_YELLOW}${FILES_STAT}" files, "${FILES_SIZE}${SH_WHITE}")"${HORIZ_LINE}${SH_BLUE}${GIT_PS1}${SH_WHITE}"> "${OUT_COL}
 fi
 trap 'echo -ne "\e[0m"' DEBUG
 PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export VISUAL=nvim
+export VISUAL=nvim-qt
 export TERM=xterm-256color
 export BROWSER="/usr/bin/firefox"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
-[[ -f ~/.bash_ssh ]] && . ~/.bash_ssh
