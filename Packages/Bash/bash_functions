@@ -363,6 +363,21 @@ rtems() {
     alias kill-qemu="killall qemu-system-arm"
 }
 
+awget() {
+    local URL="$1"
+    local WGET_PARAM="${@:2}"
+
+    local USER="go7box"
+    local PASS=$(pass Server/rutorrent/${USER})
+
+    # local _final_url=$(sed -e "s#\(https://\)#\1${USER}:${PASS}@#" <<< "$URL")
+
+    # echo "$_final_url"
+
+    # mpv --cache=204800 --cache-initial=10240 --cache-secs=100 "$_final_url"
+    wget2 --progress bar --user ${USER} --password "${PASS}" $WGET_PARAM "$URL"
+}
+
 stream() {
     local URL="$1"
     local MPV_PARAM="${@:2}"
@@ -404,6 +419,41 @@ buildmutt() {
             --with-idn
     elif [[ $1 == "build" ]]; then
         make
+    fi
+}
+
+distos() {
+    PIDFILE="/tmp/.ds-deb7.lock"
+    if [[ "$1" == "gui" ]]; then
+        OPTS="-usbdevice tablet"
+    else
+        OPTS="-vga none -nographic"
+    fi
+
+    if [[ ! -f $PIDFILE ]]; then
+        qemu-system-x86_64 \
+            -enable-kvm \
+            -net user,hostfwd=tcp::8022-:22 \
+            -net nic,model=virtio  \
+            -m 1G,slots=2,maxmem=3G  \
+            -name "Distributed Systems: Fedora" \
+            -pidfile "$PIDFILE" \
+            -cpu host \
+            -M 1.6 \
+            -machine type=pc,accel=kvm \
+            ${OPTS} \
+            -boot order=c \
+            -drive file="$HOME/VirtualBox VMs/DistributedSystems/DS-Fedora/DS-Fedora.raw",format=raw,aio=native,cache=none
+    else
+        echo "Found existing PID file"
+        PID=$(pgrep qemu-system-x86)
+        if [[ -z $PID ]]; then
+            echo "... But qemu process not found. Cleaning up PIDFile"
+            rm -v -f "$PIDFILE"
+            return 1
+        fi
+        echo "Trying to SSH into Virtual Machine ..."
+        ssh "distos"
     fi
 }
 
