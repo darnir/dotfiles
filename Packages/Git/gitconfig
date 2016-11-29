@@ -53,6 +53,7 @@
     rh = reset --hard HEAD
 
 	uds = "config user.email \"s8dashah@stud.uni-saarland.de\""
+	gnu = "config user.email \"darnir@gnu.org\""
 
 [am]
     messageid = true
