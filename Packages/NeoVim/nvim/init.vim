@@ -101,7 +101,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'zchee/deoplete-jedi'
 
 Plug 'tpope/vim-liquid'
-" Plug 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'eapache/rainbow_parentheses.vim'
@@ -113,6 +113,7 @@ Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
 Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
 Plug 'hrother/offlineimaprc.vim'
 Plug 'muttrc.vim'
+Plug 'cespare/vim-toml'
 " Plug 'tmux-plugins/vim-tmux'
 " Plug 'mgrabovsky/vim-xverif'
 
