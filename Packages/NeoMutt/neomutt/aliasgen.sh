@@ -4,12 +4,12 @@ set -e
 set -u
 set -o pipefail
 
-ALIASFILE="$HOME/.mutt/aliases"
+ALIASFILE="$XDG_CONFIG_HOME/neomutt/aliases"
 
 MSG=$(cat)
 
 FROM=$(grep ^"From: " <<< "$MSG")
-ALIASLINE=$(awk -f $HOME/.mutt/printalias.awk <<< "$FROM")
+ALIASLINE=$(awk -f $XDG_CONFIG_HOME/neomutt/printalias.awk <<< "$FROM")
 MAIL=$(awk '{print $(NF)}' <<< "$ALIASLINE" | tr -d '<>')
 # ALIAS=$(awk '{print $2}' <<< "$ALIASLINE")
 

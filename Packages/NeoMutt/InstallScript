@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGE_NAME="NeoMutt"
+PACKAGE_NAME="mutt"
 
 prepare() {
 	install_aur neomutt-git
@@ -8,6 +8,5 @@ prepare() {
 }
 
 install() {
-	install_file muttrc home false true
-    install_directory mutt home false true
+    install_directory neomutt xdg_config_home false true
 }

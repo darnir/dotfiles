@@ -1,8 +1,8 @@
 set from = "darnir@gmail.com"
 set sendmail  = "/usr/bin/msmtp -a gmail"
-set postponed = "+gmail/drafts"
-set trash = "+gmail/trash"
-set spoolfile = "+gmail/inbox"
+set postponed = "+gmail/Drafts"
+set trash = "+gmail/Trash"
+set spoolfile = "+gmail/Inbox"
 unset record
 
 color status cyan default

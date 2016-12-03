@@ -3,9 +3,9 @@
 # Main Options
 
 set mbox_type = Maildir
-set folder = "~/.maildir"
-set spoolfile = "+gmail/inbox"
+set folder = "~/.local/var/lib/mail"
+set spoolfile = "+gmail/Inbox"
 
 # IMAP: offlineimap
-source ~/.mutt/mailboxes
+source ~/.local/var/lib/offlineimap/mailboxes
 # mailboxes `find ~/.maildir/ -type d -name cur -printf '%h '`

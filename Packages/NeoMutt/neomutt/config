@@ -5,9 +5,9 @@
 # Set Program and Directory Paths =================================================================
 
 ## Custom Path Variables --------------------------------------------------------------------------
-set my_muttconfdir         = "~/.mutt"			              # Location of Mutt config files
-set my_attachdir           = "~/.maildir/attachments"         # Save attachments here
-set my_accountsdir		   = "~/.mutt/accounts"               # Account specific config files
+set my_muttconfdir         = "~/.local/etc/neomutt"				              # Location of Mutt config files
+set my_attachdir           = "~/.local/var/lib/mail/attachments" # Save attachments here
+set my_accountsdir		   = "~/.local/etc/neomutt/accounts"               # Account specific config files
 
 
 ## Directories and Programs -----------------------------------------------------------------------
@@ -22,7 +22,7 @@ set editor                  = "nvim -c 'set fo+=aw'"          # Editor used for 
 # Account Details =================================================================================
 
 ## Source the details for offlineimap -------------------------------------------------------------
-source ~/.mutt/offlineimap.muttrc
+source $my_muttconfdir/offlineimap.muttrc
 ## Add some Mailboxes that are not synchronized using Offlineimap ---------------------------------
 mailboxes "+GNU" "+GNU/INBOX" "+GNU/Sent" "+GNU/Archive" "+GNU/Drafts" "+GNU/Trash"
 
@@ -38,14 +38,15 @@ folder-hook darnirmlist/*    source $my_accountsdir/darnirmlist.muttrc
 
 
 # Source the Mutt Colorscheme =====================================================================
-source ~/.mutt/colors.muttrc
+source $my_muttconfdir/colors.muttrc
 
 
 # Set the alias information =======================================================================
 set sort_alias              = alias                     # Sort aliases by alias name
 set reverse_alias           = yes                       # Show Name from alias when possible
 source $alias_file                                      # Stupid, but required
-set display_filter          = "~/.mutt/aliasgen.sh"     # Pass all incoming emails to this script
+set display_filter          = $my_muttconfdir/aliasgen.sh
+														# Pass all incoming emails to this script
                                                         # which generates the alias file based on
 														# the sender
 
@@ -86,6 +87,7 @@ set uncollapse_jump                                     # Jump to next unread wh
 set beep_new                                            # Beep on new messages
 unset arrow_cursor                                      # Show selected mail with inverse colors
 folder-hook . "exec collapse-all"                       # Collapse all threads by default
+set to_chars				= " ↓⇊↯↑L"
 
 
 # Pager Options
