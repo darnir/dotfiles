@@ -7,7 +7,7 @@ prepare() {
 }
 
 install() {
-    install_directory nvim userconf false true
+    install_directory nvim xdg_config_home false true
 }
 
 post_install() {
@@ -15,7 +15,7 @@ post_install() {
 
     mkdir -p "$HOME/.config/nvim/autoload"
 
-	wget -O ~/.config/nvim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	wget -O $XDG_CONFIG_HOME/nvim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 	echo "vim-plug installed"
     sleep 2
@@ -29,5 +29,5 @@ post_install() {
 	popd
 
 	install_aur par
-	install_packages vim-systemd shellcheck rust cargo
+	install_packages vim-systemd shellcheck
 }
