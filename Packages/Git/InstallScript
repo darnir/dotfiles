@@ -3,9 +3,7 @@
 PACKAGE_NAME="Git"
 
 install() {
-    install_file gitk home false true
-    install_file gitconfig home false true
-    install_file gitattributes home false true
+	install_directory git xdg_config_home false true
 }
 
 post_install() {
@@ -16,7 +14,7 @@ post_install() {
     if isarchlinux
     then
         log_info "Installing essential Perl packages for git send-email..."
-        sudo pacman -S perl-authen-sasl perl-net-smtp-ssl
+        sudo pacman --no-confirm -S perl-authen-sasl perl-net-smtp-ssl
     else
         log_warn "Please install the following optional dependencies:"
         echo "perl-authen-sasl      For git send-email"
