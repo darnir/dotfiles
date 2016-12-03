@@ -31,6 +31,7 @@
 #   installed.
 _get_conf_file() {
     local confpath
+	local confopt="${1^^}"
     case "$1" in
         etc) confpath="/etc/";;
         home) confpath="$HOME/.";;
@@ -38,11 +39,12 @@ _get_conf_file() {
         bin) confpath="/usr/local/bin/";;
         systemd-user) confpath="$HOME/.config/systemd/user/";;
         autostart) confpath="$HOME/.config/autostart/";;
+		xdg_*_home) confpath="${!confopt}/";;
         *) confpath="$1/"
     esac
 	mkdir -p "$confpath"
 	confpath="${confpath}${_CONF_NAME}"
-    echo "$confpath"
+	echo "$confpath"
 }
 
 _check_sudo() {
@@ -166,7 +168,7 @@ install_file() {
     local _CONF_NAME="$1"
     local _CONF_FILE=$(_get_conf_file "$2")
     local _BCK_FILE=${_CONF_FILE}.bck
-    local _LOC_FILE=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
+    local _LOC_FILE=$(pwd)/Packages/${pkgname}/${_CONF_NAME}
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
@@ -208,7 +210,7 @@ install_directory() {
     local _CONF_NAME="$1"
     local _CONF_FILE=$(_get_conf_file "$2")
     local _BCK_FILE=${_CONF_FILE}bck
-    local _LOC_FILE=$(pwd)/Packages/${PACKAGE_NAME}/${_CONF_NAME}
+    local _LOC_FILE=$(pwd)/Packages/${pkgname}/${_CONF_NAME}
 
     local SUDO=$(_check_sudo "$3")
     local linktype=$(_set_linktype "$4")
@@ -220,7 +222,7 @@ install_directory() {
 }
 
 depends() {
-    ./dotfiles -b "$PACKAGE_NAME" -d "$1"
+    ./dotfiles -b "$pkgname" -d "$1"
 }
 
 
@@ -255,6 +257,7 @@ install_aur() {
     popd
     popd
 }
+
 safetouch() {
     if [ ! -f "$1" ]
     then

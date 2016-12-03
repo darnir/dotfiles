@@ -128,16 +128,16 @@ install_package() {
     if [[ $(type -t prepare) == "function" ]]
     then
 		log_all "white" "Running Pre-Install Hooks"
-		log_all "nc" "$(eval prepare 2>&1)"
+		log_all "nc" "$(prepare 2>&1)"
 		log_std ""
     fi
 
-	log_user "nc" "$(eval install 2>&1)"
+	log_user "nc" "$(install 2>&1)"
 
     if [[ $(type -t post_install) == "function" ]]
     then
 		log_all "white" "\nRunning Post-Install Hooks"
-		log_all "nc" "$(eval post_install 2>&1)"
+		log_all "nc" "$(post_install 2>&1)"
     fi
 	log_std "=== End of Log Entry ==="
     cat $TEMPDB >> $INSTALL
