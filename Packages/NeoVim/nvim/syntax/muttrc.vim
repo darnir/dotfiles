@@ -1,1 +1,0 @@
-/usr/share/vim/vimfiles/syntax/neomuttrc.vim

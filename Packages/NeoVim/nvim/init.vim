@@ -2,95 +2,70 @@
 "                         Neo-ViM Configuration File                          "
 "                                                                             "
 "  This file contains the various custom settings for Neo-ViM fork of Vim     "
-"																			  "
+"                                                                             "
 "  Author: Darshit Shah <darnir [at] gmail [dot] com                          "
 "                                                                             "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 " General Editor Settings {{{
-" let NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
-					" Set a custom Spell File
-set modeline		" Enable modeline support
-let g:mapleader=','	" Remap the leader key to something more convenient
-set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~,*.aux,*.log,*.out,*.blg,*.lot,*.toc,*.pdf
-					" Ignore these filetypes from within Vim
-set lazyredraw		" Delay redrawing window during macro
+                                        " Set a custom Spell File
+set modeline                            " Enable modeline support
+let g:mapleader=','                     " Remap the leader key to something more convenient
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.~,*.aux,*.out,*.blg,*.lot,*.toc,*.pdf
+                                        " Ignore these filetypes from within Vim
+set lazyredraw                          " Delay redrawing window during macro
 set clipboard=unnamedplus
-					" Use the system clipboard as the default unnamed register
-set gdefault		" Always set the 'g' value when substitiuting
-set hidden			" Support hidden buffers
+                                        " Use the system clipboard as the default unnamed register
+set gdefault                            " Always set the 'g' value when substitiuting
+set hidden                              " Support hidden buffers
 set switchbuf=useopen,usetab
-					" Use existing open buffers and tabs to find file first
-set wrapscan		" Wrap searches around EOF
-set directory=/tmp/	" Temp. swap files need not persist
-set keywordprg=:Nman
+                                        " Use existing open buffers and tabs to find file first
+set wrapscan                            " Wrap searches around EOF
+set directory=/tmp/                     " Temp. swap files need not persist
+set runtimepath^=/usr/share/vim/vimfiles/
 " }}}
 
 " Editor UI Settings {{{
-set termguicolors	" Use True Colours for Terminal
-set ruler			" Show the cursor position all the time
-set showcmd			" Show the command you are currently typing
+set notermguicolors                     " Don't use True Colours for Terminal (256 is more than enough)
+set ruler                               " Show the cursor position all the time
+set showcmd                             " Show the command you are currently typing
 set formatoptions+=tcroqnj
-					" Set various options for formatting text.
-					" Check |fo-options| for information
-set scrolloff=6		" Keep a buffer of 6 lines top and bottom when scrolling
-set relativenumber	" Show relative line numbers
+                                        " Set various options for formatting text.
+                                        " Check |fo-options| for information
+set scrolloff=6                         " Keep a buffer of 6 lines top and bottom when scrolling
+set relativenumber                      " Show relative line numbers
 set shortmess+=atIoOtT
-					" Change the messages shown by vim
-set visualbell		" Use a visual bell instead of a beep
-set noerrorbells	" Disable bells on errors
+                                        " Change the messages shown by vim
+set foldmethod=syntax
+set visualbell                          " Use a visual bell instead of a beep
+set noerrorbells                        " Disable bells on errors
+set noshowmode                          " Don't show the current editing mode
 " }}}
 
 " Indentation Settings {{{
-set smartindent		" Set smart indenting
-set smarttab		" Enable Smart tab'ing
-set shiftwidth=4	" Number of columns to move at each indent level
-set softtabstop=4	" Number of columns moved on a <tab> key
-set tabstop=4		" Number of columns a Tab represents
-set textwidth=79	" Auto wrap at char 80
+set smartindent                         " Set smart indenting
+set smarttab                            " Enable Smart tab'ing
+set shiftwidth=4                        " Number of columns to move at each indent level
+set softtabstop=4                       " Number of columns moved on a <tab> key
+set tabstop=4                           " Number of columns a Tab represents
+set textwidth=79                        " Auto wrap at char 80
 " }}}
 
 " Search Options {{{
-set smartcase		" Use smart case sensitivity when searching
-set incsearch		" Use incremental search
-set magic			" Use magic regex during searches
-"This unsets the 'last search pattern' register by hitting return
+set smartcase                           " Use smart case sensitivity when searching
+set incsearch                           " Use incremental search
+set magic                               " Use magic regex during searches
+" This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR>i<CR><ESC>
 " }}}
 
-" {{{ Markdown-Composer
-function! BuildComposer(info)
-  if a:info.status != 'unchanged' || a:info.force
-    !cargo build --release
-    UpdateRemotePlugins
-  endif
-endfunction
-" }}}
-
-" {{{ Update Remote Plugins
-function! DoRemote(arg)
-    UpdateRemotePlugins
-endfunction
-" }}}
-
 " Vim Plugin Management {{{
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
+Plug 'jacoborus/tender'                 " Use the tender colorscheme
 
-Plug 'xolox/vim-misc' | Plug 'xolox/vim-colorscheme-switcher', { 'on': 'NextColorScheme' }
-Plug 'tpope/vim-vividchalk'
-Plug 'flazz/vim-colorschemes', { 'on': 'NextColorScheme' }
-Plug 'jacoborus/tender'
-
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
-Plug 'benekastah/neomake'
-Plug 'Shougo/neosnippet-snippets' | Plug 'Shougo/neosnippet'
-Plug 'honza/vim-snippets'
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'jiangmiao/auto-pairs'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-commentary'
 Plug 'bogado/file-line'
@@ -98,32 +73,13 @@ Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'zchee/deoplete-jedi'
-
-Plug 'tpope/vim-liquid'
 Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'eapache/rainbow_parentheses.vim'
 
-" Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'hdima/python-syntax', { 'for': 'python' }
-Plug 'smancill/conky-syntax.vim', { 'for': 'conky' }
-Plug 'Firef0x/PKGBUILD.vim', { 'for': 'PKGBUILD' }
-Plug 'hrother/offlineimaprc.vim'
-Plug 'muttrc.vim'
-Plug 'cespare/vim-toml'
-" Plug 'tmux-plugins/vim-tmux'
-" Plug 'mgrabovsky/vim-xverif'
-
-Plug 'a.vim', { 'for': 'c' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
-
-Plug 'lervag/vimtex', { 'for': 'tex' }
-
-Plug 'nhooyr/neoman.vim'
 call plug#end()
 " }}}
 
@@ -140,10 +96,9 @@ colorscheme tender	" Set the theme for Vim
 augroup filetype_settings
     autocmd!
     " Set spell checking only on files that make sense. Like TeX, mail and Markdown
-    autocmd FileType tex setlocal spell spelllang=en_us
-    autocmd FileType mail setlocal spell spelllang=en_us
-    autocmd FileType markdown setlocal spell spelllang=en_us
-    " autocmd FileType markdown,tex,mail setlocal formatoptions+=a
+    autocmd FileType tex,mail,markdown setlocal spell spelllang=en_us
+    " autocmd FileType mail setlocal spell spelllang=en_us
+    " autocmd FileType markdown setlocal spell spelllang=en_us
 augroup END
 
 augroup cursor_positions
@@ -185,20 +140,20 @@ augroup cursor_positions
         " Found an _empty_ subject in the headers.
         " NOTE: you can put similar checks to handle other empty headers
         " like To, From, Newgroups, ...
-        if l:str == 'Subject: '
+        if l:str ==# 'Subject: '
           execute l:cur
           :start!
           break
         endif
         " We have reached the end of the headers.
-        if l:str == ''
+        if l:str ==? ''
           let l:cur = l:cur + 1
           " If the first line of the body is an attribution, put
           " the cursor _after_ that line, otherwise the cursor is
           " leaved right after the headers (assuming we're writing
           " a new mail, and not editing a reply).
           " NOTE: modify the regexp to match your mail client's attribution!
-          if strlen(matchstr(getline(l:cur), '^On.*wrote:.*')) > 0
+          if strlen(matchstr(getline(l:cur), '^\* \w+ <\w+>.*')) > 0
             let l:cur = l:cur + 1
           endif
           execute l:cur
@@ -231,79 +186,24 @@ augroup END
 
 " }}}
 
-" {{{ Neomake Settings
-augroup NeomakeSettings
-    autocmd!
-    autocmd! BufWritePost * Neomake
-    let g:neomake_python_enabled_makers = ['flake8']
-    let g:neomake_python_flake8_maker = {
-        \ 'args': ['--config=flake8.ini'],
-        \ }
-    let g:neomake_tex_enabled_makers = ['lacheck']
-    let g:neomake_sh_enabled_makers = ['shellcheck']
-    let g:neomake_vim_enabled_makers = ['vint']
-    " let g:neomake_c_enabled_makers = ['gcc', 'clang-tidy']
-augroup END
-" }}}
-
-" {{{ NeoSnippet Settings
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB>
- \ pumvisible() ? "\<C-n>" :
- \ neosnippet#expandable_or_jumpable() ?
- \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" " For conceal markers.
-" if has('conceal')
-"   set conceallevel=2 concealcursor=niv
-" endif
-" }}}
-
-" {{{ Deoplete Settings
-command EnableDeoplete exec deoplete#enable()
-" }}}
-
-" {{{ Markdown Composer Settings
-let g:markdown_composer_autostart=0
-" }}}
-
-" {{{ Vim-Grepper Settings
-let g:grepper = {
-    \ 'tools': ['git', 'grep'],
-    \ 'open':  1,
-    \ 'jump':  0,
-    \ }
-nnoremap <leader>git :Grepper -tool git -noswitch<cr>
-nnoremap <leader># :Grepper -tool git -cword -noprompt<cr>
-" }}}
-
-" {{{ Easymotion Settings
-" map <Leader> <Plug>(easymotion-prefix)
-" }}}
-
 " Airline settings {{{
 let g:airline_theme='tenderplus'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline_detected_modified = 1
 let g:airline_detect_iminsert = 0
-let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#whitespace#mixed_indent_algo = 1
+let g:airline#extensions#whitespace#mixed_indent_algo = 2
 let g:airline#extensions#whitespace#show_message = 1
+let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'f'
 let g:airline_section_section_a = '%{gutentags#statusline()}'
+let g:airline#extension#neomake#enabled = 1
 " }}}
 
 " {{{ NERD Settings
@@ -318,47 +218,8 @@ let g:tagbar_autoclose=1
 let g:tagbar_show_linenumbers=-1
 "}}}
 
-" Rainbow Parentheses Settings {{{
-" TODO: FIX. Doesn't currently work
-let g:rbpt_colorpairs = [
-    \ ['red',         'RoyalBlue3'],
-    \ ['brown',       'SeaGreen3'],
-    \ ['blue',        'DarkOrchid3'],
-    \ ['gray',        'firebrick3'],
-    \ ['green',       'RoyalBlue3'],
-    \ ['magenta',     'SeaGreen3'],
-    \ ['cyan',        'DarkOrchid3'],
-    \ ['darkred',     'firebrick3'],
-    \ ['brown',       'RoyalBlue3'],
-    \ ['darkblue',    'DarkOrchid3'],
-    \ ['gray',        'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkmagenta', 'SeaGreen3'],
-    \ ['darkcyan',    'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-augroup rainbow_paren
-    autocmd!
-    au VimEnter * RainbowParenthesesActivate
-    au Syntax * RainbowParenthesesLoadRound
-    au Syntax * RainbowParenthesesLoadSquare
-    au Syntax * RainbowParenthesesLoadBraces
-augroup END
-" }}}
-
 " CScope Settings {{{
-
 source ~/.config/nvim/cscope_maps.vim
-
-" }}}
-
-" CTags Settings {{{
-let g:ctags_statusline=1
-let g:generate_tags=1
-" C-\ will open in a new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
 
 " Keyboard Shortcuts {{{
@@ -372,12 +233,8 @@ command W w !sudo tee % > /dev/null
 map <F6> :NERDTreeToggle<CR>
 map <F7> :TagbarToggle<CR>
 
-nnoremap <leader><leader> <Esc>
-inoremap <leader><leader> <Esc>
-
 nnoremap <leader>m :!make<Esc>
 
-nnoremap <leader>r :RainbowParenthesesActivate<CR>
 nnoremap <leader>o o<ESC>
 nnoremap <leader>O O<Esc>
 
@@ -399,16 +256,6 @@ function! AppendModeline()
   call append(line('$'), l:modeline)
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
-" }}}
-
-" DiffOrig() {{{
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.  Only define it when not
-" defined already.
-if !exists(':DiffOrig')
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-            \ | wincmd p | diffthis
-endif
 " }}}
 
 " cursor sniper {{{
