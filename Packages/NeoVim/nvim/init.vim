@@ -75,8 +75,14 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
+Plug 'tikhomirov/vim-glsl'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+
+Plug 'vimwiki/vimwiki'
+Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'w0rp/ale'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
@@ -186,6 +192,13 @@ augroup END
 
 " }}}
 
+" {{{Ale Settings
+let g:ale_completion_enabled = 1
+let g:ale_linters = {
+\   'cpp': [],
+\}
+" }}}
+
 " Airline settings {{{
 let g:airline_theme='tenderplus'
 let g:airline_powerline_fonts = 1
@@ -196,6 +209,7 @@ let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline_detected_modified = 1
 let g:airline_detect_iminsert = 0
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 2
