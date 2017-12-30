@@ -9,7 +9,8 @@
     cpn     = cherry-pick -n
     cp      = cherry-pick
     # View abbreviated SHA, description, and history graph of the latest 20 commits
-    l = log --pretty=format:'%Cred%h%Creset [%G?] -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 20 --graph
+    l = log --pretty=format:'%Cred%h%Creset [%G?] -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' -n 20 --abbrev-commit --graph
+	ll = log --no-merges --date=short --pretty='format:%ad %an <%ae>%w(0,0,5)%+B'
     # View the current working tree status using the short format
     s = status -s
     # Commit all changes
@@ -124,7 +125,7 @@
     autocorrect = 1
 
 [log]
-	showSignature = true
+	showSignature = false
 
 [merge]
 	tool = vimdiff
@@ -152,5 +153,8 @@
     email = darnir@gmail.com
     name = Darshit Shah
     signingkey = "2A1743EDA91A35B6"
+
+[sendemail]
+	smtpserver = /home/thedoctor/.local/bin/msmtp
 
 ;  vim: set ts=4 sts=4 sw=4 tw=79 ft=gitconfig noet :
