@@ -1,9 +1,0 @@
-set from = "s8dashah@stud.uni-saarland.de"
-set sendmail  = "/usr/bin/msmtp -a UdS"
-
-set postponed = "+UdS/Drafts"
-set spoolfile = "+UdS/INBOX"
-set record = "+UdS/Sent"
-set trash = "+UdS/Trash"
-
-color status green default

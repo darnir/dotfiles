@@ -148,5 +148,9 @@ color   attach_headers     brightmagenta   default        "can't handle these mu
 color   attach_headers     brightmagenta   default        "signature verification suppressed"
 color   attach_headers     brightmagenta   default        "invalid node with packet of type"
 
+color sidebar_highlight black color8
+color sidebar_new green black
+color sidebar_ordinary color245 default
+
 color progress white red
 color index_flags default red '~F'

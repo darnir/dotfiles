@@ -19,7 +19,10 @@ NOALIAS_PAT="facebook|twitter|emirates|amazon|gnu|github|sofort|paypal| \
 	stackexchange|shopping|airbnb|aur.archlinux.org|printer@cs.fs| \
     quora|coverity|bits2msphd|do-not-reply|flixbus|piazza|debbugs|contact@| \
 	gitter|googlegroups|keybase|linkedin|mailman|neomutt|travis| \
-	guerrillamail|webmaster|buildbot|arch-general|arch-dev-public|payoneer"
+	guerrillamail|webmaster|buildbot|arch-general|arch-dev-public|payoneer| \
+	aok|announce|nobody|gitlab|dcms@uni-saarland|dhl|lists|copyright-clerk| \
+	fedex|firefox|notification|postmaster"
+
 
 if grep -Eq "$NOALIAS_PAT" <<< "$ALIASLINE"; then
 	:

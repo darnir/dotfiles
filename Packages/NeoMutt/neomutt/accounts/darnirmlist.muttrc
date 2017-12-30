@@ -1,9 +1,0 @@
-set from = "darnirmlist@gmail.com"
-set sendmail  = "/usr/bin/msmtp -a darnirmlist"
-
-set postponed = "+darnirmlist/Drafts"
-set spoolfile = "+darnirmlist/Inbox"
-set trash = "+darnirmlist/Trash"
-unset record
-
-color status blue default
