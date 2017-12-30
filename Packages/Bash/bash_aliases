@@ -9,18 +9,15 @@ alias ping='ping -c 5'
 alias rm='rm -v'
 alias vi="nvim"
 alias vim="nvim"
-alias irssi="screen irssi"
 
 # New Commands
 alias :q='exit'
 alias :wq='exit'
 alias alert='beep -f 5000 -l 60 -r 2'
-alias aur="cower -ddfuc --target=$HOME/AUR/"
+alias aur="cower -ddfu"
 alias cleantex='rm *.{aux,bbl,blg,log,lot,out,toc,pdf,dvi,fdb_latexmk,fls} 2>/dev/null'
-alias da='date "+%A, %B %d, %Y [%T]"'
 alias du1='du --max-depth=1'
 alias gitignore='git status --porcelain | grep '^??' | cut -c4- >>.gitignore'
-alias hist='history | grep'      # requires an argument
 alias la='ls -lah'
 alias mirrorlist='sudo reflector --save /etc/pacman.d/mirrorlist --sort rate --verbose'
 alias musicdb='mpc update --wait && mpc ls | mpc add'
@@ -36,6 +33,7 @@ alias restartnet='sudo systemctl restart netctl-auto@wlp9s0.service'
 alias netstatus="systemctl status netctl-auto@wlp9s0.service"
 alias weather="wget -O- -q wttr.in"
 alias csp="lp -d CS_FS_Printer"
+alias univpn="pass Accounts/UdS/password | head -n1 | sudo openconnect asa2.uni-saarland.de -u s8dashah"
 
 # Safety Features
 alias chgrp='chgrp --preserve-root'
