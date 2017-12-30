@@ -18,4 +18,6 @@ bindkey ";5C" next  # change window with ctrl-right
 
 altscreen on
 
+maptimeout 5
+
 zombie kr
