@@ -13,6 +13,8 @@ function init_accounts()
 	switch_account("gmail")
 	for i, acc in ipairs(accounts) do
 		mutt.enter("folder-hook "..acc.."/* 'lua switch_account(\""..acc.."\")")
+		mutt.enter("folder-hook "..acc.."/* macro index,pager AA <save-message>="..acc.."/Archive<Enter>")
+		mutt.enter("folder-hook "..acc.."/* macro index,pager At <untag-pattern>all<Enter><tag-thread><tag-prefix><save-message>="..acc.."/Archive<Enter>")
 	end
 end
 

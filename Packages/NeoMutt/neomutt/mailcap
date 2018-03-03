@@ -34,4 +34,4 @@ text/plain           ; cat %s                         ; needsterminal
 application/x-perl   ; ~/.local/etc/mutt/mutt_bgrun nvim-qt %s  ; test=runningx
 application/x-perl   ; cat %s                         ; copiousoutput
 
-application/pgp-keys ; gpg -f < %s                    ; copiousoutput
+# application/pgp-keys ; gpg -f < %s                    ; copiousoutput
