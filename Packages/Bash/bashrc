@@ -45,7 +45,7 @@ set skip-completed-text on
 
 
 # Source the utlity files containing aliases and functions for Bash
-[[ -f $HOME/.bash_aliases ]] && . ~/.bash_aliases
+[[ -f $XDG_CONFIG_HOME/sh/aliases ]] && . $XDG_CONFIG_HOME/sh/aliases
 [[ -f $HOME/.bash_functions ]] && . ~/.bash_functions
 [[ -f $HOME/.bash_completions ]] && . ~/.bash_completions
 [[ -f $HOME/.bash_colours ]] && . ~/.bash_colours
@@ -75,7 +75,7 @@ HORIZ_LINE="\342\224\200"
 
 BATT="\$(acpi -b | awk '{print \$4}' | cut -b1-3)"
 FILES_STAT="\$(ls -1 | wc -l | sed 's: ::g')"
-FILES_SIZE="\$(ls -lah | grep -m 1 total | sed 's/1:total //')b"
+FILES_SIZE="\$(ls -lah | head -n1 | awk '{print \$2}')b"
 GIT_PS1='$(__git_ps1 "(%s)")'
 
 export CTX_START=${HORIZ_LINE}"("
@@ -103,7 +103,4 @@ PS2='>> '
 PS3='>>> '
 PS4='+ '
 
-export VISUAL=nvim-qt
-export TERM=xterm-256color
-export BROWSER="/usr/bin/firefox"
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src/

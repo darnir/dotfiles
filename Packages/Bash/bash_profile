@@ -2,12 +2,7 @@
 # ~/.bash_profile
 #
 
+# Load general shell environment (bash and zsh):
+. "$XDG_CONFIG_HOME/sh/environment"
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc
-
-# export PATH="$PATH:/opt/cov-analysis/bin/"
-export PATH="/usr/lib/ccache/bin/:$PATH"
-export CC=gcc
-
-export BROWSER="/usr/bin/lynx"
-export EDITOR="nvim"
-export TZ="Europe/Berlin"

@@ -23,52 +23,6 @@ tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-# Function: cov-make()
-# This function is specifically geared towards creating a coverity build package
-# for my Wget code base. This function isn't portable since it was written to
-# simplify only my work.
-cov-make() {
-    _info "Running cov-make, the Coverity Wrapper for my Wget"
-    if [ $PWD != "$HOME/Programming/wget" ]
-    then
-        _error "This function should only be run from the Wget source dir \
-located at: ~/Programming/wget/"
-        return 100
-    elif [ -z ${COV_TOKEN+x} ]
-    then
-        _error "Bash secrets were not sourced. Please source the bash secrets"
-        return 100
-    fi
-    _info "Running `make clean`."
-    make clean
-    _info "Configure Wget with GCC."
-    configwget gcc
-    _info "Running cov-build..."
-    cov-build --dir cov-int make
-
-    COMPILED_UNITS=$(grep -o -e [0-9][0-9].% cov-int/build-log.txt)
-    if [[ $COMPILED_UNITS != "100%" ]]
-    then
-        _info "Compiled Units: $COMPILED_UNITS"
-        _error "Not all units compiled. Please check cov-int/build-log.txt"
-        return 100
-    fi
-
-    _info "Packing the coverity build files"
-    tar czvf wget.tgz cov-int
-
-    local version=$(git describe --always | sed 's|-|.|g')
-
-    _info "Uploading Coverity Build to the server"
-    curl --form project=GNU+Wget \
-  --form token=${COV_TOKEN}\
-  --form email=darnir@gmail.com \
-  --form file=@wget.tgz \
-  --form version="${version}"\
-  --form description="\"Coverity build for GNU Wget\"" \
-  https://scan.coverity.com/builds?project=GNU+Wget
-}
-
 # Function: calc()
 # This is a simple command line calculator for Bash. It uses bc to compute
 # various results. Give it a valid bc expression and this function will try to
@@ -88,95 +42,6 @@ calc() {
         printf "$result";
     fi;
     printf "\n";
-}
-
-# Function: pdflatex()
-# This function invokes the similarly named /usr/bin/pdflatex binary and uses
-# grep to colour the output and highlight the errors and warnings when running
-# pdflatex.
-pdflatex() {
-GREP="grep --color=always --line-buffered"
-LL=$*
-echo "$LL"
-(/usr/bin/pdflatex -file-line-error "$LL" 2>&1) \
- | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
- | GREP_COLOR="01;31" $GREP -P "(^[^:]*:\d+: )|(^l\.\d+ )|(^! LaTeX Error: )|$" \
- | GREP_COLOR="00;33" $GREP -P "(LaTeX Warning(:|))|(Package [^\s]+ Warning(:|))|$" \
- | GREP_COLOR="00;32" $GREP -P "^Output written on .*\.pdf \(.*\)\.$|$" \
- | uniq
-}
-
-# Function: man()
-# Similar to pdflatex, this function is invoked when someone tries to load a man
-# page. It adds some amount of syntax colouring to the man page to make it
-# easier to scan visually.
-man() {
-    env \
-        LESS_TERMCAP_mb=$'\x1b[38;2;255;200;200m' \
-    	LESS_TERMCAP_md=$'\x1b[38;2;20;240;240m' \
-    	LESS_TERMCAP_me=$'\x1b[0m' \
-    	LESS_TERMCAP_so=$'\x1b[38;2;60;90;90;48;2;40;40;40m' \
-    	LESS_TERMCAP_se=$'\x1b[0m' \
-    	LESS_TERMCAP_us=$'\x1b[38;2;150;100;200m' \
-    	LESS_TERMCAP_ue=$'\x1b[0m' \
-    	man "$@"
-}
-
-# Function: resolve()
-# Expects a filename as a parameter at $1.
-# A file named $1.pacnew should also exist. This function will then invoke
-# vimdiff to diff the files for resolving the conflicts.
-# This is a very crude function with little to no error checking and should be
-# invoked with care.
-resolve() {
-    vimdiff "$1" "$1.pacnew"
-    read -p "Were the conflicts resolved? [Y/N]: " yn
-    case $yn in
-        [Yy]* ) _info "Deleting pacnew file"; sudo rm "$1.pacnew";;
-    esac
-}
-
-# Function: extract()
-# Expects a compressed file as a paramter
-# This is a utility function I copied from the Arch Wiki. This function accepts
-# a filename as a parameter and based on the filename it will run the respective
-# utility to decompress the file. The way this function is written, it can be
-# used even with older versions of tar which do not have filename based
-# detection of the algorithm.
-extract() {
-    local c e i
-
-    (($#)) || return
-
-    for i; do
-        c=''
-        e=1
-
-        if [[ ! -r $i ]]; then
-            echo "$0: file is unreadable: \`$i'" >&2
-            continue
-        fi
-
-        case $i in
-        *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
-               c='bsdtar xvf';;
-        *.7z)  c='7z x';;
-        *.Z)   c='uncompress';;
-        *.bz2) c='bunzip2';;
-        *.exe) c='cabextract';;
-        *.gz)  c='gunzip';;
-        *.rar) c='unrar x';;
-        *.xz)  c='unxz';;
-        *.zip) c='unzip';;
-        *)     echo "$0: unrecognized file extension: \`$i'" >&2
-               continue;;
-        esac
-
-        command $c "$i"
-        e=$?
-    done
-
-    return $e
 }
 
 # Function: pack()
@@ -224,21 +89,6 @@ note () {
         echo "$@" >> "$NOTES"
     fi
 }
-
-# Function: pdf()
-#
-# Expects a pdf file as an argument.
-# This is a simple helper function to asynchronously launch a pdf viewer (evince) from
-# the command line without polluting it. If the "-o" switch is passed, then Okular
-# will be used as the PDF viewer.
-pdf() {
-    if [[ "$1" == "-o" ]]; then
-        okular "$2" &> /dev/null &
-    else
-        evince "$1" &>/dev/null &
-    fi
-}
-
 # Function: pdftools()
 #
 # Simple common operations to perform on a (set of) PDF file(s) +
@@ -252,38 +102,6 @@ pdftools() {
         compress) gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -sOutputFile="$2" "$3";;
         join) gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="$2" "${@:3}";;
     esac
-}
-
-# Function: timer()
-# Usage: timer [time] [message]
-# This function takes a time argument that is acceptable to sleep(1) and a
-# message. After a period of [time], the message is displayed on the screen and
-# a audio beep is generated. For the beep to be played, ensure that the beep
-# channel in ALSA is not muted.
-timer() {
-    if [ $# -ne 2 ]
-    then
-        echo "Usage: timer [time] [message]"
-        return 1
-    fi
-    sleep "$1" && alert && zenity --info --text="$2" &> /dev/null &
-}
-
-# Function: screen()
-# Usage: screen [preset]
-# This function overrides the call to /usr/bin/screen. There exist a number of
-# screen presets in $HOME. When $1 to this function matches an existing preset,
-# this function invokes screen with the respective screenrc file. As a result it
-# can be used to quickly set up a development environment for multiple projects.
-screen() {
-    filename=".screenrc_$1"
-    filepath="$HOME/$filename"
-    if [[ -f $filepath ]]
-    then
-        /usr/bin/screen -c "$filepath"
-    else
-        /usr/bin/screen $*
-    fi
 }
 
 ssh-genkey() {
@@ -306,34 +124,6 @@ EOF
 
     echo "Identity Settings written to config file. Please verify:"
     vim "$HOME/.ssh/config"
-}
-
-fork() {
-    $* &> /dev/null &
-}
-
-configwget() {
-    # _CFLAGS="-g -g3 -O0 -Wall -Wextra -Wpedantic -Wno-missing-field-initializers -fdiagnostics-color=auto"
-    _CFLAGS="-std=gnu99 -pedantic -g -g3 -O0 -Wall -Wextra -Wstrict-prototypes -Wold-style-definition -Wwrite-strings -Wshadow -Wformat -Wformat-security -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -fdiagnostics-color=auto"
-    _CC="clang"
-    _CONFOPT="--enable-option-checking
-              --disable-silent-rules
-              --enable-dependency-tracking
-              --with-ssl=openssl
-              --without-included-regex
-              --enable-nls
-              --enable-assert
-              --prefix=/usr"
-    _clang_CONFOPT="-C"
-    _gcc_CONFOPT=""
-
-    if [[ "$1" == "gcc" ]]; then
-        _CC="gcc"
-        shift
-    fi
-
-    _CC_CONFOPT="_${_CC}_CONFOPT"
-    CC=${_CC} time ./configure $_CONFOPT ${!_CC_CONFOPT} $* CFLAGS="$_CFLAGS"
 }
 
 cleanswap() {
@@ -370,12 +160,7 @@ awget() {
     local USER="go7box"
     local PASS=$(pass Server/rutorrent/${USER})
 
-    # local _final_url=$(sed -e "s#\(https://\)#\1${USER}:${PASS}@#" <<< "$URL")
-
-    # echo "$_final_url"
-
-    # mpv --cache=204800 --cache-initial=10240 --cache-secs=100 "$_final_url"
-    wget2 --progress bar --user ${USER} --password "${PASS}" $WGET_PARAM "$URL"
+    wget -c --progress bar --user ${USER} --password "${PASS}" $WGET_PARAM "$URL"
 }
 
 stream() {
@@ -390,7 +175,7 @@ stream() {
     echo "$_final_url"
 
     # mpv --cache=204800 --cache-initial=10240 --cache-secs=100 "$_final_url"
-    mpv --cache=204800 --cache-secs=100 $MPV_PARAM "$_final_url"
+    mpv --cache=2048000 --cache-secs=1000 "$MPV_PARAM" "$_final_url"
 }
 
 buildmutt() {
