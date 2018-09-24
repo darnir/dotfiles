@@ -8,7 +8,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Editor Settings {{{
-set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
+set spellfile=$XDG_CONFIG_HOME/nvim/spell/en.utf-8.add
                                         " Set a custom Spell File
 set modeline                            " Enable modeline support
 let g:mapleader=','                     " Remap the leader key to something more convenient
@@ -65,27 +65,28 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'jacoborus/tender'                 " Use the tender colorscheme
 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'easymotion/vim-easymotion'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-commentary'
 Plug 'bogado/file-line'
-Plug 'godlygeek/tabular'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'rust-lang/rust.vim'
-Plug 'cespare/vim-toml'
-Plug 'tikhomirov/vim-glsl'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'cespare/vim-toml', {'for': 'toml' }
+Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins', 'for': 'tex' }
+Plug 'https://sanctum.geek.nz/code/vim-redact-pass.git'
+Plug 'luochen1990/rainbow'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
 Plug 'vimwiki/vimwiki'
-Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'w0rp/ale'
 
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
+Plug 'tpope/vim-git', { 'for': 'git' }
 call plug#end()
 " }}}
 
@@ -105,6 +106,7 @@ augroup filetype_settings
     autocmd FileType tex,mail,markdown setlocal spell spelllang=en_us
     " autocmd FileType mail setlocal spell spelllang=en_us
     " autocmd FileType markdown setlocal spell spelllang=en_us
+    autocmd FileType tex execute deoplete#enable()
 augroup END
 
 augroup cursor_positions
@@ -197,6 +199,8 @@ let g:ale_completion_enabled = 1
 let g:ale_linters = {
 \   'cpp': [],
 \}
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " }}}
 
 " Airline settings {{{
@@ -233,7 +237,7 @@ let g:tagbar_show_linenumbers=-1
 "}}}
 
 " CScope Settings {{{
-source ~/.config/nvim/cscope_maps.vim
+source $XDG_CONFIG_HOME/nvim/cscope_maps.vim
 " }}}
 
 " Keyboard Shortcuts {{{
@@ -303,5 +307,27 @@ augroup highlight_whitespace
     autocmd BufWinLeave * call clearmatches()
 augroup END
 " }}}
+
+let g:rainbow_active=1
+	let g:rainbow_conf = {
+	\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+	\	'operators': '_,_',
+	\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+	\	'separately': {
+	\		'*': {},
+	\		'tex': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+	\		},
+	\		'vim': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+	\		},
+	\		'html': {
+	\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+	\		},
+	\		'css': 0,
+	\	}
+	\}
+
+let g:vimwiki_list = [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': 'default', 'nested_syntaxes': {}, 'auto_toc': 1, 'auto_tags': 1, 'diary_sort': 'desc', 'path': '/home/thedoctor/.local/var/lib/vimwiki/wiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '.tpl', 'syntax': 'default', 'custom_wiki2html': '', 'automatic_nested_syntaxes': 1, 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/thedoctor/.local/var/lib/vimwiki/html/', 'temp': 0, 'template_path': '/home/thedoctor/.local/var/lib/vimwiki/templates/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
