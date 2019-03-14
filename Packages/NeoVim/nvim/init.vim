@@ -24,6 +24,10 @@ set switchbuf=useopen,usetab
 set wrapscan                            " Wrap searches around EOF
 set directory=/tmp/                     " Temp. swap files need not persist
 set runtimepath^=/usr/share/vim/vimfiles/
+set exrc                                " Also load .exrc files from current directory
+set secure                              " Don't run some insecure commands from local exrc files
+set undofile                            " Create a persistent undo-file
+set undodir=$XDG_CACHE_HOME/nvim/undo   " Location of these persistent undo files
 " }}}
 
 " Editor UI Settings {{{
@@ -41,6 +45,8 @@ set foldmethod=syntax
 set visualbell                          " Use a visual bell instead of a beep
 set noerrorbells                        " Disable bells on errors
 set noshowmode                          " Don't show the current editing mode
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:␣,trail:·,eol:¬
+set list
 " }}}
 
 " Indentation Settings {{{
@@ -70,8 +76,8 @@ Plug 'tpope/vim-commentary'
 Plug 'bogado/file-line'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'cespare/vim-toml', {'for': 'toml' }
 Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
