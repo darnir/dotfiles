@@ -31,7 +31,7 @@ set undodir=$XDG_CACHE_HOME/nvim/undo   " Location of these persistent undo file
 " }}}
 
 " Editor UI Settings {{{
-set notermguicolors                     " Don't use True Colours for Terminal (256 is more than enough)
+set termguicolors                       " Use True Colour Support
 set ruler                               " Show the cursor position all the time
 set showcmd                             " Show the command you are currently typing
 set formatoptions+=tcroqnj
@@ -80,10 +80,12 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'cespare/vim-toml', {'for': 'toml' }
 Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
+Plug 'tpope/vim-surround'
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins', 'for': 'tex' }
 Plug 'https://sanctum.geek.nz/code/vim-redact-pass.git'
 Plug 'luochen1990/rainbow'
+Plug 'junegunn/fzf.vim'
 
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
@@ -109,10 +111,10 @@ colorscheme tender	" Set the theme for Vim
 augroup filetype_settings
     autocmd!
     " Set spell checking only on files that make sense. Like TeX, mail and Markdown
-    autocmd FileType tex,mail,markdown setlocal spell spelllang=en_us
+    autocmd FileType tex,mail,markdown setlocal spell spelllang=en_gb
     " autocmd FileType mail setlocal spell spelllang=en_us
     " autocmd FileType markdown setlocal spell spelllang=en_us
-    autocmd FileType tex execute deoplete#enable()
+    " autocmd FileType tex execute deoplete#enable()
 augroup END
 
 augroup cursor_positions
@@ -267,7 +269,13 @@ nnoremap <leader>W :set formatoptions-=a<CR>
 
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
-nnoremap s :%s/\s\+$//e
+nnoremap <leader>s :%s/\s\+$//e
+
+nnoremap ; :Buffers<CR>
+nnoremap f :Files<CR>
+nnoremap T :Tags<CR>
+nnoremap t :BTags<CR>
+nnoremap s :Ag<CR>
 " }}}
 
 " AppendModeline() {{{
@@ -314,6 +322,7 @@ augroup highlight_whitespace
 augroup END
 " }}}
 
+" Raindbow Brackets {{{
 let g:rainbow_active=1
 	let g:rainbow_conf = {
 	\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -333,7 +342,10 @@ let g:rainbow_active=1
 	\		'css': 0,
 	\	}
 	\}
+" }}}
 
+" Vim Wiki {{{
 let g:vimwiki_list = [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': 'default', 'nested_syntaxes': {}, 'auto_toc': 1, 'auto_tags': 1, 'diary_sort': 'desc', 'path': '/home/thedoctor/.local/var/lib/vimwiki/wiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '.tpl', 'syntax': 'default', 'custom_wiki2html': '', 'automatic_nested_syntaxes': 1, 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/thedoctor/.local/var/lib/vimwiki/html/', 'temp': 0, 'template_path': '/home/thedoctor/.local/var/lib/vimwiki/templates/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
+" }}}
 
 " vim: set ts=4 sts=4 sw=4 tw=80 fdm=marker et :
